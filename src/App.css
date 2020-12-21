@@ -1,38 +1,53 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://fonts.googleapis.com/css?family=Lily+Script+One');
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+a:link, a:visited {
+  color: black;
+  background-color: transparent;
+  text-decoration: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+a:hover {
+  color: #101C38;
+  background-color: transparent;
+  text-decoration: underline;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.container {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-direction: column;
+}
+body {
+  flex-direction: row;
+  margin: 0;
+  font-family: Montserrat;
+  font-style: normal;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: -0.015em;
 }
 
-.App-link {
-  color: #61dafb;
+body::-webkit-scrollbar {
+  width: 0.25rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+body::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #101C38;
+}
+
+code {
+font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  monospace;
 }
