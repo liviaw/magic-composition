@@ -1,5 +1,5 @@
 import React from 'react';
-import FileUpload from "./FileUploaderPresentationalComponent";
+import FileUploaderPresentationalComponent from "./FileUploaderPresentationalComponent";
 
 type State = {
     dragging: boolean;
@@ -81,25 +81,25 @@ export default class FileUploader extends React.Component<Props, State> {
   
     render() {
       return (
-        <FileUpload
-          dragging={this.state.dragging}
-          file={this.state.file}
-          onSelectFileClick={this.onSelectFileClick}
-          onDrag={this.overrideEventDefaults}
-          onDragStart={this.overrideEventDefaults}
-          onDragEnd={this.overrideEventDefaults}
-          onDragOver={this.overrideEventDefaults}
-          onDragEnter={this.dragenterListener}
-          onDragLeave={this.dragleaveListener}
-          onDrop={this.dropListener}
-        >
-          <input
-            ref={el => (this.fileUploaderInput = el)}
-            type="file"
-            className="file-uploader__input"
-            onChange={this.onFileChanged}
-          />
-        </FileUpload>
+        <FileUploader></FileUploader>
+        //   dragging={this.state.dragging}
+        //   file={this.state.file}
+        //   onSelectFileClick={this.onSelectFileClick}
+        //   onDrag={this.overrideEventDefaults}
+        //   onDragStart={this.overrideEventDefaults}
+        //   onDragEnd={this.overrideEventDefaults}
+        //   onDragOver={this.overrideEventDefaults}
+        //   onDragEnter={this.dragenterListener}
+        //   onDragLeave={this.dragleaveListener}
+        //   onDrop={this.dropListener}
+        // >
+        //   <input
+        //     ref={el => (this.fileUploaderInput = el)}
+        //     type="file"
+        //     className="file-uploader__input"
+        //     onChange={this.onFileChanged}
+        //   />
+        // </FileUploader>
       );
     }
   }

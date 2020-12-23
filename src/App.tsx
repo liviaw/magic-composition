@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 // import {Player} from './Components/Import/Player';
 
@@ -13,6 +13,16 @@ import FileUploader from './Components/Modal/FileUploader';
 const App: React.FC = () => {
   const [videoFilePath, setVideoPath] = useState<string | string[] | SourceProps[] | MediaStream | undefined>("");
   const [onDragState, setOnDragState] = useState<boolean>(false);
+
+  // useEffect(() => {
+  //   checkDraggedFile();
+  // })
+  const checkDraggedFile = (e: React.MouseEvent<HTMLButtonElement>) => {
+
+  }
+
+
+
   let video1:string | string[] | SourceProps[] | MediaStream = require('./video1.mp4');
   let image1:string | string[] | SourceProps[] | MediaStream = require('./Media/image1.png');
   const handleVideoUpload = (event:React.ChangeEvent<HTMLInputElement>) => {
@@ -22,10 +32,8 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <div className="canvaHomePage">
-        <div className="canvaHomePageText">
-        Canva Home Page
-        </div>
-        <Modal/>
+        {/* <Dropbox/> */}
+        <Modal onDragState={true} callBack={checkDraggedFile}/>
       </div>
     </div>
   );
