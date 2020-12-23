@@ -1,7 +1,7 @@
 import React from 'react';
 
-// import styles from './FileUpload.module.css';
-import './FileUpload.module.css';
+import styles from './FileUpload.module.css';
+// import './FileUpload.module.css';
 
 type PresentationalProps = {
   dragging: boolean;
@@ -15,7 +15,7 @@ type PresentationalProps = {
   onDragLeave: (event: React.DragEvent<HTMLDivElement>) => void;
   onDrop: (event: React.DragEvent<HTMLDivElement>) => void;
 };
-
+const filesString:string = "Drag & Drop File\n or";
 export const FileUploaderPresentationalComponent: React.SFC<
   PresentationalProps
 > = props => {
@@ -32,9 +32,9 @@ export const FileUploaderPresentationalComponent: React.SFC<
     onDrop
   } = props;
 
-  let uploaderClasses = "file-uploader";
+  let uploaderClasses = "fileUploader";
   if (dragging) {
-    uploaderClasses += " file-uploader--dragging";
+    uploaderClasses += " fileUploaderDragging";
   }
 
   const fileName = file ? file.name : "No File Uploaded!";
@@ -50,10 +50,9 @@ export const FileUploaderPresentationalComponent: React.SFC<
       onDragLeave={onDragLeave}
       onDrop={onDrop}
     >
-      <div className="file-uploader__contents">
-        <span className="file-uploader__file-name">{fileName}</span>
-        <span>Drag & Drop File</span>
-        <span>or</span>
+      <div className={styles.fileUploaderContents}>
+        <span className={styles.fileUploaderFileName}>{fileName}</span>
+        <span dangerouslySetInnerHTML={{__html: filesString}}></span>
         <span onClick={onSelectFileClick}>
           Select File
         </span>

@@ -27,8 +27,6 @@ export default class FileUploader extends React.Component<Props, State> {
         event.dataTransfer.types &&
         event.dataTransfer.types[0] === "Files"
       ) {
-        // This block handles support for IE - if you're not worried about
-        // that, you can omit this
         this.setState({ dragging: true });
       }
     };
