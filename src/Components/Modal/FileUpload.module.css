@@ -24,7 +24,7 @@
   }
 
   .dropModal {
-    background-color: rgb(0, 196, 204, 35%);
+    background-color: rgb(0, 196, 204, 50%);
     height:  90vh;
     width: 90vw;
     justify-content: center;
@@ -42,4 +42,23 @@
     position: absolute;
     color: rgb(10,10,10);
     font-weight: bolder;
+  }
+
+  .dotted {
+    height:  80vh;
+    width: 80vw;
+    justify-content: center;
+    position: relative;
+    left: 5%;
+    top: 5vh; 
+    border: 5px dotted black;
+  }
+
+  .characterIcon {
+    height: 12%;
+    width: auto;
+    top: 40%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
   }
