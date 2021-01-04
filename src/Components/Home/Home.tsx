@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import {Modal} from '../Modal/Modal';
-import ReactPlayer, { SourceProps } from 'react-player/lazy';
+
 // import styles from './'
 
-const Home: React.FC = () => {
-    const [videoFilePath, setVideoPath] = useState<string | string[] | SourceProps[] | MediaStream | undefined>("");
-    const [filePath, setFilePath] = useState< string[] >([]);
+type Props = {
+  filePath: string[];
+  setFilePath: React.Dispatch<React.SetStateAction<string[]>>;
+};
+
+const Home:  React.FC<Props> = ({
+  filePath,
+  setFilePath,
+}) => {
     const [onDragState, setOnDragState] = useState<boolean>(false);
     const [onDropState, setOnDropState] = useState<boolean>(false);
 
@@ -16,7 +22,7 @@ const Home: React.FC = () => {
         setOnDropState(true);
         e.preventDefault();
         console.log("dropHandler");
-        const empty= filePath;
+        const dup = filePath;
     
         if (e.dataTransfer.items) {
           // Use DataTransferItemList interface to access the file(s)
@@ -28,7 +34,7 @@ const Home: React.FC = () => {
                 return;
               }
                 console.log("here" + file.name);
-                    empty.push(file.name);
+                    dup.push(file.name);
                     console.log('... file[' + i + '].name = ' + file.name);
                 }
             }
@@ -36,11 +42,11 @@ const Home: React.FC = () => {
           console.log("second");
             // Use DataTransfer interface to access the file(s)
             for (let i = 0; i < e.dataTransfer.files.length; i++) {
-              empty.push(e.dataTransfer.files[i].name);
+              dup.push(e.dataTransfer.files[i].name);
               console.log('... file[' + i + '].name = ' + e.dataTransfer.files[i].name);
             }
         }
-        setFilePath(empty);
+        setFilePath(dup);
       }
       const dragOverHandler = (e: React.MouseEvent<HTMLDivElement>) => {
         // setOnDragState(true);
@@ -54,20 +60,20 @@ const Home: React.FC = () => {
         }
         console.log("dragEnterHandler");
       }
-      const handleFileUpload = (event:React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files === null) return;
-        const empty= [];
-        for (let i = 0; i < event.target.files.length; i++) {
-            empty.push(URL.createObjectURL(event.target.files[i]));
-        }
-        setFilePath(empty);
+      // const handleFileUpload = (event:React.ChangeEvent<HTMLInputElement>) => {
+      //   if (event.target.files === null) return;
+      //   const empty= [];
+      //   for (let i = 0; i < event.target.files.length; i++) {
+      //       empty.push(URL.createObjectURL(event.target.files[i]));
+      //   }
+      //   setFilePath(empty);
     
           
-      }
-      const handleVideoUpload = (event:React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files === null) return;
-        setVideoPath(URL.createObjectURL(event.target.files[0]));
-      };
+      // }
+      // const handleVideoUpload = (event:React.ChangeEvent<HTMLInputElement>) => {
+      //   if (event.target.files === null) return;
+      //   setVideoPath(URL.createObjectURL(event.target.files[0]));
+      // };
       return (
         <div className="App">
           <div className="canvaHomePage" onDragEnter={dragEnterHandler} onDrop={dropHandler} onDragOver={dragOverHandler}>

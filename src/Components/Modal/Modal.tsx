@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import styles from "./FileUpload.module.css";
 import character from "../../Media/character.png";
-import { Link } from "react-router-dom";
+import { Button } from 'react-bootstrap';
 
 type Props = {
   onDragState: boolean;
@@ -21,7 +21,7 @@ export const Modal: React.FC<Props> = ({
     callBack();
     console.log("dragLeaveHandler");
   };
-
+{/* <a href="/create"></a> */}
   const Dropbox = () => {
     if (!onDropState && onDragState) {
       return (
@@ -38,12 +38,10 @@ export const Modal: React.FC<Props> = ({
           <div className={styles.dotted}>
             {/* {files.map(f => (<span dangerouslySetInnerHTML={{__html: f}}/>))} */}
             {files.map((f) => (
-              <div>{f}</div>
+              <div key={f}>{f}</div>
             ))}
+            <Button variant="info"><a href="/create">Create Video</a></Button>
           </div>
-          <button>
-            <Link to="/createVideo">Create Video</Link>
-          </button>
         </div>
       );
     } else {
