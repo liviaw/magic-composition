@@ -8,6 +8,8 @@ import { BrowserRouter as Router, Switch, Route, useLocation, useHistory} from '
 
 const App: React.FC = () => {
   const [filePath, setFilePath] = useState< string[] >([]);
+  const [str, setStr] = useState< string >("");
+  const [str2, setStr2] = useState< string >("");
   const [temp, setTemp] = useState< string[] >([]);
   useEffect(() => {
     console.log("mounted");
@@ -21,42 +23,49 @@ const App: React.FC = () => {
   const addFile = () => {
     
   }
-  const getFile = () => {
-    // filePath.forEach( (f) => {
 
-    //   console.log(f)
-    // }
-    // )
-    // console.log("hi");
-    return filePath;
-  }
   const updateFile = (newFiles: string[]) => {
     setFilePath(newFiles);
     console.log(Array.from(filePath).join(","));
     console.log("updateee")
   }
-  function NoMatch() {
-    let location = useLocation();
-  
-    return (
-      <div>
-        <h3>
-          No match for <code>{location.pathname}</code>
-        </h3>
-      </div>
-    );
-  }
+  var loadFile = function(event: React.ChangeEvent<HTMLInputElement>) {
+    var image = document.getElementById('output');
+    if (image == null || event.target.files == null) {
+      return;
+    }
+    setStr(URL.createObjectURL(event.target.files[0]));
+    console.log(event.target.files[0]);
+    console.log(URL.createObjectURL(event.target.files[0]));
+
+  };
+  var loadFile2 = function(event: React.ChangeEvent<HTMLInputElement>) {
+    var image = document.getElementById('output');
+    if (image == null || event.target.files == null) {
+      return;
+    }
+    setStr2(URL.createObjectURL(event.target.files[0]));
+
+  };
+
   console.log("hi");
+
   return (
     <div className="App">
-      <Router>
-        <Switch>
-        <Route exact path="/" component={()=>(<Home filePath={filePath} setFilePath={setFilePath} />)}/>
-        <Route path="/create" component={()=>(<CreateVideo filePath={filePath}/>)}/>
-        <Route component={NoMatch}/>
-        </Switch>
-    </Router>
+      <p>
+        <input type="file"  accept="image/*, video/*" name="image" id="file"  onChange={loadFile} className="{display: none;}"/>
 
+        </p>
+<p><label className="{cursor: pointer;}">Upload Image</label></p>
+<p><img id="output" width="200" src={str}/></p>
+
+
+<p>
+        <input type="file"  accept="image/*" name="image" id="file"  onChange={loadFile2} className="{display: none;}"/>
+
+        </p>
+<p><label className="{cursor: pointer;}">Upload Image</label></p>
+<p><img id="output2" width="200" src={str2}/></p>
     </div>
   );
 }
