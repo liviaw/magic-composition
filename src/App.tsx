@@ -7,24 +7,20 @@ import sampimage1 from './Media/image1.png';
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'; 
 
 const App: React.FC = () => {
-  const [filePath, setFilePath] = useState< string[] >([]);
-
-  const removeFile = () => {
-
-  }
-  const addFile = () => {
-    
-  }
+  const [videoFilePath, setVideoPath] = useState<string | string[] | SourceProps[] | MediaStream | undefined>("");
+  const handleVideoUpload = (event:React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files === null) return;
+    setVideoPath(URL.createObjectURL(event.target.files[0]));
+  };
   return (
     <div className="App">
-      <Router>
-        <Switch>
-        <Route exact path="/" component={()=>(<Home filePath={filePath} setFilePath={setFilePath}/>)}/>
+      <form action="/action_page.php">
+        <input type="file" onChange={handleVideoUpload}/>
+        <input type="submit" value="Submit"></input>
+      </form>
+      <ReactPlayer url={videoFilePath} width="100%" height="50%" controls={true} playing/>
+      {/* <Player/> */}
 
-        <Route path="/create"component={()=>(<CreateVideo filePath={filePath}/>)}/>
-        {/* <Route component={NoMatch}/> */}
-        </Switch>
-    </Router>
 
     </div>
   );
