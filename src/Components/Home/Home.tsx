@@ -43,10 +43,13 @@ const Home:  React.FC<Props> = ({
             // Use DataTransfer interface to access the file(s)
             for (let i = 0; i < e.dataTransfer.files.length; i++) {
               dup.push(e.dataTransfer.files[i].name);
-              console.log('... file[' + i + '].name = ' + e.dataTransfer.files[i].name);
+              // console.log('... file[' + i + '].name = ' + e.dataTransfer.files[i].name);
             }
         }
+        console.log(dup.join(","));
+        console.log("from home");
         setFilePath(dup);
+        // setVideoPath(URL.createObjectURL(event.target.files[0]));
       }
       const dragOverHandler = (e: React.MouseEvent<HTMLDivElement>) => {
         // setOnDragState(true);

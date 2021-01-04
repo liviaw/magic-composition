@@ -3,6 +3,8 @@ import styles from "./FileUpload.module.css";
 import character from "../../Media/character.png";
 import { Button } from 'react-bootstrap';
 
+import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'; 
+
 type Props = {
   onDragState: boolean;
   onDropState: boolean;
@@ -38,7 +40,7 @@ export const Modal: React.FC<Props> = ({
           <div className={styles.dotted}>
             {/* {files.map(f => (<span dangerouslySetInnerHTML={{__html: f}}/>))} */}
             {files.map((f) => (
-              <div key={f}>{f}</div>
+              <div key={f+Math.random()}>{f}</div>
             ))}
             <Button variant="info"><a href="/create">Create Video</a></Button>
           </div>

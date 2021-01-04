@@ -5,7 +5,7 @@ import styles from './CreateVideo.module.css';
 import ReactPlayer, { SourceProps } from 'react-player/lazy';
 
 type Props = {
-    filePath: string[];
+    filePath:string[];
   };
 const CreateVideo: React.FC<Props> = ({
     filePath,
@@ -29,14 +29,12 @@ const CreateVideo: React.FC<Props> = ({
         //     create
         // </div>
     return(
-        <div className={styles.dropModal}>
-          <div className={styles.dotted}>
+        <div>
             {/* {files.map(f => (<span dangerouslySetInnerHTML={{__html: f}}/>))} */}
             {filePath.map((f) => (
               <div key={f}>{f}</div>
             ))}
             <p>jhdsfkhkdj</p>
-          </div>
         </div>
     )
 }
