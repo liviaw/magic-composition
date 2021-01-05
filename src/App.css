@@ -94,7 +94,7 @@ font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
   }
 
 .hide {
-  display:hidden
+  display:none;
 }
 
-.show {display:block}
+.show {display:block;}

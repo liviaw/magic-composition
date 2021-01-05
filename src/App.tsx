@@ -10,11 +10,15 @@ const App: React.FC = () => {
   const [files, setFiles] = useState<FileList>();
   const [medias, setMedias] = useState<JSX.Element[]>([]);
   const [imagesCounter, setImagesCounter] = useState(0);
+  const [duration, setDuration] = useState(10000);
+
   let imageFormat = new RegExp('image/*');
   let videoFormat = new RegExp('video/*');
-
+  // medias[imageCounter].
   useEffect(()=> {
     ShowMedia();
+    setInterval(changeImage, duration); 
+
   }, [files])
   const handleVideoUpload = async (event:React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files === null) return;
@@ -35,13 +39,13 @@ const App: React.FC = () => {
     for (let i = 0; i < files.length; i++) {
       if (imageFormat.test(files[i].type)) {
         console.log(i + files[i].type);
-        // style={{display:"none"}}
+        // 
         mediasTemp.push(<img src={URL.createObjectURL(files[i])}/>)
       }
       else if (videoFormat.test(files[i].type)) {
         console.log(i + files[i].type);
         // style={{display:"none"}} , visibilitiy doesnt work too
-        mediasTemp.push(<ReactPlayer  url={URL.createObjectURL(files[i])} width="100%" height="50%" playing={true}/>)
+        mediasTemp.push(<ReactPlayer url={URL.createObjectURL(files[i])} width="100%" height="50%" playing={true} onEnded={changeImage}/>)
       }
     }
     setMedias(mediasTemp);
@@ -63,11 +67,13 @@ const App: React.FC = () => {
 
   const changeImage = () => {
     let temp = medias[imagesCounter];
+    // temp.style.display = "block";
     // temp.className = styles.show;
     setImagesCounter(imagesCounter + 1);
     // visibility=hidden;
   }
 
+  
   return (
     <div className="App">
       <form>
@@ -76,9 +82,10 @@ const App: React.FC = () => {
       </form>
       {/* {ShowMedia()} */}
       {/* {idk()} */}
-      {/* {setInterval(changeImage, 1000)} */}
+      {medias[imagesCounter]}
       
-      {medias}
+      {/* {medias.map(setInterval((f) => f), 1000)
+      })} */}
 
 
       
