@@ -11,6 +11,7 @@ const App: React.FC = () => {
   const [medias, setMedias] = useState<JSX.Element[]>([]);
   const [mediaCounter, setMediaCounter] = useState<number>(0);
   const [duration, setDuration] = useState(2000);
+  const [delay, setDelay] = useState(false);
 
   let imageFormat = new RegExp('image/*');
   let videoFormat = new RegExp('video/*');
@@ -20,6 +21,13 @@ const App: React.FC = () => {
     // setInterval(changeImage, 5000); 
 
   }, [files])
+
+  useEffect(() => {
+    if (delay) {
+      let id = setInterval(changeImage, 2000);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
   const handleVideoUpload = async (event:React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files === null) return;
     // setVideoPath([ URL.createObjectURL(event.target.files[0])]);
@@ -48,26 +56,32 @@ const App: React.FC = () => {
     setMedias(mediasTemp);
     return mediasTemp;
   }
+  // function setTimerWrapper() {
+  //   setInterval(changeImage, 5000);
+  // } 
 
   const changeImage = () => {
     console.log("===mediacounter===");
     console.log(mediaCounter);
-    let temp = mediaCounter + 1;
-    setMediaCounter(temp);
-    // if (files == null) {
-    //   console.log("files empty");
-    //   return;
-    // }
-
-    // if (mediaCounter >= files.length) {
-    //   clearInterval();
-    //   console.log("interval cleared");
-    // } else {
-
-    //   setMediaCounter(mediaCounter + 1);
-    // }
+    // let temp = mediaCounter + 1;
+    // console.log(temp);
+    // setMediaCounter(temp);
+    if (files == null) {
+      console.log("files empty");
+      return;
+    }
+    
+    if (mediaCounter >= files.length) {
+      clearInterval(id);
+      console.log("interval cleared");
+    } else {
+      
+      setMediaCounter(mediaCounter + 1);
+    }
   }
+  let id = setInterval(changeImage, 5000);
 
+  
   
   return (
     <div className="App">
@@ -75,9 +89,9 @@ const App: React.FC = () => {
         <input type="file" multiple onChange={handleVideoUpload}/>
         <input type="submit" value="Submit"></input>
       </form>
-      <button onClick={() => {setInterval(changeImage, 5000)}}>start video</button>
+      <button onClick={() => {setDelay(true)}}>start video</button>
       <br/>
-      <button onClick={() => {clearInterval()}}>stop interval im sad :(</button>
+      {/* <button onClick={() => {clearInterval(setTimerWrapper)}}>stop interval im sad :(</button> */}
       {medias[mediaCounter]}
       
       {/* {medias.map(setInterval((f) => f), 1000)
