@@ -92,3 +92,9 @@ font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     color: rgb(10,10,10);
     font-weight: bolder;
   }
+
+.hide {
+  display:hidden
+}
+
+.show {display:block}
