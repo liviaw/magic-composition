@@ -9,7 +9,7 @@ const App: React.FC = () => {
   // const [videoFilePath, setVideoPath] = useState<string[] >([]);
   const [files, setFiles] = useState<FileList>();
   const [medias, setMedias] = useState<JSX.Element[]>([]);
-  const [mediaCounter, setMediaCounter] = useState(0);
+  const [mediaCounter, setMediaCounter] = useState<number>(0);
   const [duration, setDuration] = useState(2000);
 
   let imageFormat = new RegExp('image/*');
@@ -31,7 +31,7 @@ const App: React.FC = () => {
   const ShowMedia:() => JSX.Element | JSX.Element[]  = () => {
     const mediasTemp:JSX.Element[] = []
     if (files == null) {
-      console.log("empty files");
+      console.log("pls wrk");
       return <></>
     }
     let imageFormat = new RegExp('image/*');
@@ -50,20 +50,22 @@ const App: React.FC = () => {
   }
 
   const changeImage = () => {
+    console.log("===mediacounter===");
     console.log(mediaCounter);
-    if (files == null) {
-      console.log("files empty");
-      return;
-    }
-    console.log(files.length);
-    if (mediaCounter >= files.length) {
-      // setMediaCounter(0);
-      clearInterval();
-      console.log("interval cleared");
-    } else {
+    let temp = mediaCounter + 1;
+    setMediaCounter(temp);
+    // if (files == null) {
+    //   console.log("files empty");
+    //   return;
+    // }
 
-      setMediaCounter(mediaCounter + 1);
-    }
+    // if (mediaCounter >= files.length) {
+    //   clearInterval();
+    //   console.log("interval cleared");
+    // } else {
+
+    //   setMediaCounter(mediaCounter + 1);
+    // }
   }
 
   
@@ -73,9 +75,9 @@ const App: React.FC = () => {
         <input type="file" multiple onChange={handleVideoUpload}/>
         <input type="submit" value="Submit"></input>
       </form>
-      <button onClick={() => setInterval(changeImage, 5000)}>start video</button>
+      <button onClick={() => {setInterval(changeImage, 5000)}}>start video</button>
       <br/>
-      <button onClick={() => clearInterval()}>stop interval im sad :(</button>
+      <button onClick={() => {clearInterval()}}>stop interval im sad :(</button>
       {medias[mediaCounter]}
       
       {/* {medias.map(setInterval((f) => f), 1000)
