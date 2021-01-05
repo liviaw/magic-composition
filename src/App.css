@@ -83,18 +83,12 @@ font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
   
   }
 
-  .dropModalText {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: xx-large;
-    position: absolute;
-    color: rgb(10,10,10);
-    font-weight: bolder;
-  }
-
-.hide {
-  display:none;
+.dropModalText {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: xx-large;
+  position: absolute;
+  color: rgb(10,10,10);
+  font-weight: bolder;
 }
-
-.show {display:block;}

@@ -9,15 +9,15 @@ const App: React.FC = () => {
   // const [videoFilePath, setVideoPath] = useState<string[] >([]);
   const [files, setFiles] = useState<FileList>();
   const [medias, setMedias] = useState<JSX.Element[]>([]);
-  const [imagesCounter, setImagesCounter] = useState(0);
-  const [duration, setDuration] = useState(10000);
+  const [mediaCounter, setMediaCounter] = useState(0);
+  const [duration, setDuration] = useState(2000);
 
   let imageFormat = new RegExp('image/*');
   let videoFormat = new RegExp('video/*');
   // medias[imageCounter].
   useEffect(()=> {
     ShowMedia();
-    setInterval(changeImage, duration); 
+    // setInterval(changeImage, 5000); 
 
   }, [files])
   const handleVideoUpload = async (event:React.ChangeEvent<HTMLInputElement>) => {
@@ -38,39 +38,32 @@ const App: React.FC = () => {
     let videoFormat = new RegExp('video/*');
     for (let i = 0; i < files.length; i++) {
       if (imageFormat.test(files[i].type)) {
-        console.log(i + files[i].type);
-        // 
         mediasTemp.push(<img src={URL.createObjectURL(files[i])}/>)
       }
       else if (videoFormat.test(files[i].type)) {
-        console.log(i + files[i].type);
-        // style={{display:"none"}} , visibilitiy doesnt work too
-        mediasTemp.push(<ReactPlayer url={URL.createObjectURL(files[i])} width="100%" height="50%" playing={true} onEnded={changeImage}/>)
+        // onEnded={changeImage}
+        mediasTemp.push(<ReactPlayer url={URL.createObjectURL(files[i])} width="100%" height="50%" playing={true} />)
       }
     }
     setMedias(mediasTemp);
     return mediasTemp;
   }
-  const idk = async () => {
-    let file = medias[0];
-    // {medias.forEach((file)=>{
-      if (imageFormat.test(file.type)) {
-        await setTimeout(function(){}, 1000); 
-        let temp = medias;
-        temp.splice(0,1);
-        setMedias(temp);
-        console.log(temp);
-
-      }
-    // })}
-  }
 
   const changeImage = () => {
-    let temp = medias[imagesCounter];
-    // temp.style.display = "block";
-    // temp.className = styles.show;
-    setImagesCounter(imagesCounter + 1);
-    // visibility=hidden;
+    console.log(mediaCounter);
+    if (files == null) {
+      console.log("files empty");
+      return;
+    }
+    console.log(files.length);
+    if (mediaCounter >= files.length) {
+      // setMediaCounter(0);
+      clearInterval();
+      console.log("interval cleared");
+    } else {
+
+      setMediaCounter(mediaCounter + 1);
+    }
   }
 
   
@@ -80,9 +73,10 @@ const App: React.FC = () => {
         <input type="file" multiple onChange={handleVideoUpload}/>
         <input type="submit" value="Submit"></input>
       </form>
-      {/* {ShowMedia()} */}
-      {/* {idk()} */}
-      {medias[imagesCounter]}
+      <button onClick={() => setInterval(changeImage, 5000)}>start video</button>
+      <br/>
+      <button onClick={() => clearInterval()}>stop interval im sad :(</button>
+      {medias[mediaCounter]}
       
       {/* {medias.map(setInterval((f) => f), 1000)
       })} */}
