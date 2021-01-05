@@ -14,7 +14,6 @@ const Home:  React.FC<Props> = ({
 }) => {
     const [onDragState, setOnDragState] = useState<boolean>(false);
     const [onDropState, setOnDropState] = useState<boolean>(false);
-    const [filesState, setFilesState] = useState<string[]>([]);
 
     const checkDraggedFile = (e: React.MouseEvent<HTMLButtonElement>) => {
         setOnDragState(false);
@@ -24,7 +23,6 @@ const Home:  React.FC<Props> = ({
         e.preventDefault();
         console.log("dropHandler");
         const dup = filePath;
-        const empty = filesState;
     
         if (e.dataTransfer.items) {
           // Use DataTransferItemList interface to access the file(s)
@@ -35,22 +33,20 @@ const Home:  React.FC<Props> = ({
               if (file == null) {
                 return;
               }
-              empty.push(URL.createObjectURL(file.name));
-              
-              dup.push(file.name);
-            }
+                console.log("here" + file.name);
+                    dup.push(file.name);
+                    console.log('... file[' + i + '].name = ' + file.name);
+                }
             }
         } else {
+          console.log("second");
             // Use DataTransfer interface to access the file(s)
             for (let i = 0; i < e.dataTransfer.files.length; i++) {
               dup.push(e.dataTransfer.files[i].name);
+              console.log('... file[' + i + '].name = ' + e.dataTransfer.files[i].name);
             }
         }
-        // console.log(dup.join(","));
-        // console.log("from home");
         setFilePath(dup);
-        setFilesState(empty);
-        // setVideoPath(URL.createObjectURL(event.target.files[0]));
       }
       const dragOverHandler = (e: React.MouseEvent<HTMLDivElement>) => {
         // setOnDragState(true);
@@ -81,7 +77,7 @@ const Home:  React.FC<Props> = ({
       return (
         <div className="App">
           <div className="canvaHomePage" onDragEnter={dragEnterHandler} onDrop={dropHandler} onDragOver={dragOverHandler}>
-            <Modal onDragState={onDragState} onDropState={onDropState} callBack={checkDraggedFile} filePath={filePath} filesState={filesState}/>
+            <Modal onDragState={onDragState} onDropState={onDropState} callBack={checkDraggedFile} filePath={filePath}/>
           </div> 
         </div>
       );

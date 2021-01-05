@@ -12,13 +12,14 @@ type Props = {
   callBack: any;
   // files: Set<string>;
   filePath: string[];
-  filesState:string[];
+  filesState: string[];
 };
 
 export const Modal: React.FC<Props> = ({
   onDragState,
   onDropState,
   callBack,
+  // files,
   filePath,
   filesState,
 }) => {
