@@ -1,9 +1,35 @@
-import React, {useEffect, useState} from 'react';
+
+
+import React, { useState, useEffect, useRef } from 'react';
+import { useInterval } from 'beautiful-react-hooks'; 
 import { Button, Modal } from 'react-bootstrap';
 import styles from './CreateVideo.module.css';
 import VideoProgressBar from './VideoProgressBar';
 import ReactPlayer, { SourceProps } from 'react-player/lazy';
 
+function useInterval(callback:any, delay:number, finished: boolean) {
+
+    const savedCallback = useRef<any>(null);
+    // Remember the latest callback.
+    useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
+  
+    // Set up the interval.
+    useEffect(() => {
+    function tick() {
+        savedCallback.current();
+    }
+    let id:NodeJS.Timeout;
+      if (delay !== null) {
+        id = setInterval(tick, delay);
+        if (finished) {
+          clearInterval(id);
+        }
+        return () => clearInterval(id);
+      }
+    }, [delay]);
+}
 type Props = {
     files:File[];
     show: boolean;
@@ -20,20 +46,35 @@ const CreateVideo: React.FC<Props> = ({
     const [medias, setMedias] = useState<JSX.Element[]>([]);
     const [mediaCounter, setMediaCounter] = useState<number>(0);
     const [duration, setDuration] = useState(2000);
-    const [delay, setDelay] = useState(false);
+    // const [delay, setDelay] = useState(true);
     const [progress, setProgress] = useState<number>(0);
+    
     useEffect(()=> {
         ShowMedia();
         // setInterval(changeImage, 5000); 
     
       }, [files])
-    
-      useEffect(() => {
-        if (delay) {
-          let id = setInterval(changeImage, 2000);
-          return () => clearInterval(id);
+    const changeImage = () => {
+        console.log("===mediacounter===");
+        console.log(mediaCounter);
+        // let temp = mediaCounter + 1;
+        // console.log(temp);
+        // setMediaCounter(temp);
+        if (files == null) {
+            console.log("files empty");
+            return;
         }
-      }, [delay]);
+        
+        if (mediaCounter >= files.length) {
+            setProgress(100);
+            console.log("interval cleared");
+        } else {
+            setProgress(progress + 10);
+            setMediaCounter(mediaCounter + 1);
+        }
+    }
+    useInterval(changeImage, 2000, mediaCounter>=files.length);
+
 
     const ShowMedia:() => JSX.Element | JSX.Element[]  = () => {
         const mediasTemp:JSX.Element[] = []
@@ -55,28 +96,6 @@ const CreateVideo: React.FC<Props> = ({
         setMedias(mediasTemp);
         return mediasTemp;
     }
-    const changeImage = () => {
-        console.log("===mediacounter===");
-        console.log(mediaCounter);
-        // let temp = mediaCounter + 1;
-        // console.log(temp);
-        // setMediaCounter(temp);
-        if (files == null) {
-            console.log("files empty");
-            return;
-        }
-        
-        if (mediaCounter >= files.length) {
-            setProgress(100);
-            clearInterval(id);
-            console.log("interval cleared");
-        } else {
-            setProgress(progress + 10);
-            setMediaCounter(mediaCounter + 1);
-        }
-    }
-      let id = setInterval(changeImage, 5000);
-    
       
     return(
         <Modal centered size="lg" show={show} onHide={handleClose}>

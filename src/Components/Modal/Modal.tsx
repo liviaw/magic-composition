@@ -34,17 +34,22 @@ export const Modal: React.FC<Props> = ({
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const Dropbox = () => {
+
     const history = useHistory();
+    
     if(show) {
-      return <CreateVideo files={files} show={show} handleClose={handleClose} handleShow={handleShow}/>
+      return (
+        <div>
+          <CreateVideo files={files} show={show} handleClose={handleClose} handleShow={handleShow}/>
+        </div>
+      )
     }
 
-    console.log("onDropState = "+onDropState + " onDragState = " + onDragState);
+    console.log("onDropState = "+ onDropState + " onDragState = " + onDragState);
     if (!onDropState && onDragState) {
       console.log("===dragging===");
       return (
-        <div className={styles.dropModal}>
+        <div className={styles.dropModal} onDragLeave={dragLeaveHandler}>
           <div className={styles.dotted}>
             <img className={styles.characterIcon} src={character} alt="here" />
             <div className={styles.dropModalText}>Drop Your File Here</div>
@@ -54,7 +59,7 @@ export const Modal: React.FC<Props> = ({
     } else if (onDropState && onDragState) {
       console.log("===done dropping===");
       return (
-        <div className={styles.dropModal}>
+        <div className={styles.dropModal} onDragLeave={dragLeaveHandler}>
           <div className={styles.dotted}>
             {files.map((f) => {
               if (isImage(f)) {
@@ -86,14 +91,7 @@ export const Modal: React.FC<Props> = ({
             {/* <Button onClick={()=> history.push("/create")} variant="info">Create Video</Button> */}
         </div>
       );
-    } else {
-      return <></>;
-    }
-  };
-  
-  return (
-    <div onDragLeave={dragLeaveHandler}>
-      <Dropbox />      
-    </div>
-  );
+    } 
+    return <></>;
+    
 };
