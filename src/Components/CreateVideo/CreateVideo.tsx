@@ -7,29 +7,6 @@ import styles from './CreateVideo.module.css';
 import VideoProgressBar from './VideoProgressBar';
 import ReactPlayer, { SourceProps } from 'react-player/lazy';
 
-function useInterval(callback:any, delay:number, finished: boolean) {
-
-    const savedCallback = useRef<any>(null);
-    // Remember the latest callback.
-    useEffect(() => {
-      savedCallback.current = callback;
-    }, [callback]);
-  
-    // Set up the interval.
-    useEffect(() => {
-    function tick() {
-        savedCallback.current();
-    }
-    let id:NodeJS.Timeout;
-      if (delay !== null) {
-        id = setInterval(tick, delay);
-        if (finished) {
-          clearInterval(id);
-        }
-        return () => clearInterval(id);
-      }
-    }, [delay]);
-}
 type Props = {
     files:File[];
     show: boolean;
@@ -45,15 +22,9 @@ const CreateVideo: React.FC<Props> = ({
   }) => {
     const [medias, setMedias] = useState<JSX.Element[]>([]);
     const [mediaCounter, setMediaCounter] = useState<number>(0);
-    const [duration, setDuration] = useState(2000);
+    const [duration, setDuration] = useState();
     // const [delay, setDelay] = useState(true);
     const [progress, setProgress] = useState<number>(0);
-    
-    useEffect(()=> {
-        ShowMedia();
-        // setInterval(changeImage, 5000); 
-    
-      }, [files])
     const changeImage = () => {
         console.log("===mediacounter===");
         console.log(mediaCounter);
@@ -67,13 +38,22 @@ const CreateVideo: React.FC<Props> = ({
         
         if (mediaCounter >= files.length) {
             setProgress(100);
+            clearInterval();
             console.log("interval cleared");
         } else {
             setProgress(progress + 10);
             setMediaCounter(mediaCounter + 1);
         }
     }
-    useInterval(changeImage, 2000, mediaCounter>=files.length);
+    const [isCleared, clearInterval] = useInterval(changeImage, 1000);
+    
+    useEffect(()=> {
+        ShowMedia();
+        // setInterval(changeImage, 5000); 
+    
+      }, [files])
+
+    
 
 
     const ShowMedia:() => JSX.Element | JSX.Element[]  = () => {
