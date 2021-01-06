@@ -10,21 +10,16 @@ type Props = {
   onDragState: boolean;
   onDropState: boolean;
   callBack: any;
-  // files: Set<string>;
-  filePath: string[];
-  filesState: string[];
+  files: File[];
 };
 
 export const Modal: React.FC<Props> = ({
   onDragState,
   onDropState,
   callBack,
-  // files,
-  filePath,
-  filesState,
+  files,
 }) => {
-  let _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png", "mp4", ".mov", "wmv", "flv"];    
-  
+
   const dragLeaveHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     callBack();
@@ -35,8 +30,9 @@ export const Modal: React.FC<Props> = ({
   const Dropbox = () => {
     const history = useHistory();
 
-  
+    console.log("onDropState = "+onDropState + " onDragState = " + onDragState);
     if (!onDropState && onDragState) {
+      console.log("===dragging===");
       return (
         <div className={styles.dropModal}>
           <div className={styles.dotted}>
@@ -46,18 +42,18 @@ export const Modal: React.FC<Props> = ({
         </div>
       );
     } else if (onDropState && onDragState) {
+      console.log("===done dropping===");
       return (
         <div className={styles.dropModal}>
           <div className={styles.dotted}>
             {/* {files.map(f => (<span dangerouslySetInnerHTML={{__html: f}}/>))} */}
-            {filesState.map((f) => {
+            {files.map((f) => {
               if (!isImage(f) && !isVideo(f)) {
-                alert("Sorry, " + f + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
               }  else if (isImage(f)) {
                 return(
-                <div key={f+Math.random()}>
-                  <img id={f+Math.random()} src={f} alt={"image not rendering " + f }/>
-                  {f}
+                <div key={f.name+Math.random()}>
+                  <img id={f.name+Math.random()} src={URL.createObjectURL(f)} alt={"image not rendering " + f.name }/>
+                  {f.name}
                   </div>
                 )
               }
@@ -67,9 +63,11 @@ export const Modal: React.FC<Props> = ({
         </div>
       );
     } else {
+      console.log("last");
       return <></>;
     }
   };
+  
   return (
     <div onDragLeave={dragLeaveHandler}>
       <Dropbox />

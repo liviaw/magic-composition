@@ -5,10 +5,10 @@ import styles from './CreateVideo.module.css';
 import ReactPlayer, { SourceProps } from 'react-player/lazy';
 
 type Props = {
-    filePath:string[];
+    files:File[];
   };
 const CreateVideo: React.FC<Props> = ({
-    filePath,
+    files,
   }) => {
 
     // const handleVideoUpload = (event:React.ChangeEvent<HTMLInputElement>) => {
@@ -19,12 +19,13 @@ const CreateVideo: React.FC<Props> = ({
     return(
         <div>
 
-            {Array.from(filePath).map((videoPath) => (
+            {Array.from(files).map((videoPath) => (
                 <>
                     {console.log(videoPath)}
-                    <div key={videoPath}>{videoPath}</div>
-                    <img className={styles.renderImage} src={videoPath} alt="" />
-                    <ReactPlayer url={videoPath} width="100%" height="100%" controls={true} /></>
+                    <div key={videoPath.name}>{videoPath}</div>
+                    <img src={URL.createObjectURL(videoPath)}/>
+                    <ReactPlayer url={URL.createObjectURL(videoPath)} width="100%" height="50%" playing={true} />
+                </>
             ))}
             create
         </div>

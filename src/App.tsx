@@ -7,8 +7,8 @@ import sampimage1 from './Media/image1.png';
 import { BrowserRouter as Router, Switch, Route, useLocation, useHistory} from 'react-router-dom'; 
 
 const App: React.FC = () => {
-  const [filePath, setFilePath] = useState< string[] >([]);
-  const [temp, setTemp] = useState< string[] >([]);
+
+  const [files, setFiles] = useState<File[]>([]);
   useEffect(() => {
     console.log("mounted");
     return (() => {
@@ -21,20 +21,7 @@ const App: React.FC = () => {
   const addFile = () => {
     
   }
-  const getFile = () => {
-    // filePath.forEach( (f) => {
 
-    //   console.log(f)
-    // }
-    // )
-    // console.log("hi");
-    return filePath;
-  }
-  const updateFile = (newFiles: string[]) => {
-    setFilePath(newFiles);
-    console.log(Array.from(filePath).join(","));
-    console.log("updateee")
-  }
   function NoMatch() {
     let location = useLocation();
   
@@ -46,16 +33,17 @@ const App: React.FC = () => {
       </div>
     );
   }
-  console.log("hi");
   return (
     <div className="App">
-      <Router>
+      <Home files={files} setFiles={setFiles} />
+      {/* <Router>
         <Switch>
-        <Route exact path="/" component={()=>(<Home filePath={filePath} setFilePath={setFilePath} />)}/>
-        <Route path="/create" component={()=>(<CreateVideo filePath={filePath}/>)}/>
+          
+        <Route exact path="/" component={()=>(<Home files={files} setFiles={setFiles} />)}/>
+        <Route path="/create" component={()=>(<CreateVideo files={files}/>)}/>
         <Route component={NoMatch}/>
         </Switch>
-    </Router>
+    </Router> */}
 
     </div>
   );
