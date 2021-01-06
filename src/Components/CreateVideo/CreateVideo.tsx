@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import styles from './CreateVideo.module.css';
-// import ReactPlayer from "react-player";
+import VideoProgressBar from './VideoProgressBar';
 import ReactPlayer, { SourceProps } from 'react-player/lazy';
 
 type Props = {
@@ -21,6 +21,7 @@ const CreateVideo: React.FC<Props> = ({
     const [mediaCounter, setMediaCounter] = useState<number>(0);
     const [duration, setDuration] = useState(2000);
     const [delay, setDelay] = useState(false);
+    const [progress, setProgress] = useState<number>(0);
     useEffect(()=> {
         ShowMedia();
         // setInterval(changeImage, 5000); 
@@ -66,10 +67,11 @@ const CreateVideo: React.FC<Props> = ({
         }
         
         if (mediaCounter >= files.length) {
+            setProgress(100);
             clearInterval(id);
             console.log("interval cleared");
         } else {
-            
+            setProgress(progress + 10);
             setMediaCounter(mediaCounter + 1);
         }
     }
@@ -85,8 +87,9 @@ const CreateVideo: React.FC<Props> = ({
             some text here
             <div className={styles.renderMediaContainer}>
 
-                {medias[0]}
+                {medias[mediaCounter]}
             </div>
+            <VideoProgressBar file={files[mediaCounter]} progress={progress}/>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="outline-dark" onClick={handleClose}>
