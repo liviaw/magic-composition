@@ -1,16 +1,19 @@
 import React, {useState} from "react";
-import styles from "./FileUpload.module.css";
-import character from "../../Media/character.png";
 import { Button } from 'react-bootstrap';
-import {isVideo, isImage} from '../utils';
-
 import { BrowserRouter as Router, Switch, Route, useHistory} from 'react-router-dom'; 
+import character from "../../Media/character.png";
+import {isVideo, isImage} from '../utils';
+import {CreateVideo} from '..';
+import ReactPlayer, { SourceProps } from 'react-player';
+
+import styles from "./Modal.module.css";
 
 type Props = {
   onDragState: boolean;
   onDropState: boolean;
   callBack: any;
   files: File[];
+  removeFile:(file: File) => void;
 };
 
 export const Modal: React.FC<Props> = ({
@@ -18,6 +21,7 @@ export const Modal: React.FC<Props> = ({
   onDropState,
   callBack,
   files,
+  removeFile,
 }) => {
 
   const dragLeaveHandler = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -25,10 +29,16 @@ export const Modal: React.FC<Props> = ({
     callBack();
     console.log("dragLeaveHandler");
   };
-{/* <a href="/create"></a> */}
+
+  const [show, setShow] = useState<boolean>(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const Dropbox = () => {
     const history = useHistory();
+    if(show) {
+      return <CreateVideo files={files} show={show} handleClose={handleClose} handleShow={handleShow}/>
+    }
 
     console.log("onDropState = "+onDropState + " onDragState = " + onDragState);
     if (!onDropState && onDragState) {
@@ -46,31 +56,44 @@ export const Modal: React.FC<Props> = ({
       return (
         <div className={styles.dropModal}>
           <div className={styles.dotted}>
-            {/* {files.map(f => (<span dangerouslySetInnerHTML={{__html: f}}/>))} */}
             {files.map((f) => {
-              if (!isImage(f) && !isVideo(f)) {
-              }  else if (isImage(f)) {
+              if (isImage(f)) {
                 return(
-                <div key={f.name+Math.random()}>
-                  <img id={f.name+Math.random()} src={URL.createObjectURL(f)} alt={"image not rendering " + f.name }/>
-                  {f.name}
+                  <div key={f.name+Math.random()} className={styles.filePreviewContainer}>
+                    {f.name} 
+                    <div className={styles.previewContainer}>
+                    <img id={f.name+Math.random()} className={styles.previewMedia} src={URL.createObjectURL(f)} alt={"image not rendering " + f.name }/>
+                    </div>
+                    <Button variant="danger" className={styles.deleteButton} onClick={() => removeFile(f)}>Delete</Button> 
                   </div>
                 )
+              } else if (isVideo(f)) {
+                return(
+                  <div key={f.name+Math.random()} className={styles.filePreviewContainer}>
+                      {f.name} 
+                      <div className={styles.previewContainer}>
+                        <ReactPlayer className={styles.previewMedia} url={URL.createObjectURL(f)} width="100%" height="50%" alt={"file not rendering"+ f.name}/>
+                      </div>
+                      <Button variant="danger" className={styles.deleteButton} onClick={() => removeFile(f)}>Delete</Button> 
+                    </div>
+                )
+              } else {
+                alert("invalid file " + f.name);
               }
             })}
-            <Button onClick={()=> history.push("/create")} variant="info">Create Video</Button>
+            <Button className={styles.createVideoButton} onClick={()=> setShow(true)} variant="success">Create Video</Button>
           </div>
+            {/* <Button onClick={()=> history.push("/create")} variant="info">Create Video</Button> */}
         </div>
       );
     } else {
-      console.log("last");
       return <></>;
     }
   };
   
   return (
     <div onDragLeave={dragLeaveHandler}>
-      <Dropbox />
+      <Dropbox />      
     </div>
   );
 };

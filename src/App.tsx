@@ -15,8 +15,15 @@ const App: React.FC = () => {
       console.log("unmounted");
     })
   },[]);
-  const removeFile = () => {
+  const removeFile = (file:File ) => {
+    const newFiles = files
+    const index = newFiles.indexOf(file);
+    if (index > -1) {
+      console.log("removeFiles " + index + " " + file);
+      newFiles.splice(index, 1);
+    }
 
+    setFiles(newFiles);
   }
   const addFile = () => {
     
@@ -35,7 +42,7 @@ const App: React.FC = () => {
   }
   return (
     <div className="App">
-      <Home files={files} setFiles={setFiles} />
+      <Home files={files} setFiles={setFiles} removeFile={removeFile}/>
       {/* <Router>
         <Switch>
           

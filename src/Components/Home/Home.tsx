@@ -6,25 +6,21 @@ import {Modal} from '../Modal/Modal';
 type Props = {
   files: File[];
   setFiles:React.Dispatch<React.SetStateAction<File[]>>;
+  removeFile:(file: File) => void;
 };
 
 const Home:  React.FC<Props> = ({
   files,
   setFiles,
+  removeFile,
 }) => {
   const [onDragState, setOnDragState] = useState<boolean>(false);
   const [onDropState, setOnDropState] = useState<boolean>(false);
-  
-  // useEffect(()=> {
-  //   console.log("onDropState in useffect " + onDropState)
-  //   setOnDropState(true);
-  // }, [onDropState])
+
     const checkDraggedFile = (e: React.MouseEvent<HTMLButtonElement>) => {
         setOnDragState(false);
     }
-    const idk = ()=> {
-      setOnDropState(true);
-    }
+
     const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
       setOnDropState(true);
       e.preventDefault();
@@ -59,7 +55,6 @@ const Home:  React.FC<Props> = ({
       setFiles(dup);
     }
     const dragOverHandler = (e: React.MouseEvent<HTMLDivElement>) => {
-      // setOnDragState(true);
       e.preventDefault();
       console.log("dragOverHandler");
     }
@@ -72,10 +67,10 @@ const Home:  React.FC<Props> = ({
     }
     console.log("onDropState = "+onDropState + " onDragState = " + onDragState);
     console.log(files);
+    // history.push("/")
     return (
       <div className="canvaHomePage" onDragEnter={dragEnterHandler} onDrop={dropHandler} onDragOver={dragOverHandler}>
-        <Modal onDragState={onDragState} onDropState={onDropState} callBack={checkDraggedFile} files={files}/>
-        <button onClick={idk}>changeStatePls</button>
+        <Modal onDragState={onDragState} onDropState={onDropState} callBack={checkDraggedFile} files={files} removeFile={removeFile}/>
       </div> 
 
     );
