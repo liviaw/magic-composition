@@ -6,6 +6,8 @@ import { Button, Modal } from 'react-bootstrap';
 import styles from './CreateVideo.module.css';
 import VideoProgressBar from './VideoProgressBar';
 import ReactPlayer, { SourceProps } from 'react-player/lazy';
+import ImageWrapper from './ImageWrapper';
+import { useTimeout } from 'beautiful-react-hooks'; 
 
 type Props = {
     files:File[];
@@ -25,52 +27,48 @@ const CreateVideo: React.FC<Props> = ({
     const [duration, setDuration] = useState();
     // const [delay, setDelay] = useState(true);
     const [progress, setProgress] = useState<number>(0);
+    const [videoPlaying, setVideoPlaying] = useState<boolean>(false);
     const changeImage = () => {
-        console.log("===mediacounter===");
         console.log(mediaCounter);
-        // let temp = mediaCounter + 1;
-        // console.log(temp);
-        // setMediaCounter(temp);
-        if (files == null) {
-            console.log("files empty");
+        if (videoPlaying || files == null) {
             return;
         }
-        
         if (mediaCounter >= files.length) {
             setProgress(100);
             clearInterval();
             console.log("interval cleared");
         } else {
+            console.log("videoended");
             setProgress(progress + 10);
             setMediaCounter(mediaCounter + 1);
         }
     }
-    const [isCleared, clearInterval] = useInterval(changeImage, 1000);
-    
+
     useEffect(()=> {
         ShowMedia();
-        // setInterval(changeImage, 5000); 
-    
       }, [files])
 
-    
-
+      const tempfun = () => {
+          console.log("videoended");
+          setMediaCounter(mediaCounter + 1);
+          console.log(mediaCounter);
+      }
 
     const ShowMedia:() => JSX.Element | JSX.Element[]  = () => {
         const mediasTemp:JSX.Element[] = []
         if (files == null) {
-            console.log("pls wrk");
             return <></>
         }
         let imageFormat = new RegExp('image/*');
         let videoFormat = new RegExp('video/*');
         for (let i = 0; i < files.length; i++) {
             if (imageFormat.test(files[i].type)) {
-            mediasTemp.push(<img className={styles.renderMedia} src={URL.createObjectURL(files[i])}/>)
+                mediasTemp.push(<ImageWrapper file={files[i]} delay={2000} onEnded={changeImage}/>);
+                // mediasTemp.push(<img className={styles.renderMedia} src={URL.createObjectURL(files[i])}/>)
             }
             else if (videoFormat.test(files[i].type)) {
             // onEnded={changeImage}
-            mediasTemp.push(<ReactPlayer url={URL.createObjectURL(files[i])} width="100%" height="50%" playing={true} />)
+            mediasTemp.push(<ReactPlayer url={URL.createObjectURL(files[i])} width="100%" height="50%" playing={true} onStart = {() => setVideoPlaying(true)} onEnded={() => setVideoPlaying(false)}/>)
             }
         }
         setMedias(mediasTemp);
@@ -88,7 +86,7 @@ const CreateVideo: React.FC<Props> = ({
 
                 {medias[mediaCounter]}
             </div>
-            <VideoProgressBar file={files[mediaCounter]} progress={progress}/>
+            {/* <VideoProgressBar file={files[mediaCounter]} progress={progress}/> */}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="outline-dark" onClick={handleClose}>
