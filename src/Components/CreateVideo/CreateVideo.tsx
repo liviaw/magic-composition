@@ -6,8 +6,6 @@ import { Button, Modal } from 'react-bootstrap';
 import styles from './CreateVideo.module.css';
 import VideoProgressBar from './VideoProgressBar';
 import ReactPlayer, { SourceProps } from 'react-player/lazy';
-import ImageWrapper from './ImageWrapper';
-import { useTimeout } from 'beautiful-react-hooks'; 
 
 type Props = {
     files:File[];
@@ -24,8 +22,7 @@ const CreateVideo: React.FC<Props> = ({
   }) => {
     const [medias, setMedias] = useState<JSX.Element[]>([]);
     const [mediaCounter, setMediaCounter] = useState<number>(0);
-    const [duration, setDuration] = useState();
-    // const [delay, setDelay] = useState(true);
+    const [duration, setDuration] = useState<number>(2000);
     const [progress, setProgress] = useState<number>(0);
     const [videoPlaying, setVideoPlaying] = useState<boolean>(false);
     const changeImage = () => {
@@ -43,16 +40,11 @@ const CreateVideo: React.FC<Props> = ({
             setMediaCounter(mediaCounter + 1);
         }
     }
-
+    const [isCleared, clearInterval] = useInterval(changeImage, duration);
+    
     useEffect(()=> {
         ShowMedia();
       }, [files])
-
-      const tempfun = () => {
-          console.log("videoended");
-          setMediaCounter(mediaCounter + 1);
-          console.log(mediaCounter);
-      }
 
     const ShowMedia:() => JSX.Element | JSX.Element[]  = () => {
         const mediasTemp:JSX.Element[] = []
@@ -63,8 +55,7 @@ const CreateVideo: React.FC<Props> = ({
         let videoFormat = new RegExp('video/*');
         for (let i = 0; i < files.length; i++) {
             if (imageFormat.test(files[i].type)) {
-                mediasTemp.push(<ImageWrapper file={files[i]} delay={2000} onEnded={changeImage}/>);
-                // mediasTemp.push(<img className={styles.renderMedia} src={URL.createObjectURL(files[i])}/>)
+                mediasTemp.push(<img className={styles.renderMedia} src={URL.createObjectURL(files[i])}/>)
             }
             else if (videoFormat.test(files[i].type)) {
             // onEnded={changeImage}
