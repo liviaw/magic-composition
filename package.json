@@ -12,7 +12,6 @@
     "@types/react-dom": "^16.9.8",
     "beautiful-react-hooks": "^0.31.0",
     "bootstrap": "^4.5.3",
-    "get-video-duration": "^3.0.2",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",
     "react-dom": "^17.0.1",
