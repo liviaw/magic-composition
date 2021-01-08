@@ -12,9 +12,6 @@ const VideoProgressBar: React.FC<Props> = ({
 }) => {
     const [progressInterval, setProgressInterval] = useState<number>(100);
     const [currentProgressTime, setCurrentProgressTime] = useState<number>(0);
-    // const [progressSeconds, setProgressSeconds] = useState<number>(0);
-    // const [progressMinutes, setProgressMinutess] = useState<number>(0);
-    // const [progressHours, setProgressHours] = useState<number>(0);
     const [videoOver, setVideoOver] = useState<boolean>(false);
 
     const [barProgress, setBarProgress] = useState<number>(0);
@@ -26,11 +23,14 @@ const VideoProgressBar: React.FC<Props> = ({
             setVideoOver(true);
             clearInterval();
         } else {
+            // updates progress
+            console.log(totalVideoDuration+" second has passed progress= " + currentProgressTime + " of "+ totalVideoDuration);
             let currentSec = currentProgressTime + progressInterval/1000;
             setCurrentProgressTime(currentSec);
             setBarProgress(Math.round(currentSec / totalVideoDuration * 100));
         }
     }
+    console.log("totalVideoDuration= " + totalVideoDuration);
     const [isCleared, clearInterval] = useInterval(updateProgress, progressInterval);
 
 

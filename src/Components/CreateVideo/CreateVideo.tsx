@@ -62,6 +62,7 @@ const CreateVideo: React.FC<Props> = ({
     //   }
     const ShowMedia = () => {
         const mediasTemp:JSX.Element[] = []
+        let combinedVideoDuration = 0;
         if (files == null) {
             return <></>
         }
@@ -77,8 +78,15 @@ const CreateVideo: React.FC<Props> = ({
             else if (videoFormat.test(files[i].type)) {
                 newVideosNum = newVideosNum + 1;
                 
-                var video = document.createElement("video");
+                var video: HTMLMediaElement  = document.createElement("video");
                 video.setAttribute("src", URL.createObjectURL(files[i]));
+                video.load();
+                video.onloadedmetadata = function() {
+                    console.log('metadata loaded!');
+                    console.log(video.duration * 1000);
+                    combinedVideoDuration = combinedVideoDuration + (video.duration * 1000);
+                };
+                
                 const videoFile = <ReactPlayer 
                 
                     url={URL.createObjectURL(files[i])} 
@@ -95,10 +103,10 @@ const CreateVideo: React.FC<Props> = ({
                             },
                         }
                     }}
-                    onDuration={(duration) => {
-                        console.log("duration= "+duration);
-                        setTotalVideoDuration(totalVideoDuration + duration)}
-                    }
+                    // onDuration={(duration) => {
+                    //     console.log("duration= "+duration);
+                    //     setTotalVideoDuration(totalVideoDuration + duration)}
+                    // }
                 />
 
                 // console.log(videoFile.config.file.attributes);
@@ -109,7 +117,9 @@ const CreateVideo: React.FC<Props> = ({
         setImagesNum(newImagesNum);
         setVideosNum(newVideosNum);
         setMedias(mediasTemp);
-        setTotalVideoDuration(totalVideoDuration + newImagesNum*imageDuration);
+        console.log("SETTING "+ combinedVideoDuration);
+        combinedVideoDuration = combinedVideoDuration + newImagesNum*imageDuration
+        setTotalVideoDuration(combinedVideoDuration);
     }
     // console.log("in cerate vid, totalVideoDuration: "+totalVideoDuration + " imagesNum " + imagesNum + " imageDuration " + imageDuration);
     //   console.log("maths wow " + totalVideoDuration + imagesNum*imageDuration);
