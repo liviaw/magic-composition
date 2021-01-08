@@ -36,21 +36,18 @@ const Home:  React.FC<Props> = ({
             if (file == null) {
               return;
             }
-            console.log("here " + file.name);
             setOnDropState(true);
             dup.push(file);
           }
           setOnDropState(true);
         }
       } else {
-        console.log("second");
           // Use DataTransfer interface to access the file(s)
           for (let i = 0; i < e.dataTransfer.files.length; i++) {
             dup.push(e.dataTransfer.files[i]);
             console.log('... file[' + i + '].name = ' + e.dataTransfer.files[i].name);
           }
       }
-      console.log("action");
       setOnDropState(true);
       setFiles(dup);
     }

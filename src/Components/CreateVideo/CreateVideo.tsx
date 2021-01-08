@@ -1,11 +1,10 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { useInterval } from 'beautiful-react-hooks'; 
 import { Button, Modal } from 'react-bootstrap';
 import styles from './CreateVideo.module.css';
 import VideoProgressBar from './VideoProgressBar';
 import ReactPlayer from 'react-player/lazy';
+import {isVideo, isImage} from '../utils';
 // import { Player, ControlBar } from 'video-react';
 // import {getVideoDurationInSeconds} from 'get-video-duration';
 
@@ -27,6 +26,7 @@ const CreateVideo: React.FC<Props> = ({
     const [imageDuration, setImageDuration] = useState<number>(5000);
     // const [progress, setProgress] = useState<number>(0);
     const [videoPlaying, setVideoPlaying] = useState<boolean>(false);
+    const [videoReady, setVideoReady] = useState<number>(0);
     const [videosNum, setVideosNum] = useState<number>(0);
     const [imagesNum, setImagesNum] = useState<number>(0);
     const [totalVideoDuration, setTotalVideoDuration] = useState<number>(0);
@@ -68,24 +68,39 @@ const CreateVideo: React.FC<Props> = ({
         }
         let newImagesNum = imagesNum;
         let newVideosNum = videosNum;
-        let imageFormat = new RegExp('image/*');
-        let videoFormat = new RegExp('video/*');
         for (let i = 0; i < files.length; i++) {
-            if (imageFormat.test(files[i].type)) {
+            if (isImage(files[i])) {
                 newImagesNum = newImagesNum + 1;
                 mediasTemp.push(<img className={styles.renderMedia} src={URL.createObjectURL(files[i])}/>)
             }
-            else if (videoFormat.test(files[i].type)) {
+            else if (isVideo(files[i])) {
                 newVideosNum = newVideosNum + 1;
+                combinedVideoDuration = combinedVideoDuration + 5000;
                 
-                var video: HTMLMediaElement  = document.createElement("video");
-                video.setAttribute("src", URL.createObjectURL(files[i]));
-                video.load();
-                video.onloadedmetadata = function() {
-                    console.log('metadata loaded!');
-                    console.log(video.duration * 1000);
-                    combinedVideoDuration = combinedVideoDuration + (video.duration * 1000);
-                };
+                // var video: HTMLMediaElement  = document.createElement("video");
+                // video.setAttribute("src", URL.createObjectURL(files[i]));
+                // video.load();
+                // video.onloadedmetadata = async function() {
+                //     console.log('metadata loaded!');
+                //     console.log(video.duration * 1000);
+                //     combinedVideoDuration = combinedVideoDuration + (video.duration * 1000);
+                // };
+
+
+                // var video: HTMLMediaElement = document.createElement('video');
+                // video.preload = 'metadata';
+                // video.setAttribute("src", URL.createObjectURL(files[i]));
+                // video.src = URL.createObjectURL(files[i]);
+                // window.URL.revokeObjectURL(video.src);
+                // video.load();
+                // combinedVideoDuration = combinedVideoDuration + (video.duration * 1000);
+                // console.log("SETTING "+ combinedVideoDuration);
+                // video.onloadedmetadata = function() {
+                //     console.log('metadata loaded!');
+                //     console.log(video.duration * 1000);
+                //     combinedVideoDuration = combinedVideoDuration + (video.duration * 1000);
+                // };
+                
                 
                 const videoFile = <ReactPlayer 
                 
@@ -117,12 +132,16 @@ const CreateVideo: React.FC<Props> = ({
         setImagesNum(newImagesNum);
         setVideosNum(newVideosNum);
         setMedias(mediasTemp);
-        console.log("SETTING "+ combinedVideoDuration);
+        
         combinedVideoDuration = combinedVideoDuration + newImagesNum*imageDuration
         setTotalVideoDuration(combinedVideoDuration);
     }
     // console.log("in cerate vid, totalVideoDuration: "+totalVideoDuration + " imagesNum " + imagesNum + " imageDuration " + imageDuration);
     //   console.log("maths wow " + totalVideoDuration + imagesNum*imageDuration);
+
+    const playVideo = (<div className={styles.renderMediaContainer}>
+                            {medias[mediaCounter]}
+                        </div>)
     return(
         <Modal centered size="lg" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -130,9 +149,8 @@ const CreateVideo: React.FC<Props> = ({
         </Modal.Header>
         <Modal.Body>
             some text here
-           <div className={styles.renderMediaContainer}>
-                {medias[mediaCounter]}
-            </div>
+            {/* {videoReady === videosNum + imagesNum ? <LoadingPage/> : <></>} */}
+           
 
             <VideoProgressBar totalVideoDuration={totalVideoDuration/1000}/>
         </Modal.Body>
