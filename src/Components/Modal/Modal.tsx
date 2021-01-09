@@ -50,9 +50,7 @@ export const Modal: React.FC<Props> = ({
     )
   }
 
-  console.log("onDropState = "+ onDropState + " onDragState = " + onDragState);
   if (!onDropState && onDragState) {
-    console.log("===dragging===");
     return (
       <div className={styles.dropModal} onDragLeave={dragLeaveHandler}>
         <div className={styles.dotted}>

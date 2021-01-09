@@ -21,5 +21,4 @@ export const isVideo = (file: File) => {
     return videoFormat.test(file.type)
 }
 
-
 export const shuffleArray = (array: any[]) => [...array].sort(() => Math.random() - 0.5);
