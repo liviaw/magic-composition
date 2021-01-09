@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 interface Person {
   firstName: string;
@@ -12,21 +12,36 @@ interface Props {
   person: Person;
 }
 
-interface TextNode {
-  text: string
+interface FileLoading {
+  file: string,
+  loaded: boolean
 }
 
 
 export const Import: React.FC<Props> = ({}) => {
 // function Import() {
-  const [count, setCount] = useState<TextNode>({text: 'ughh'});
+  // arrayf [{file: "abc", loaded: false}, {file: "ghi.png", loaded: true}]
+  const [count, setCount] = useState<FileLoading[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
+
+  const removeFile = (file:File ) => {
+    const newFiles = [...files]
+    const index = newFiles.indexOf(file);
+    if (index > -1) {
+      console.log("removeFiles " + index + " " + file);
+      newFiles.splice(index, 1);
+    }
+    
+    setFiles(newFiles);
+    console.log(newFiles);
+  }
+  const addFile = () => {
+    
+  }
+
+
   return (
     <div>
-      quiz!
-      <form action="/action_page.php">
-        <input type="file"></input>
-        <input type="submit" value="Submit"></input>
-      </form>
     </div>
   );
 }

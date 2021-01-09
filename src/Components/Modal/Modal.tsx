@@ -33,7 +33,6 @@ export const Modal: React.FC<Props> = ({
   const [show, setShow] = useState<boolean>(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);    
-  const history = useHistory();
 
   const trimmedName = (filename: string) => {
     if (filename.length >= MAXLEN) {
@@ -63,7 +62,6 @@ export const Modal: React.FC<Props> = ({
       </div>
     );
   } else if (onDropState && onDragState) {
-    console.log("===done dropping===");
     return (
       <div className={styles.dropModal} onDragLeave={dragLeaveHandler}>
         <div className={styles.dotted}>
@@ -98,7 +96,6 @@ export const Modal: React.FC<Props> = ({
           })}
           <Button className={styles.createVideoButton} onClick={()=> setShow(true)} variant="success">Create Video</Button>
         </div>
-          {/* <Button onClick={()=> history.push("/create")} variant="info">Create Video</Button> */}
       </div>
     );
   } 
