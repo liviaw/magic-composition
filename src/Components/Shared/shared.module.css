@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://fonts.googleapis.com/css?family=Lily+Script+One');
+
+
+.header {
+    width: 100vw;
+    height: 8vh;
+    background-color: rgb(255,255,255);
+    border-bottom: 1px solid lightgray;
+    position: relative;
+}
+
+.canvalogo {
+    width: 3vw;
+    margin: 0 2vw 0 0;
+    left: 2vw;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.heading {
+    position: absolute;
+    left: 6vw;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    flex-direction: row;
+    margin: 0;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bolder;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: -0.015em;
+    line-height: 1.6;
+}

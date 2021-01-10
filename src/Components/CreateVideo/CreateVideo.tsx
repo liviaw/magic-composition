@@ -8,20 +8,25 @@ import {isVideo, isImage} from '../utils';
 // import { Player, ControlBar } from 'video-react';
 // import {getVideoDurationInSeconds} from 'get-video-duration';
 
+interface Media {
+    [filename: string]: {
+      type: string;
+      element: JSX.Element;
+      // time: number;
+    }
+  }
+
 type Props = {
-    files:File[];
     show: boolean;
-    handleClose: () => void;
-    handleShow: () => void;
+    setShow: React.Dispatch<React.SetStateAction<boolean>>;
+    medias: Media;
 };
   
 const CreateVideo: React.FC<Props> = ({
-    files,
     show,
-    handleClose,
-    handleShow
+    setShow,
+    medias,
   }) => {
-    const [medias, setMedias] = useState<JSX.Element[]>([]);
     const [mediaCounter, setMediaCounter] = useState<number>(0);
     const [imageDuration, setImageDuration] = useState<number>(5000);
     // const [progress, setProgress] = useState<number>(0);
@@ -150,7 +155,9 @@ const CreateVideo: React.FC<Props> = ({
         <Modal.Body>
             some text here
             {/* {videoReady === videosNum + imagesNum ? <LoadingPage/> : <></>} */}
-           
+            <div className={styles.renderMediaContainer}>
+                            {medias[mediaCounter]}
+                        </div>
 
             <VideoProgressBar totalVideoDuration={totalVideoDuration/1000}/>
         </Modal.Body>

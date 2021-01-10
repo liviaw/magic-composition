@@ -1,27 +1,34 @@
-import React, {useState} from "react";
+import React from "react";
 import { Button } from 'react-bootstrap';
-import { BrowserRouter as Router, Switch, Route, useHistory} from 'react-router-dom'; 
 import character from "../../Media/character.png";
-import {isVideo, isImage} from '../utils';
-import {CreateVideo} from '..';
-import ReactPlayer, { SourceProps } from 'react-player';
+import {trimmedName} from '../utils';
 
 import styles from "./Modal.module.css";
+
+interface Media {
+  [filename: string]: {
+    type: string;
+    element: JSX.Element;
+    // time: number;
+  }
+}
 
 type Props = {
   onDragState: boolean;
   onDropState: boolean;
   callBack: any;
-  files: File[];
-  removeFile:(file: File) => void;
+  medias: Media;
+  removeFile:(file: string) => void;
+  setShow: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const Modal: React.FC<Props> = ({
   onDragState,
   onDropState,
   callBack,
-  files,
+  medias,
   removeFile,
+  setShow,
 }) => {
 
   const dragLeaveHandler = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -30,26 +37,7 @@ export const Modal: React.FC<Props> = ({
     console.log("dragLeaveHandler");
   };
   const MAXLEN = 30;
-  const [show, setShow] = useState<boolean>(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);    
-
-  const trimmedName = (filename: string) => {
-    if (filename.length >= MAXLEN) {
-      let splittedNames = filename.split(".");
-      return filename.substr(0,MAXLEN/2) + "..." + splittedNames[splittedNames.length - 1];
-    }
-    return filename;
-  }
     
-  if(show) {
-    return (
-      <div>
-        <CreateVideo files={files} show={show} handleClose={handleClose} handleShow={handleShow}/>
-      </div>
-    )
-  }
-
   if (!onDropState && onDragState) {
     return (
       <div className={styles.dropModal} onDragLeave={dragLeaveHandler}>
@@ -63,39 +51,22 @@ export const Modal: React.FC<Props> = ({
     return (
       <div className={styles.dropModal} onDragLeave={dragLeaveHandler}>
         <div className={styles.dotted}>
-          {files.map((f) => {
-            if (isImage(f)) {
-              return(
-                <div key={f.name+Math.random()} className={styles.filePreviewContainer}>
-                  <div className={styles.fileNamePreview }>
-                      {trimmedName(f.name)} 
-                  </div>
-                  <div className={styles.previewContainer}>
-                      <img id={f.name+Math.random()} className={styles.previewMedia} src={URL.createObjectURL(f)} alt={"image not rendering " + f.name }/>
-                  </div>
-                  <Button variant="danger" className={styles.deleteButton} onClick={() => removeFile(f)}>Delete</Button> 
-                </div>
-              )
-            } else if (isVideo(f)) {
-              return(
-                <div key={f.name+Math.random()} className={styles.filePreviewContainer}>
-                    <div className={styles.fileNamePreview }>
-                      {f.name} 
-                    </div>
-                    <div className={styles.previewContainer}>
-                      <ReactPlayer className={styles.previewMedia} url={URL.createObjectURL(f)} width="100%" height="50%" alt={"file not rendering"+ f.name}/>
-                    </div>
-                    <Button variant="danger" className={styles.deleteButton} onClick={() => removeFile(f)}>Delete</Button> 
-                  </div>
-              )
-            } else {
-              alert("invalid file " + f.name);
-            }
-          })}
+        {/* filename (key) to JSX element (value) mapping */}
+          {Object.keys(medias).map((filename:string) => (
+            <div key={filename} className={styles.filePreviewContainer}> 
+              <div className={styles.fileNamePreview }>
+                {trimmedName(filename, MAXLEN)} 
+              </div>
+              <div className={styles.previewContainer}>
+                {medias[filename]["element"]} 
+              </div>
+              <Button variant="danger" className={styles.deleteButton} onClick={() => removeFile(filename)}>Delete</Button> 
+            </div> 
+          ))} 
           <Button className={styles.createVideoButton} onClick={()=> setShow(true)} variant="success">Create Video</Button>
         </div>
       </div>
-    );
-  } 
+    )
+  }
   return <></>;
 };
