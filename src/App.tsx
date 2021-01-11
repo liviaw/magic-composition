@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import { Import, Header, Media, CreateVideo, Loading, AddMedia } from "./Components/";
+import { Import, Header, Media, CreateVideo, Loading } from "./Components/";
 
 const App: React.FC = () => {
   const [show, setShow] = useState<boolean>(false);

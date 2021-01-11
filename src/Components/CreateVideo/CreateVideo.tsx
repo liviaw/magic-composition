@@ -3,7 +3,6 @@ import { useInterval } from "beautiful-react-hooks";
 import { Button, Modal } from "react-bootstrap";
 import { Media } from "../";
 import styles from "./CreateVideo.module.css";
-import character from "../../Media/character.png";
 
 type Props = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,10 +18,10 @@ export const CreateVideo: React.FC<Props> = ({ setShow, show, medias }) => {
       return;
     }
     if (mediaCounter >= medias.length) {
+      // clearing interval for media switching within the video
       clearInterval();
-      console.log("interval cleared");
     } else {
-      console.log("videoended");
+      // video ended
       setMediaCounter((mediaCounter) => mediaCounter + 1);
     }
   };

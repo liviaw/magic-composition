@@ -139,9 +139,6 @@ const Import: React.FC<Props> = ({
             {/* filename (key) to JSX element (value) mapping */}
 
             {medias.map((media: Media, index: number) => {
-              console.log(medias[index]["element"]);
-              console.log(medias[index]);
-              console.log(index);
               return (
                 <div
                   key={media["filename"]}
