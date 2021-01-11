@@ -1,4 +1,4 @@
-// export { default as CreateVideo } from './CreateVideo/CreateVideo';
+export { CreateVideo } from './CreateVideo/CreateVideo';
 export { default as Import } from "./Import/Import";
 export { ErrorModal, showError } from "./ErrorToast/ErrorToast";
 export { Header } from "./Shared/Header";

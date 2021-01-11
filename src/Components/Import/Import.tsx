@@ -17,12 +17,13 @@ type Props = {
   medias: Media[];
   setMedias: React.Dispatch<React.SetStateAction<Media[]>>;
   removeFile: (index: number) => void;
+  addMedia:() => void;
 };
 
-const App: React.FC<Props> = ({ setShow, medias, setMedias, removeFile }) => {
+const App: React.FC<Props> = ({ setShow, medias, setMedias, removeFile, addMedia }) => {
   const [onDragState, setOnDragState] = useState<boolean>(false);
   const [onDropState, setOnDropState] = useState<boolean>(false);
-  const [mediaReady, setMediaReady] = useState<number>(0);
+ 
 
   const mediaElement: (addFiles: Media[], file: File) => void = (
     addFiles,
@@ -30,7 +31,7 @@ const App: React.FC<Props> = ({ setShow, medias, setMedias, removeFile }) => {
   ) => {
     if (isImage(file)) {
       let el: JSX.Element = (
-        <img className={styles.renderMedia} src={URL.createObjectURL(file)} />
+        <img className={styles.renderMedia} src={URL.createObjectURL(file)} onLoad={() => addMedia()}/>
       );
       let newMedia = new Media(file.name, "image", el);
       addFiles.push(newMedia);
@@ -43,9 +44,7 @@ const App: React.FC<Props> = ({ setShow, medias, setMedias, removeFile }) => {
           playing={true}
           onError={() => alert(file + " is unable to play")}
           id={file.name}
-          onReady={() => {
-            setMediaReady(mediaReady + 1);
-          }}
+          onReady={() => addMedia()}
         />
       );
       let newMedia = new Media(file.name, "video", el);
