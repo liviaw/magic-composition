@@ -8,9 +8,7 @@ const App: React.FC = () => {
   const [mediaReady, setMediaReady] = useState<number>(0);
 
   const addMedia = () => {
-    let temp = mediaReady + 1;
-    console.log("called! " + temp);
-    setMediaReady(temp)
+    setMediaReady(m => m + 1)
   }
 
   const removeFile: (index: number) => void = (index: number) => {
@@ -29,18 +27,21 @@ const App: React.FC = () => {
     <div className="App">
       <Header />
       drag and drop your files here :)
-      {/* {medias.length !== mediaReady?<p>
+      {mediaReady}
+      {medias.length !== mediaReady ? <p>
         loading... {medias.length} {mediaReady}
-      </p> : null} */}
-      {show ? 
+      </p> : null}
+      {show && medias.length === mediaReady ? 
         <CreateVideo setShow={setShow} show={show}/> : 
         <></>}
-        {mediaReady}
+        
       <Import
         setShow={setShow}
         medias={medias}
         setMedias={setMedias}
         removeFile={removeFile}
+        mediaReady={mediaReady}
+        setMediaReady={setMediaReady}
         addMedia={addMedia}
       />
     </div>

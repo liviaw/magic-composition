@@ -18,9 +18,18 @@ type Props = {
   setMedias: React.Dispatch<React.SetStateAction<Media[]>>;
   removeFile: (index: number) => void;
   addMedia:() => void;
+  mediaReady: number;
+  setMediaReady: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const App: React.FC<Props> = ({ setShow, medias, setMedias, removeFile, addMedia }) => {
+const App: React.FC<Props> = ({ 
+  setShow, 
+  medias, 
+  setMedias, 
+  removeFile, 
+  mediaReady,
+  setMediaReady,
+  addMedia }) => {
   const [onDragState, setOnDragState] = useState<boolean>(false);
   const [onDropState, setOnDropState] = useState<boolean>(false);
  
@@ -45,6 +54,7 @@ const App: React.FC<Props> = ({ setShow, medias, setMedias, removeFile, addMedia
           onError={() => alert(file + " is unable to play")}
           id={file.name}
           onReady={() => addMedia()}
+          onLoad={addMedia}
         />
       );
       let newMedia = new Media(file.name, "video", el);
