@@ -19,14 +19,16 @@ type Props = {
   setMedias: React.Dispatch<React.SetStateAction<Media[]>>;
   removeFile: (index: number) => void;
   addMedia: () => void;
+  addFile: (newMedia: Media[]) => void;
 };
 
-const App: React.FC<Props> = ({
+const Import: React.FC<Props> = ({
   setShow,
   medias,
   setMedias,
   removeFile,
   addMedia,
+  addFile,
 }) => {
   const [onDragState, setOnDragState] = useState<boolean>(false);
   const [onDropState, setOnDropState] = useState<boolean>(false);
@@ -55,7 +57,6 @@ const App: React.FC<Props> = ({
           onError={() => alert(file + " is unable to play")}
           id={file.name}
           onReady={addMedia}
-          onLoad={addMedia}
         />
       );
       let newMedia = new Media(file.name, "video", el);
@@ -111,7 +112,6 @@ const App: React.FC<Props> = ({
       onDrop={dropHandler}
       onDragOver={dragOverHandler}
     >
-      <AddMedia/>
       <ErrorModal/>
       {!onDropState && onDragState ? (
         <div
@@ -122,7 +122,7 @@ const App: React.FC<Props> = ({
           }}
         >
           <div className={styles.dotted}>
-            <img className={styles.characterIcon} src={character} alt="here" />
+            <img className={styles.characterIcon} src={character} alt="drag file here" />
             <div className={styles.dropModalText}>Drop Your File Here</div>
           </div>
         </div>
@@ -159,6 +159,7 @@ const App: React.FC<Props> = ({
                 </div>
               );
             })}
+            <AddMedia addFile={addFile} mediaElement={mediaElement}/>
             <Button
               className={styles.createVideoButton}
               onClick={() => setShow(true)}
@@ -173,4 +174,4 @@ const App: React.FC<Props> = ({
   );
 };
 
-export default App;
+export default Import;

@@ -18,8 +18,8 @@ const App: React.FC = () => {
     }
     setMedias(newMedias);
   };
-  const addFile: (file: File) => void = (file: File) => {
-    let newMedias = [...medias];
+  const addFile: (newMedia: Media[]) => void = (newMedia: Media[]) => {
+    let newMedias = [...medias, ...newMedia];
     setMedias(newMedias);
   };
   return (
@@ -27,9 +27,9 @@ const App: React.FC = () => {
       <Header />
       drag and drop your files here :)
       <Loading mediasLength={medias.length} mediaReady={mediaReady}/>
-      {show && medias.length === mediaReady ? 
-        <CreateVideo setShow={setShow} show={show}/> : 
-        <></>}
+      {show && medias.length === mediaReady &&
+        (<CreateVideo setShow={setShow} show={show} medias={medias}/>) 
+      }
         
       <Import
         setShow={setShow}
@@ -37,6 +37,7 @@ const App: React.FC = () => {
         setMedias={setMedias}
         removeFile={removeFile}
         addMedia={addMedia}
+        addFile={addFile}
       />
     </div>
   );

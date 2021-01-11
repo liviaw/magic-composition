@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import React from 'react';
 import LoadingBar from 'react-top-loading-bar'
 
 type Props = {
@@ -17,9 +16,9 @@ export const Loading:  React.FC<Props> = ({
         progress={mediaReady/mediasLength * 100}
         color='#00C4CC'
       />
-        {mediasLength !== mediaReady && (
+        {mediasLength > mediaReady && (
           <>
-          <p>loading...  Ready </p>
+          <p>loading...  </p>
           {mediaReady} / {mediasLength}
           </>
         )}

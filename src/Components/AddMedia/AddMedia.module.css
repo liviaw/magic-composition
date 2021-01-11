@@ -1,4 +1,29 @@
 .addfileButton {
-	width: 10px;
-	height: 10px;
+	width: 12vw;
+	height: 12vw;
+	border-radius: 50%;
+	border: 1px solid rgb(225,225,225, 0.7);
+	background-color: rgb(235,235,235, 0.7);
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
+}
+
+.hide {
+	display:none;
+	width: 12vw;
+	height: 12vw;
+}
+.icon {
+	width: 5vw;
+	height: 5vw;
+	display: inline-block;
+	margin: 0 auto;
+}
+
+.addfileButton:hover {
+	border: 1px solid rgb(215,215,215);
+	background-color: rgb(250,250,250, 0.7);
 }
