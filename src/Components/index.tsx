@@ -3,6 +3,8 @@ export { default as Import } from "./Import/Import";
 export { ErrorModal, showError } from "./ErrorToast/ErrorToast";
 export { Header } from "./Shared/Header";
 export { isImage, isVideo, trimmedName } from "./utils";
+export { Loading } from './Loading/Loading';
+export {AddMedia} from './AddMedia/AddMedia';
 
 export class Media {
   filename: string;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import { Import, Header, Media, CreateVideo } from "./Components/";
+import { Import, Header, Media, CreateVideo, Loading, AddMedia } from "./Components/";
 
 const App: React.FC = () => {
   const [show, setShow] = useState<boolean>(false);
@@ -20,17 +20,13 @@ const App: React.FC = () => {
   };
   const addFile: (file: File) => void = (file: File) => {
     let newMedias = [...medias];
-    
     setMedias(newMedias);
   };
   return (
     <div className="App">
       <Header />
       drag and drop your files here :)
-      {mediaReady}
-      {medias.length !== mediaReady ? <p>
-        loading... {medias.length} {mediaReady}
-      </p> : null}
+      <Loading mediasLength={medias.length} mediaReady={mediaReady}/>
       {show && medias.length === mediaReady ? 
         <CreateVideo setShow={setShow} show={show}/> : 
         <></>}
@@ -40,8 +36,6 @@ const App: React.FC = () => {
         medias={medias}
         setMedias={setMedias}
         removeFile={removeFile}
-        mediaReady={mediaReady}
-        setMediaReady={setMediaReady}
         addMedia={addMedia}
       />
     </div>

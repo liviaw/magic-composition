@@ -7,6 +7,7 @@ import {
   showError,
   trimmedName,
   Media,
+  AddMedia
 } from "..";
 import styles from "./Import.module.css";
 import character from "../../Media/character.png";
@@ -17,22 +18,18 @@ type Props = {
   medias: Media[];
   setMedias: React.Dispatch<React.SetStateAction<Media[]>>;
   removeFile: (index: number) => void;
-  addMedia:() => void;
-  mediaReady: number;
-  setMediaReady: React.Dispatch<React.SetStateAction<number>>;
+  addMedia: () => void;
 };
 
-const App: React.FC<Props> = ({ 
-  setShow, 
-  medias, 
-  setMedias, 
-  removeFile, 
-  mediaReady,
-  setMediaReady,
-  addMedia }) => {
+const App: React.FC<Props> = ({
+  setShow,
+  medias,
+  setMedias,
+  removeFile,
+  addMedia,
+}) => {
   const [onDragState, setOnDragState] = useState<boolean>(false);
   const [onDropState, setOnDropState] = useState<boolean>(false);
- 
 
   const mediaElement: (addFiles: Media[], file: File) => void = (
     addFiles,
@@ -40,7 +37,11 @@ const App: React.FC<Props> = ({
   ) => {
     if (isImage(file)) {
       let el: JSX.Element = (
-        <img className={styles.renderMedia} src={URL.createObjectURL(file)} onLoad={() => addMedia()}/>
+        <img
+          className={styles.renderMedia}
+          src={URL.createObjectURL(file)}
+          onLoad={addMedia}
+        />
       );
       let newMedia = new Media(file.name, "image", el);
       addFiles.push(newMedia);
@@ -53,7 +54,7 @@ const App: React.FC<Props> = ({
           playing={true}
           onError={() => alert(file + " is unable to play")}
           id={file.name}
-          onReady={() => addMedia()}
+          onReady={addMedia}
           onLoad={addMedia}
         />
       );
@@ -110,6 +111,8 @@ const App: React.FC<Props> = ({
       onDrop={dropHandler}
       onDragOver={dragOverHandler}
     >
+      <AddMedia/>
+      <ErrorModal/>
       {!onDropState && onDragState ? (
         <div
           className={styles.dropModal}

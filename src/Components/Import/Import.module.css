@@ -1,6 +1,6 @@
 .renderMedia {
-  width: 50vw;
-  height: 50vh;
+  width: 100%;
+  height: auto; 
   object-fit: contain;
 }
 .canvaHomePage {

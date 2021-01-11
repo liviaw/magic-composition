@@ -8873,6 +8873,11 @@ prepend-http@^1.0.0:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
   integrity sha1-1PRWKwzjaW5BrFLQ4ALlemNdxtw=
 
+prettier@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.2.1.tgz#795a1a78dd52f073da0cd42b21f9c91381923ff5"
+  integrity sha512-PqyhM2yCjg/oKkFPtTGUojv7gnZAoG80ttl45O6x2Ug/rMJw4wcc9k6aaf2hibP7BGVCCM33gZoGjyvt9mm16Q==
+
 pretty-bytes@^5.3.0:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/pretty-bytes/-/pretty-bytes-5.4.1.tgz#cd89f79bbcef21e3d21eb0da68ffe93f803e884b"
@@ -9218,6 +9223,14 @@ react-player@^2.7.2:
     prop-types "^15.7.2"
     react-fast-compare "^3.0.1"
 
+react-redux-loading-bar@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/react-redux-loading-bar/-/react-redux-loading-bar-5.0.0.tgz#fffbc2b893c556b7b4c577743427507ee6dbc1f3"
+  integrity sha512-orxhhnuTDHUJ8sWBf7NHc9iIvPx8+8LVmMmC9ka3UcXKbMRaPdaYfH2wCikOwVV6gxhRceFA/zaSLSdnGrF41Q==
+  dependencies:
+    prop-types "^15.7.2"
+    react-lifecycles-compat "^3.0.4"
+
 react-refresh@^0.8.3:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
@@ -9326,6 +9339,11 @@ react-toastify@^6.2.0:
     clsx "^1.1.1"
     prop-types "^15.7.2"
     react-transition-group "^4.4.1"
+
+react-top-loading-bar@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-top-loading-bar/-/react-top-loading-bar-2.0.1.tgz#c8805ad9c1068766fdd3cadd414e67cfdf1878e9"
+  integrity sha512-wkRlK9Rte4TU817GDcjlsCoDOxrrnvsNvK609FKyio0EIrmmqjQDz5DB8HbN88CHNZBy5Lh/OBALc03ioWFPuQ==
 
 react-transition-group@^4.4.1:
   version "4.4.1"
