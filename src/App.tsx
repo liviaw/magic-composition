@@ -8,7 +8,7 @@ const App: React.FC = () => {
   const [mediaReady, setMediaReady] = useState<number>(0);
 
   const addMedia = () => {
-    setMediaReady(m => m + 1)
+    setMediaReady(m => m + 1);
   }
 
   const removeFile: (index: number) => void = (index: number) => {
