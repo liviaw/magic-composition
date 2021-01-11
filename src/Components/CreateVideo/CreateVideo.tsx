@@ -13,7 +13,6 @@ export const CreateVideo: React.FC<Props> = ({ setShow, show, medias }) => {
   const [mediaCounter, setMediaCounter] = useState<number>(0);
   const [imageDuration, setImageDuration] = useState<number>(5000);
   const changeImage: () => void = () => {
-    console.log(mediaCounter);
     if (medias == null) {
       return;
     }
@@ -26,8 +25,6 @@ export const CreateVideo: React.FC<Props> = ({ setShow, show, medias }) => {
     }
   };
   const [isCleared, clearInterval] = useInterval(changeImage, imageDuration);
-  console.log(medias[mediaCounter]["element"]);
-  console.log(mediaCounter);
   return (
     <Modal centered size="lg" show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
