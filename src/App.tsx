@@ -32,9 +32,9 @@ const App: React.FC = () => {
         addFile={addFile}
         addDuration={addDuration}
       /> 
-      {/* {show ?
-        <VideoModal setShow={setShow} show={show} medias={medias} videoPlaying={videoPlaying} totalVideoDuration={totalVideoDuration}/> : null
-      } */}
+      {show ?
+        <VideoModal setShow={setShow} show={show} files={files} totalVideoDuration={totalVideoDuration}/> : null
+      }
     </div>
   );
 };

@@ -31,8 +31,8 @@ export const ImportModal: React.FC<Props> = ({
   const [onDropState, setOnDropState] = useState<boolean>(false);
   const [mediaReady, setMediaReady] = useState<number>(0);
 
-  const addMediaReady: () => void = () => {
-    setMediaReady(media => media + 1);
+  const addMediaReady = () => {
+    setMediaReady(mediaReady + 1);
   }
 
   const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
@@ -117,7 +117,7 @@ export const ImportModal: React.FC<Props> = ({
           }}
         >
           {/* <Loading mediasLength={files.length} mediaReady={mediaReady}/> */}
-          <MediaPreview files={files} removeFile={removeFile} addFile={addFile} addMediaReady={addMediaReady}/> 
+          <MediaPreview files={files} removeFile={removeFile} addFile={addFile}/> 
           <Button
             className={styles.createVideoButton}
             onClick={() => setShow(true)}
