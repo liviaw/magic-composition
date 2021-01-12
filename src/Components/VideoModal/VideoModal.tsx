@@ -1,23 +1,33 @@
 import React, { useState } from "react";
 import { useInterval } from "beautiful-react-hooks";
 import { Button, Modal } from "react-bootstrap";
-import { Media } from "../";
-import styles from "./CreateVideo.module.css";
+import { Media, VideoProgressBar, imageDuration } from "..";
+import styles from "./VideoModal.module.css";
 
 type Props = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   show: boolean;
   medias: Media[];
+  videoPlaying: boolean;
+  totalVideoDuration: number;
 };
-export const CreateVideo: React.FC<Props> = ({ setShow, show, medias }) => {
+export const VideoModal: React.FC<Props> = ({
+  setShow,
+  show,
+  medias,
+  videoPlaying,
+  totalVideoDuration,
+}) => {
   const [mediaCounter, setMediaCounter] = useState<number>(0);
-  const [imageDuration, setImageDuration] = useState<number>(5000);
   const changeImage: () => void = () => {
-    if (medias == null) {
+    console.log(mediaCounter);
+    // if files are not attached or if video is playing, do not change interval
+    if (videoPlaying || medias == null) {
       return;
     }
-    if (mediaCounter >= medias.length) {
+    if (mediaCounter >= medias.length - 1) {
       // clearing interval for media switching within the video
+      setMediaCounter(medias.length - 1);
       clearInterval();
     } else {
       // video ended
@@ -25,6 +35,7 @@ export const CreateVideo: React.FC<Props> = ({ setShow, show, medias }) => {
     }
   };
   const [isCleared, clearInterval] = useInterval(changeImage, imageDuration);
+
   return (
     <Modal centered size="lg" show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
@@ -34,6 +45,7 @@ export const CreateVideo: React.FC<Props> = ({ setShow, show, medias }) => {
         <div className={styles.renderMediaContainer}>
           {medias[mediaCounter]["element"]}
         </div>
+        <VideoProgressBar totalVideoDuration={totalVideoDuration/1000} />
       </Modal.Body>
       <Modal.Footer>
         <Button variant="outline-dark" onClick={() => setShow(false)}>

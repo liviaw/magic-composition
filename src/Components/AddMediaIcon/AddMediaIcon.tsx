@@ -1,14 +1,14 @@
 import React, { useRef } from "react";
 import icon from "./photo.svg";
-import styles from "./AddMedia.module.css";
+import styles from "./AddMediaIcon.module.css";
 import { Media } from "..";
 
 type Props = {
   addFile: (newMedia: Media[]) => void;
-  mediaElement: (addFiles: Media[], file: File) => void;
+  createMediaElement: (addFiles: Media[], file: File) => void;
 };
 
-export const AddMedia: React.FC<Props> = ({ addFile, mediaElement }) => {
+export const AddMediaIcon: React.FC<Props> = ({ addFile, createMediaElement }) => {
   const handleVideoUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -16,17 +16,16 @@ export const AddMedia: React.FC<Props> = ({ addFile, mediaElement }) => {
     let files: FileList = event.target.files;
     const newMedia: Media[] = [];
     for (let i = 0; i < files.length; i++) {
-      mediaElement(newMedia, files[i]);
+      createMediaElement(newMedia, files[i]);
     }
     addFile(newMedia);
   };
   return (
-    <>
-      <div>
+      <div className={styles.addMediaIconContainer}>
         <label htmlFor="fileUpload">
           <div className={styles.addfileButton}>
             <img className={styles.icon} src={icon} alt="add file icon" />
-            <span> Add Files </span>
+            <p> Add Files </p>
           </div>
         </label>
         <input
@@ -37,6 +36,5 @@ export const AddMedia: React.FC<Props> = ({ addFile, mediaElement }) => {
           onChange={handleVideoUpload}
         />
       </div>
-    </>
   );
 };

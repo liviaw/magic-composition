@@ -1,22 +1,22 @@
-export { CreateVideo } from './CreateVideo/CreateVideo';
-export { default as Import } from "./Import/Import";
+// i feel like these should be inside globla.t, or is this okay?
+export { VideoModal } from './VideoModal/VideoModal';
+export {VideoProgressBar} from './VideoModal/VideoProgressBar';
+export { ImportModal } from "./ImportModal/ImportModal";
 export { ErrorModal, showError } from "./ErrorToast/ErrorToast";
 export { Header } from "./Shared/Header";
-export { isImage, isVideo, trimmedName } from "./utils";
+export { isImage, isVideo, trimmedName, imageDuration } from "./utils";
 export { Loading } from './Loading/Loading';
-export {AddMedia} from './AddMedia/AddMedia';
+export {AddMediaIcon} from './AddMediaIcon/AddMediaIcon';
 
 export class Media {
   filename: string;
   type: string;
   element: JSX.Element;
-  constructor(filename: string, type: string, element: JSX.Element) {
+  duration:number;
+  constructor(filename: string, type: string, element: JSX.Element, duration:number=1000) {
     this.filename = filename;
     this.type = type;
     this.element = element;
-  }
-  // methods here:
-  createElement() {
-    return this.element;
+    this.duration = duration;
   }
 }

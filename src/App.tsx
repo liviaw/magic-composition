@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import "./App.css";
-import { Import, Header, Media, CreateVideo, Loading } from "./Components/";
+import { ImportModal, Header, Media, VideoModal, Loading } from "./Components/";
 
 const App: React.FC = () => {
   const [show, setShow] = useState<boolean>(false);
   const [medias, setMedias] = useState<Media[]>([]);
   const [mediaReady, setMediaReady] = useState<number>(0);
-
+  const [videoPlaying, setVideoPlaying] = useState<boolean>(false);
+  const [totalVideoDuration, setTotalVideoDuration] = useState<number>(0);
   const addMedia = () => {
     setMediaReady(m => m + 1);
   }
-
   const removeFile: (index: number) => void = (index: number) => {
     const newMedias = [...medias];
     if (index > -1) {
@@ -22,23 +22,26 @@ const App: React.FC = () => {
     let newMedias = [...medias, ...newMedia];
     setMedias(newMedias);
   };
+  const addDuration: (extraDuration: number) => void = (extraDuration: number) => {
+    setTotalVideoDuration(oldDur => oldDur + extraDuration);
+  };
   return (
     <div className="App">
       <Header />
-      drag and drop your files here :)
       <Loading mediasLength={medias.length} mediaReady={mediaReady}/>
-      {show && medias.length === mediaReady &&
-        (<CreateVideo setShow={setShow} show={show} medias={medias}/>) 
-      }
-        
-      <Import
-        setShow={setShow}
-        medias={medias}
-        setMedias={setMedias}
-        removeFile={removeFile}
-        addMedia={addMedia}
-        addFile={addFile}
-      />
+      {show ?
+        <VideoModal setShow={setShow} show={show} medias={medias} videoPlaying={videoPlaying} totalVideoDuration={totalVideoDuration}/> :
+        <ImportModal
+          setShow={setShow}
+          medias={medias}
+          setMedias={setMedias}
+          removeFile={removeFile}
+          addMedia={addMedia}
+          addFile={addFile}
+          setVideoPlaying={setVideoPlaying}
+          addDuration={addDuration}
+        /> 
+        }
     </div>
   );
 };

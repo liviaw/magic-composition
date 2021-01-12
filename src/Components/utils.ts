@@ -33,3 +33,5 @@ export const trimmedName = (filename: string, MAXLEN: number) => {
 
 export const shuffleArray = (array: any[]) =>
   [...array].sort(() => Math.random() - 0.5);
+
+export const imageDuration = 5000;

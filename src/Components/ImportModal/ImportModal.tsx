@@ -7,9 +7,10 @@ import {
   showError,
   trimmedName,
   Media,
-  AddMedia
+  AddMediaIcon,
+  imageDuration,
 } from "..";
-import styles from "./Import.module.css";
+import styles from "./ImportModal.module.css";
 import character from "../../Media/character.png";
 import { Button } from "react-bootstrap";
 
@@ -20,20 +21,24 @@ type Props = {
   removeFile: (index: number) => void;
   addMedia: () => void;
   addFile: (newMedia: Media[]) => void;
+  setVideoPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  addDuration: (extraDuration: number) => void;
 };
 
-const Import: React.FC<Props> = ({
+export const ImportModal: React.FC<Props> = ({
   setShow,
   medias,
   setMedias,
   removeFile,
   addMedia,
   addFile,
+  setVideoPlaying,
+  addDuration,
 }) => {
   const [onDragState, setOnDragState] = useState<boolean>(false);
   const [onDropState, setOnDropState] = useState<boolean>(false);
 
-  const mediaElement: (addFiles: Media[], file: File) => void = (
+  const createMediaElement: (addFiles: Media[], file: File) => void = (
     addFiles,
     file: File
   ) => {
@@ -42,7 +47,11 @@ const Import: React.FC<Props> = ({
         <img
           className={styles.renderMedia}
           src={URL.createObjectURL(file)}
-          onLoad={addMedia}
+          onLoad={() => {
+            addMedia();
+            addDuration(imageDuration);
+          }}
+          alt={file.name}
         />
       );
       let newMedia = new Media(file.name, "image", el);
@@ -56,7 +65,14 @@ const Import: React.FC<Props> = ({
           playing={true}
           onError={() => alert(file + " is unable to play")}
           id={file.name}
+          volume={0}
           onReady={addMedia}
+          onStart={() => setVideoPlaying(true)}
+          onEnded={() => setVideoPlaying(false)}
+          onDuration={(duration) => {
+            console.log("duration is " + duration);
+            addDuration(duration * 1000);
+          }}
         />
       );
       let newMedia = new Media(file.name, "video", el);
@@ -65,7 +81,7 @@ const Import: React.FC<Props> = ({
       showError("invalid file " + file.name);
     }
   };
-  const MAXLEN = 30;
+  const MAXLEN = 10;
 
   const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     setOnDropState(true);
@@ -82,14 +98,14 @@ const Import: React.FC<Props> = ({
             return;
           }
           setOnDropState(true);
-          mediaElement(dup, file);
+          createMediaElement(dup, file);
         }
         setOnDropState(true);
       }
     } else {
       // Use DataTransfer interface to access the file(s)
       for (let i = 0; i < e.dataTransfer.files.length; i++) {
-        mediaElement(dup, e.dataTransfer.files[i]);
+        createMediaElement(dup, e.dataTransfer.files[i]);
       }
     }
     setOnDropState(true);
@@ -112,7 +128,7 @@ const Import: React.FC<Props> = ({
       onDrop={dropHandler}
       onDragOver={dragOverHandler}
     >
-      <ErrorModal/>
+      <ErrorModal />
       {!onDropState && onDragState ? (
         <div
           className={styles.dropModal}
@@ -122,7 +138,11 @@ const Import: React.FC<Props> = ({
           }}
         >
           <div className={styles.dotted}>
-            <img className={styles.characterIcon} src={character} alt="drag file here" />
+            <img
+              className={styles.characterIcon}
+              src={character}
+              alt="drag file here"
+            />
             <div className={styles.dropModalText}>Drop Your File Here</div>
           </div>
         </div>
@@ -137,19 +157,16 @@ const Import: React.FC<Props> = ({
         >
           <div className={styles.dotted}>
             {/* filename (key) to JSX element (value) mapping */}
-
             {medias.map((media: Media, index: number) => {
               return (
                 <div
-                  key={media["filename"]}
+                  key={media.filename}
                   className={styles.filePreviewContainer}
                 >
                   <div className={styles.fileNamePreview}>
-                    {trimmedName(media["filename"], MAXLEN)}
+                    {trimmedName(media.filename, MAXLEN)}
                   </div>
-                  <div className={styles.previewContainer}>
-                    {media["element"]}
-                  </div>
+                  <div className={styles.previewContainer}>{media.element}</div>
                   <Button
                     variant="danger"
                     className={styles.deleteButton}
@@ -160,7 +177,8 @@ const Import: React.FC<Props> = ({
                 </div>
               );
             })}
-            <AddMedia addFile={addFile} mediaElement={mediaElement}/>
+            <AddMediaIcon addFile={addFile} createMediaElement={createMediaElement} />
+          </div>
             <Button
               className={styles.createVideoButton}
               onClick={() => setShow(true)}
@@ -168,11 +186,9 @@ const Import: React.FC<Props> = ({
             >
               Create Video
             </Button>
-          </div>
         </div>
-      ) : null}
+      ) : <span>Drag &amp; Drop your files here :)</span>}
     </div>
   );
 };
 
-export default Import;
