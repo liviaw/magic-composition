@@ -2,6 +2,7 @@
 export { VideoModal } from './VideoModal/VideoModal';
 export {VideoProgressBar} from './VideoModal/VideoProgressBar';
 export { ImportModal } from "./ImportModal/ImportModal";
+export { MediaPreview }from "./ImportModal/MediaPreview";
 export { ErrorModal, showError } from "./ErrorToast/ErrorToast";
 export { Header } from "./Shared/Header";
 export { isImage, isVideo, trimmedName, imageDuration } from "./utils";

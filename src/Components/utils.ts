@@ -19,7 +19,9 @@ export const isVideo = (file: File) => {
   return videoFormat.test(file.type);
 };
 
-export const trimmedName = (filename: string, MAXLEN: number) => {
+export const MAXLEN = 10;
+
+export const trimmedName = (filename: string) => {
   if (filename.length >= MAXLEN) {
     let splittedNames = filename.split(".");
     return (
@@ -34,4 +36,4 @@ export const trimmedName = (filename: string, MAXLEN: number) => {
 export const shuffleArray = (array: any[]) =>
   [...array].sort(() => Math.random() - 0.5);
 
-export const imageDuration = 5000;
+export const imageDuration = 1000;
