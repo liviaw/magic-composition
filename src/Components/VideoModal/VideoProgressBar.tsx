@@ -23,13 +23,13 @@ export const VideoProgressBar: React.FC<Props> = ({
             clearInterval();
         } else {
             // updates progress
-            console.log(totalVideoDuration+" second has passed progress= " + currentProgressTime + " of "+ totalVideoDuration);
+            // console.log(totalVideoDuration+" second has passed progress= " + currentProgressTime + " of "+ totalVideoDuration);
             let currentSec = currentProgressTime + progressInterval/1000;
             setCurrentProgressTime(currentSec);
             setBarProgress(Math.round(currentSec / totalVideoDuration * 100));
         }
     }
-    console.log("totalVideoDuration= " + totalVideoDuration);
+    // console.log("totalVideoDuration= " + totalVideoDuration);
     const [isCleared, clearInterval] = useInterval(updateProgress, progressInterval);
 
 

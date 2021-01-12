@@ -37,7 +37,12 @@ export const ImportModal: React.FC<Props> = ({
 }) => {
   const [onDragState, setOnDragState] = useState<boolean>(false);
   const [onDropState, setOnDropState] = useState<boolean>(false);
+  const [durationLoaded, setDurationLoaded] = useState<{[filename: string]:boolean}>({});
+  const [videoNum, setVideoNum] = useState<number>(0);
 
+  const mediaReadyHandler: (index:number) => void = (index:number) => {
+    addMedia();
+  }
   const createMediaElement: (addFiles: Media[], file: File) => void = (
     addFiles,
     file: File
@@ -57,6 +62,7 @@ export const ImportModal: React.FC<Props> = ({
       let newMedia = new Media(file.name, "image", el);
       addFiles.push(newMedia);
     } else if (isVideo(file)) {
+      setDurationLoaded({...durationLoaded, [file.name]:false});
       let el: JSX.Element = (
         <ReactPlayer
           url={URL.createObjectURL(file)}
@@ -71,12 +77,20 @@ export const ImportModal: React.FC<Props> = ({
           onEnded={() => setVideoPlaying(false)}
           onDuration={(duration) => {
             console.log("duration is " + duration);
-            addDuration(duration * 1000);
+            if (durationLoaded[file.name] === false) {
+              addDuration(duration * 1000);
+              // set durationState as true
+              let newDurationState = {...durationLoaded};
+              newDurationState[file.name] = true;
+              setDurationLoaded(newDurationState);
+            }
           }}
         />
       );
       let newMedia = new Media(file.name, "video", el);
       addFiles.push(newMedia);
+      // increment media number for the next file index
+      setVideoNum(m => m + 1);
     } else {
       showError("invalid file " + file.name);
     }
