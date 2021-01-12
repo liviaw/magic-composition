@@ -187,7 +187,7 @@ export const ImportModal: React.FC<Props> = ({
               Create Video
             </Button>
         </div>
-      ) : <span>Drag &amp; Drop your files here :)</span>}
+      ) : <span>Drag &amp; Drop your files here 📥</span>}
     </div>
   );
 };

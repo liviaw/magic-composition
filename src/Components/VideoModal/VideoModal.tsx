@@ -43,7 +43,7 @@ export const VideoModal: React.FC<Props> = ({
       </Modal.Header>
       <Modal.Body>
         <div className={styles.renderMediaContainer}>
-          {medias[mediaCounter]["element"]}
+          {medias[mediaCounter].element}
         </div>
         <VideoProgressBar totalVideoDuration={totalVideoDuration/1000} />
       </Modal.Body>
