@@ -17,7 +17,6 @@ export const VideoModal: React.FC<Props> = ({
 }) => {
   const [medias, setMedias] = useState<Media[]>([]);
   const [mediaCounter, setMediaCounter] = useState<number>(0);
-  const [mediaReady, setMediaReady] = useState<number>(0);
   const [totalVideoDuration, setTotalVideoDuration] = useState<number>(0);
 
   useEffect(() => {
