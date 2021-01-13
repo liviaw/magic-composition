@@ -7,25 +7,26 @@ const App: React.FC = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [videoPlaying, setVideoPlaying] = useState<boolean>(false);
   const [totalVideoDuration, setTotalVideoDuration] = useState<number>(0);
-    // mapping of file index to original duration of video/images
-    const [oriDur, setOriDur] = useState<{[fileindex: number]: number}>({});
+  // mapping of file index to original duration of video/images
+  const [oriDur, setOriDur] = useState<{[fileindex: number]: number}>({});
 
-    const removeFile = (index: number): void => {
-      const newFiles = [...files];
-      if (index > -1) {
-        newFiles.splice(index, 1);
-      }
-      setFiles(newFiles);
-    };
-    const addFile = (addedFiles: File[]): void => {
-      let newFiles:File[] = [...files, ...addedFiles];
-      setFiles(newFiles);
-    };
-    // duration in seconds
-    const addDuration = (index:number, duration: number):void => {
-      let newDur = {index: duration};
-      setOriDur({...oriDur, ...newDur});
+  const removeFile = (index: number): void => {
+    const newFiles = [...files];
+    if (index > -1) {
+      newFiles.splice(index, 1);
     }
+    setFiles(newFiles);
+  };
+  const addFile = (addedFiles: File[]): void => {
+    let newFiles:File[] = [...files, ...addedFiles];
+    setFiles(newFiles);
+  };
+  // duration in seconds
+  const addDuration = (index:number, duration: number):void => {
+    let newDur = {index: duration};
+    setOriDur({...oriDur, ...newDur});
+    setTotalVideoDuration(totalVideoDuration + duration)
+  }
 
   return (
     <div className="App">
@@ -39,9 +40,9 @@ const App: React.FC = () => {
         setVideoPlaying={setVideoPlaying}
         addDuration={addDuration}
       /> 
-      {/* {show ?
-        <VideoModal setShow={setShow} show={show} medias={medias} videoPlaying={videoPlaying} totalVideoDuration={totalVideoDuration}/> : null
-        } */}
+      {show ?
+        <VideoModal setShow={setShow} show={show} files={files} oriDur={oriDur} totalVideoDuration={totalVideoDuration}/> : null
+        }
     </div>
   );
 };

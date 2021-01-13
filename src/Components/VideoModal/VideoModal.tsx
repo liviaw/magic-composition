@@ -7,27 +7,27 @@ import styles from "./VideoModal.module.css";
 type Props = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   show: boolean;
-  medias: Media[];
-  videoPlaying: boolean;
+  files: File[];
+  oriDur: {[fileindex: number]: number};
   totalVideoDuration: number;
 };
 export const VideoModal: React.FC<Props> = ({
   setShow,
   show,
-  medias,
-  videoPlaying,
+  files,
+  oriDur,
   totalVideoDuration,
 }) => {
   const [mediaCounter, setMediaCounter] = useState<number>(0);
   const changeImage: () => void = () => {
     console.log(mediaCounter);
     // if files are not attached or if video is playing, do not change interval
-    if (videoPlaying || medias == null) {
+    if (files == null) {
       return;
     }
-    if (mediaCounter >= medias.length - 1) {
+    if (mediaCounter >= files.length - 1) {
       // clearing interval for media switching within the video
-      setMediaCounter(medias.length - 1);
+      setMediaCounter(files.length - 1);
       clearInterval();
     } else {
       // video ended
@@ -42,9 +42,9 @@ export const VideoModal: React.FC<Props> = ({
         <Modal.Title>Here is your Video</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div className={styles.renderMediaContainer}>
+        {/* <div className={styles.renderMediaContainer}>
           {medias[mediaCounter].element}
-        </div>
+        </div> */}
         <VideoProgressBar totalVideoDuration={totalVideoDuration/1000} />
       </Modal.Body>
       <Modal.Footer>
