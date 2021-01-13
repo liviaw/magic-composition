@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import { ImportModal, Header} from "./Components/";
+import { ImportModal, Header, VideoModal} from "./Components/";
 
 const App: React.FC = () => {
   const [show, setShow] = useState<boolean>(false);
@@ -28,9 +28,7 @@ const App: React.FC = () => {
         removeFile={removeFile}
         addFile={addFile}
       /> 
-      {show ?
-        <VideoModal setShow={setShow} show={show} files={files} totalVideoDuration={totalVideoDuration}/> : null
-      }
+      <VideoModal setShow={setShow} show={show} files={files}/> : null
     </div>
   );
 };

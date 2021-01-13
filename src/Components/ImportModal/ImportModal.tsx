@@ -4,7 +4,6 @@ import {
   isVideo,
   ErrorModal,
   showError,
-  Loading,
   MediaPreview
 } from "..";
 import styles from "./ImportModal.module.css";
@@ -28,11 +27,6 @@ export const ImportModal: React.FC<Props> = ({
 }) => {
   const [onDragState, setOnDragState] = useState<boolean>(false);
   const [onDropState, setOnDropState] = useState<boolean>(false);
-  const [mediaReady, setMediaReady] = useState<number>(0);
-
-  const addMediaReady = () => {
-    setMediaReady(mediaReady + 1);
-  }
 
   const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     setOnDropState(true);

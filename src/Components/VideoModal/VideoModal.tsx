@@ -1,23 +1,38 @@
-import React, { useState } from "react";
-import { useInterval } from "beautiful-react-hooks";
+import React, { useEffect, useState } from "react";
+import ReactPlayer from "react-player";
 import { Button, Modal } from "react-bootstrap";
-import { Media, VideoProgressBar, imageDuration } from "..";
+import RotateLoader from "react-spinners/RotateLoader";
+import { Media, VideoProgressBar, imageDuration, isImage } from "..";
 import styles from "./VideoModal.module.css";
 
 type Props = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   show: boolean;
   files: File[];
-  totalVideoDuration: number;
 };
 export const VideoModal: React.FC<Props> = ({
   setShow,
   show,
   files,
-  totalVideoDuration,
 }) => {
+  const [medias, setMedias] = useState<Media[]>([]);
   const [mediaCounter, setMediaCounter] = useState<number>(0);
-  const changeImage: () => void = () => {
+  const [mediaReady, setMediaReady] = useState<number>(0);
+  const [totalVideoDuration, setTotalVideoDuration] = useState<number>(0);
+
+  useEffect(() => {
+    console.log("hello");
+    let newMedia: Media[] = [];
+    files.forEach((file) => {
+      createMediaElement(file, newMedia)
+      console.log("loading.... "+ file)
+    })
+    setMedias(newMedia);
+  }, [files])
+  const addMedia = () => {
+    setMediaReady(m => m + 1);
+  }
+  const changeImage = ():void => {
     console.log(mediaCounter);
     // if files are not attached or if video is playing, do not change interval
     if (files == null) {
@@ -32,33 +47,101 @@ export const VideoModal: React.FC<Props> = ({
       setMediaCounter((mediaCounter) => mediaCounter + 1);
     }
   };
-  const [isCleared, clearInterval] = useInterval(changeImage, imageDuration);
+
+const addDuration: (extraDuration: number) => void = (extraDuration: number) => {
+  setTotalVideoDuration(oldDur => oldDur + extraDuration);
+};
+const createMediaElement: ( file: File, addFiles: Media[]) => void = (
+  file,
+  addFiles,
+) => {
+  if (isImage(file)) {
+    const newDuration: {[filename:string]:boolean} = {[file.name]:false};
+    let el: JSX.Element = (
+      <img
+        className={styles.renderMedia}
+        src={URL.createObjectURL(file)}
+        onLoad={() => {
+          if (newDuration[file.name] === false) {
+            addMedia();
+            addDuration(imageDuration);
+            // set duration state as true so that it will not reset it again
+            newDuration[file.name] = true;
+          }
+        }}
+        alt={file.name}
+      />
+    );
+    let newMedia = new Media(file.name, "image", el);
+    addFiles.push(newMedia);
+  } else {
+    const newDuration: {[filename:string]:boolean} = {[file.name]:false};
+    let el: JSX.Element = (
+      <ReactPlayer
+        url={URL.createObjectURL(file)}
+        width="100%"
+        height="50%"
+        playing={true}
+        onError={() => alert(file + " is unable to play")}
+        id={file.name}
+        volume={0}
+        onReady={addMedia}
+        onEnded={changeImage}
+        onDuration={(duration) => {
+          console.log("duration is " + duration);
+          if (newDuration[file.name] === false) {
+            addDuration(duration * 1000);
+            // set durationState as true
+            newDuration[file.name] = true;
+          }
+        }}
+      />
+    );
+    let newMedia = new Media(file.name, "video", el);
+    addFiles.push(newMedia);
+  } 
+};
+  const init = () => {
+    let newMedia: Media[] = [];
+    files.forEach((file) => {
+      createMediaElement(file, newMedia)
+      console.log("loading.... "+ file)
+    })
+    setMedias(newMedia);
+  }
 
   return (
-    <Modal centered size="lg" show={show} onHide={() => setShow(false)}>
-      <Modal.Header closeButton>
-        <Modal.Title>Here is your Video</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        {/* if not ready, show spinner, then store files in elements */}
-        <div className={styles.renderMediaContainer}>
-          {medias[mediaCounter]["element"]}
-        </div>
-        <VideoProgressBar totalVideoDuration={totalVideoDuration/1000} />
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="outline-dark" onClick={() => setShow(false)}>
-          Close
-        </Button>
-        <Button
-          variant="info"
-          onClick={() => {
-            setShow(false);
-          }}
-        >
-          Save Video
-        </Button>
-      </Modal.Footer>
-    </Modal>
+    <div>
+    {show ? (<Modal centered size="lg" show={show} onHide={() => setShow(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Here is your Video</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* if not ready, show spinner, then store files in elements */}
+          { init() }
+          {mediaReady === medias.length ?
+          <div className={styles.renderMediaContainer}>
+            {medias[mediaCounter]["element"]}
+          </div> : <RotateLoader color="#00C4CC"/>}
+          
+          <VideoProgressBar totalVideoDuration={totalVideoDuration/1000} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="outline-dark" onClick={() => setShow(false)}>
+            Close
+          </Button>
+          <Button
+            variant="info"
+            onClick={() => {
+              setShow(false);
+            }}
+          >
+            Save Video
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      ) : null
+    }
+    </div>
   );
 };
