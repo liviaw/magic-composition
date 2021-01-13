@@ -5,29 +5,21 @@ import styles from "./ImageWrapper.module.css";
 type Props = {
   file: File;
   changeImage: () => void;
-  addMedia: () => void;
 };
 // future: add media can be optional
 // if no add media, then do ot set timeout
-export const ImageWrapper: React.FC<Props> = ({
-  file,
-  changeImage,
-  addMedia,
-}) => {
+export const ImageWrapper: React.FC<Props> = ({ file, changeImage }) => {
   useEffect(() => {
-    const timeout = setTimeout(changeImage, 1000);
-	}, []);
-	const [loaded, setLoaded] = useState(false);
+    console.log("timer starts");
+    const timeout = setTimeout(() => {
+      changeImage();
+      console.log("rovi kissed ivor");
+    }, imageDuration);
+  }, []);
   return (
     <img
       className={styles.renderMedia}
       src={URL.createObjectURL(file)}
-      onLoad={() => {
-				if (loaded === false) {
-					setLoaded(true);
-					addMedia();
-				}
-      }}
       alt={file.name}
     />
   );
