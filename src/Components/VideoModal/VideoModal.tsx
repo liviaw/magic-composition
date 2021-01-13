@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { Media, VideoProgressBar, imageDuration, ImageWrapper, isImage, audioSound } from "..";
+import { Media, VideoProgressBar, imageDuration, ImageWrapper, isImage, isVideo, audioSound } from "..";
 import styles from "./VideoModal.module.css";
 import ReactPlayer from "react-player";
+import RotateLoader from "react-spinners/RotateLoader";
 
 type Props = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,38 +25,20 @@ export const VideoModal: React.FC<Props> = ({
   const addMedia = () => {
     setMediaReady((m) => m + 1);
   };
-  const changeImage: () => void = () => {
-    console.log(mediaCounter);
-    // if files are not attached or if video is playing, do not change interval
-    if (files == null) {
-      return;
-    }
-    if (mediaCounter >= files.length - 1) {
-      // clearing interval for media switching within the video
-      setMediaCounter(files.length - 1);
-      clearInterval();
-    } else {
-      // video ended
-      setMediaCounter((mediaCounter) => mediaCounter + 1);
-    }
-  };
   const initMediaElements = (): void => {
     if (files == null) {
       return;
     }
     const newMedias: Media[] = [];
-    files.forEach((file) => {
+    files.forEach((file, index) => {
       if (isImage(file)) {
-        const newDuration: { [filename: string]: boolean } = {
-          [file.name]: false,
-        };
         let el: JSX.Element = (
           <ImageWrapper file={file} changeImage={changeImage} addMedia={addMedia}/>
         );
         let newMedia = new Media(file.name, "image", el);
         newMedias.push(newMedia);
       } else {
-        const newDuration: { [filename: string]: boolean } = {
+        const newDuration: { [fileIndex: number]: boolean } = {
           [file.name]: false,
         };
         let el: JSX.Element = (
@@ -68,6 +51,13 @@ export const VideoModal: React.FC<Props> = ({
             id={file.name}
             volume={Math.random() * audioSound}
             onEnded={changeImage}
+            onReady={() => {
+              if (newDuration[index] === false) {
+                console.log("ready!");
+                addMedia();
+                newDuration[index] = true;
+              }
+            }}
           />
         );
         let newMedia = new Media(file.name, "video", el);
@@ -76,17 +66,49 @@ export const VideoModal: React.FC<Props> = ({
     });
     setMedias(newMedias);
   };
-
+  useEffect(()=> {
+    initMediaElements();
+    console.log("woking")
+    return () => setMedias([])
+  }, [initMediaElements]);
+  const changeImage: () => void = () => {
+    console.log(mediaCounter);
+    // if files are not attached or if video is playing, do not change interval
+    if (files == null) {
+      return;
+    }
+    if (mediaCounter >= files.length - 1) {
+      // clearing interval for media switching within the video
+      setMediaCounter(files.length - 1);
+    } else {
+      // video ended
+      setMediaCounter((mediaCounter) => mediaCounter + 1);
+    }
+  };
+  const idk = () => {
+    console.log(medias[0]);
+    return (<h1>livia</h1>)
+  }
   return (
     <Modal centered size="lg" show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
         <Modal.Title>Here is your Video</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {/* <div className={styles.renderMediaContainer}>
-          {medias[mediaCounter].element}
-        </div> */}
-        <VideoProgressBar totalVideoDuration={Math.round(totalVideoDuration/1000)} />
+        {mediaReady === 0 || mediaReady < medias.length ?
+          <RotateLoader color="#00C4CC" /> :(
+            <div className={styles.renderMediaContainer}>
+            {mediaReady}
+            {medias[mediaCounter].element} 
+          <VideoProgressBar totalVideoDuration={Math.round(totalVideoDuration/1000)} />
+          </div>)}
+
+          
+          {/* <div className={styles.renderMediaContainer}> */}
+          {/* {medias.length} */}
+          {/* {idk()} */}
+          {/* {medias[mediaCounter].element} */}
+        {/* </div>} */}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="outline-dark" onClick={() => setShow(false)}>

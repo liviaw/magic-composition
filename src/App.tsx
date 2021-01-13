@@ -34,9 +34,7 @@ const App: React.FC = () => {
         setShow={setShow}
         removeFile={removeFile}
         addFile={addFile}
-        totalVideoDuration={totalVideoDuration}
         setTotalVideoDuration={setTotalVideoDuration}
-        oriDur={oriDur}
         setOriDur={setOriDur}
       />
       {show ? (

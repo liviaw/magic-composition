@@ -18,9 +18,7 @@ type Props = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   removeFile: (index: number) => void;
   addFile: (newMedia: File[]) => void;
-  totalVideoDuration: number;
   setTotalVideoDuration: React.Dispatch<React.SetStateAction<number>>;
-  oriDur: { [fileindex: number]: number };
   setOriDur: React.Dispatch<
     React.SetStateAction<{ [fileindex: number]: number }>
   >;
@@ -30,9 +28,7 @@ export const ImportModal: React.FC<Props> = ({
   setShow,
   removeFile,
   addFile,
-  totalVideoDuration,
   setTotalVideoDuration,
-  oriDur,
   setOriDur,
 }) => {
   const [onDragState, setOnDragState] = useState<boolean>(false);
@@ -77,13 +73,11 @@ export const ImportModal: React.FC<Props> = ({
             onLoad={() => {
               if (newDuration[file.name] === false) {
                 addMediaReady();
-                console.log("IMG " + index + " " + imageDuration); //   // set duration state as true so that it will not reset it again
+                // set duration state as true so that it will not reset it again
                 newDuration[file.name] = true;
                 setTotalVideoDuration((d) => d + imageDuration);
-                console.log(totalVideoDuration);
                 let tempDur: { [fileindex: number]: number } = {};
                 tempDur[index] = imageDuration;
-                console.log(tempDur);
                 setOriDur((prevState) => ({
                   ...prevState,
                   ...tempDur,
@@ -105,7 +99,7 @@ export const ImportModal: React.FC<Props> = ({
             width="100%"
             height="50%"
             playing={true}
-            onError={() => alert(file + " is unable to play")}
+            onError={() => alert(file.name + " is unable to play")}
             id={file.name}
             volume={0}
             loop={true}
@@ -114,10 +108,8 @@ export const ImportModal: React.FC<Props> = ({
                 // set duration state as true so that it will not reset it again
                 newDuration[file.name] = true;
                 setTotalVideoDuration((d) => d + duration * 1000);
-                console.log(totalVideoDuration);
                 let tempDur: { [fileindex: number]: number } = {};
                 tempDur[index] = imageDuration;
-                console.log(tempDur);
                 addMediaReady();
                 setOriDur((prevState) => ({
                   ...prevState,

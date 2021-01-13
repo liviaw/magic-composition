@@ -27,9 +27,7 @@ export const VideoProgressBar: React.FC<Props> = ({
             setBarProgress(Math.round(currentSec / totalVideoDuration * 100));
         }
     }
-    console.log("totalVideoDuration= " + totalVideoDuration);
     const [isCleared, clearInterval] = useInterval(updateProgress, progressInterval);
-
 
     const formattedTime = (duration: number):string => 
     {   
