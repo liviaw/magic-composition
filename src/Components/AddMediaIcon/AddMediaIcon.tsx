@@ -7,9 +7,7 @@ type Props = {
   addFile: (newMedia: File[]) => void;
 };
 
-export const AddMediaIcon: React.FC<Props> = ({
-  addFile,
-}) => {
+export const AddMediaIcon: React.FC<Props> = ({ addFile }) => {
   const handleVideoUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {

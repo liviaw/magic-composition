@@ -32,7 +32,6 @@ export const MediaPreview: React.FC<Props> = ({
                 src={URL.createObjectURL(file)}
                 onLoad={() => {
                   if (newDuration[file.name] === false) {
-                    console.log("image loads");
                     addMedia();
                     addDuration(index, imageDuration);
                     // set duration state as true so that it will not reset it again

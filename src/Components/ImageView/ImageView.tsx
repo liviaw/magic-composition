@@ -26,7 +26,7 @@ export const ImageView: React.FC<Props> = ({
     return(<img
         className={styles.renderMedia}
         src={URL.createObjectURL(file)}
-        onLoad={() => {console.log("image wrapper done loading!")}}
+        onLoad={() => {alert("image wrapper done loading!")}}
         alt={file.name}
       />);
 }

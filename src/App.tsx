@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import "./App.css";
-import { ImportModal, Header, VideoModal} from "./Components/";
+import { ImportModal, Header, VideoModal } from "./Components/";
 
 const App: React.FC = () => {
   const [show, setShow] = useState<boolean>(false);
   const [files, setFiles] = useState<File[]>([]);
   const [mediaReady, setMediaReady] = useState<number>(0);
   // mapping of file index to original duration of video/images
-  const [oriDur, setOriDur] = useState<{[fileindex: number]: number}>({});
+  const [oriDur, setOriDur] = useState<{ [fileindex: number]: number }>({});
 
   const removeFile = (index: number): void => {
     const newFiles = [...files];
@@ -21,10 +21,10 @@ const App: React.FC = () => {
     setFiles(newMedias);
   };
   // duration in seconds
-  const addDuration = (index:number, duration: number):void => {
-    let newDur = {index: duration};
-    setOriDur({...oriDur, ...newDur});
-  }
+  const addDuration = (index: number, duration: number): void => {
+    let newDur = { index: duration };
+    setOriDur({ ...oriDur, ...newDur });
+  };
   return (
     <div className="App">
       <Header />
@@ -35,8 +35,8 @@ const App: React.FC = () => {
         removeFile={removeFile}
         addFile={addFile}
         addDuration={addDuration}
-      /> 
-      <VideoModal setShow={setShow} show={show} files={files}/> : null
+      />
+      <VideoModal setShow={setShow} show={show} files={files} /> : null
     </div>
   );
 };
