@@ -22,12 +22,7 @@ export const VideoModal: React.FC<Props> = ({
 
   useEffect(() => {
     console.log("hello");
-    let newMedia: Media[] = [];
-    files.forEach((file) => {
-      createMediaElement(file, newMedia)
-      console.log("loading.... "+ file)
-    })
-    setMedias(newMedia);
+    initMediaElements(files);
   }, [files])
   const addMedia = () => {
     setMediaReady(m => m + 1);
@@ -51,64 +46,62 @@ export const VideoModal: React.FC<Props> = ({
 const addDuration: (extraDuration: number) => void = (extraDuration: number) => {
   setTotalVideoDuration(oldDur => oldDur + extraDuration);
 };
-const createMediaElement: ( file: File, addFiles: Media[]) => void = (
-  file,
-  addFiles,
+const initMediaElements: ( files: File[]) => void = (
+  files,
 ) => {
-  if (isImage(file)) {
-    const newDuration: {[filename:string]:boolean} = {[file.name]:false};
-    let el: JSX.Element = (
-      <img
-        className={styles.renderMedia}
-        src={URL.createObjectURL(file)}
-        onLoad={() => {
-          if (newDuration[file.name] === false) {
-            addMedia();
-            addDuration(imageDuration);
-            // set duration state as true so that it will not reset it again
-            newDuration[file.name] = true;
-          }
-        }}
-        alt={file.name}
-      />
-    );
-    let newMedia = new Media(file.name, "image", el);
-    addFiles.push(newMedia);
-  } else {
-    const newDuration: {[filename:string]:boolean} = {[file.name]:false};
-    let el: JSX.Element = (
-      <ReactPlayer
-        url={URL.createObjectURL(file)}
-        width="100%"
-        height="50%"
-        playing={true}
-        onError={() => alert(file + " is unable to play")}
-        id={file.name}
-        volume={0}
-        onReady={addMedia}
-        onEnded={changeImage}
-        onDuration={(duration) => {
-          console.log("duration is " + duration);
-          if (newDuration[file.name] === false) {
-            addDuration(duration * 1000);
-            // set durationState as true
-            newDuration[file.name] = true;
-          }
-        }}
-      />
-    );
-    let newMedia = new Media(file.name, "video", el);
-    addFiles.push(newMedia);
-  } 
-};
-  const init = () => {
-    let newMedia: Media[] = [];
-    files.forEach((file) => {
-      createMediaElement(file, newMedia)
-      console.log("loading.... "+ file)
-    })
-    setMedias(newMedia);
+  if (files == null) {
+    return;
   }
+  const newMedias:Media[] = [];
+  files.forEach((file) =>{
+    if (isImage(file)) {
+      const newDuration: {[filename:string]:boolean} = {[file.name]:false};
+      let el: JSX.Element = (
+        <img
+          className={styles.renderMedia}
+          src={URL.createObjectURL(file)}
+          onLoad={() => {
+            addMedia();
+            if (newDuration[file.name] === false) {
+              addDuration(imageDuration);
+              // set duration state as true so that it will not reset it again
+              newDuration[file.name] = true;
+            }
+          }}
+          alt={file.name}
+        />
+      );
+      let newMedia = new Media(file.name, "image", el);
+      newMedias.push(newMedia);
+    } else {
+      const newDuration: {[filename:string]:boolean} = {[file.name]:false};
+      let el: JSX.Element = (
+        <ReactPlayer
+          url={URL.createObjectURL(file)}
+          width="100%"
+          height="50%"
+          playing={true}
+          onError={() => alert(file + " is unable to play")}
+          id={file.name}
+          volume={0}
+          onReady={addMedia}
+          onEnded={changeImage}
+          onDuration={(duration) => {
+            console.log("duration is " + duration);
+            if (newDuration[file.name] === false) {
+              addDuration(duration * 1000);
+              // set durationState as true
+              newDuration[file.name] = true;
+            }
+          }}
+        />
+      );
+      let newMedia = new Media(file.name, "video", el);
+      newMedias.push(newMedia);
+    } 
+  });
+  setMedias(newMedias);
+};
 
   return (
     <div>
@@ -117,8 +110,9 @@ const createMediaElement: ( file: File, addFiles: Media[]) => void = (
           <Modal.Title>Here is your Video</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+        {mediaReady}
+        {medias.length }
           {/* if not ready, show spinner, then store files in elements */}
-          { init() }
           {mediaReady === medias.length ?
           <div className={styles.renderMediaContainer}>
             {medias[mediaCounter]["element"]}
