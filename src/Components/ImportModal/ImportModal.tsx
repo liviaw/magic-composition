@@ -5,38 +5,40 @@ import {
   isVideo,
   ErrorModal,
   showError,
-  trimmedName,
   Media,
   AddMediaIcon,
   imageDuration,
   Loading,
 } from "..";
+import { ViewMedia, DragModal } from "./ViewMedia";
 import styles from "./ImportModal.module.css";
-import character from "../../Media/character.png";
 import { Button } from "react-bootstrap";
 
 type Props = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
-  files: File[];
   removeFile: (index: number) => void;
   addFile: (newMedia: File[]) => void;
-  setVideoPlaying: React.Dispatch<React.SetStateAction<boolean>>;
-  addDuration: (index: number, duration: number) => void;
+  totalVideoDuration: number;
+  setTotalVideoDuration: React.Dispatch<React.SetStateAction<number>>;
+  oriDur: { [fileindex: number]: number };
+  setOriDur: React.Dispatch<
+    React.SetStateAction<{ [fileindex: number]: number }>
+  >;
 };
 
 export const ImportModal: React.FC<Props> = ({
   setShow,
-  files,
   removeFile,
   addFile,
-  setVideoPlaying,
-  addDuration,
+  totalVideoDuration,
+  setTotalVideoDuration,
+  oriDur,
+  setOriDur,
 }) => {
   const [onDragState, setOnDragState] = useState<boolean>(false);
   const [onDropState, setOnDropState] = useState<boolean>(false);
   const [mediaReady, setMediaReady] = useState<number>(0);
   const [medias, setMedias] = useState<Media[]>([]);
-  const [counter, setCounter] = useState<number>(0);
   const removeMedia = (index: number): void => {
     const newMedias = [...medias];
     removeFile(index);
@@ -53,11 +55,17 @@ export const ImportModal: React.FC<Props> = ({
   const addMediaReady = () => {
     setMediaReady((m) => m + 1);
   };
+  // creating elemenets to be displayed for preview
   const createMediaElement: (attachedFiles: File[]) => void = (
     attachedFiles
   ) => {
+    // set drag and drop as true, even if user input using icon
+    if (attachedFiles !== []) {
+      setOnDragState(true);
+      setOnDropState(true);
+    }
     const newMedias: Media[] = [];
-    attachedFiles.forEach((file) => {
+    attachedFiles.forEach((file, index) => {
       if (isImage(file)) {
         const newDuration: { [filename: string]: boolean } = {
           [file.name]: false,
@@ -69,9 +77,17 @@ export const ImportModal: React.FC<Props> = ({
             onLoad={() => {
               if (newDuration[file.name] === false) {
                 addMediaReady();
-                addDuration(counter, imageDuration);
-                // set duration state as true so that it will not reset it again
+                console.log("IMG " + index + " " + imageDuration); //   // set duration state as true so that it will not reset it again
                 newDuration[file.name] = true;
+                setTotalVideoDuration((d) => d + imageDuration);
+                console.log(totalVideoDuration);
+                let tempDur: { [fileindex: number]: number } = {};
+                tempDur[index] = imageDuration;
+                console.log(tempDur);
+                setOriDur((prevState) => ({
+                  ...prevState,
+                  ...tempDur,
+                }));
               }
             }}
             alt={file.name}
@@ -79,7 +95,6 @@ export const ImportModal: React.FC<Props> = ({
         );
         let newMedia = new Media(file.name, "image", el);
         newMedias.push(newMedia);
-        setCounter((c) => c + 1);
       } else if (isVideo(file)) {
         const newDuration: { [filename: string]: boolean } = {
           [file.name]: false,
@@ -94,12 +109,20 @@ export const ImportModal: React.FC<Props> = ({
             id={file.name}
             volume={0}
             loop={true}
-            onReady={addMediaReady}
-            onStart={() => setVideoPlaying(true)}
-            onEnded={() => setVideoPlaying(false)}
             onDuration={(duration) => {
               if (newDuration[file.name] === false) {
-                addDuration(counter, duration * 1000);
+                // set duration state as true so that it will not reset it again
+                newDuration[file.name] = true;
+                setTotalVideoDuration((d) => d + duration * 1000);
+                console.log(totalVideoDuration);
+                let tempDur: { [fileindex: number]: number } = {};
+                tempDur[index] = imageDuration;
+                console.log(tempDur);
+                addMediaReady();
+                setOriDur((prevState) => ({
+                  ...prevState,
+                  ...tempDur,
+                }));
                 // set durationState as true
                 newDuration[file.name] = true;
               }
@@ -108,14 +131,11 @@ export const ImportModal: React.FC<Props> = ({
         );
         let newMedia = new Media(file.name, "video", el);
         newMedias.push(newMedia);
-        setCounter((c) => c + 1);
       }
     });
     addFile(attachedFiles);
     addMedia(newMedias);
   };
-  const MAXLEN = 10;
-
   const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     setOnDropState(true);
     e.preventDefault();
@@ -172,8 +192,9 @@ export const ImportModal: React.FC<Props> = ({
       onDrop={dropHandler}
       onDragOver={dragOverHandler}
     >
+      <Loading mediasLength={medias.length} mediaReady={mediaReady} />
       <ErrorModal />
-      {!onDropState && onDragState ? (
+      {!onDropState && onDragState && (
         <div
           className={styles.dropModal}
           onDragLeave={(e) => {
@@ -181,16 +202,9 @@ export const ImportModal: React.FC<Props> = ({
             e.preventDefault();
           }}
         >
-          <div className={styles.dotted}>
-            <img
-              className={styles.characterIcon}
-              src={character}
-              alt="drag file here"
-            />
-            <div className={styles.dropModalText}>Drop Your File Here</div>
-          </div>
+          <DragModal />
         </div>
-      ) : null}
+      )}
       {onDropState && onDragState ? (
         <div
           className={styles.dropModal}
@@ -199,41 +213,27 @@ export const ImportModal: React.FC<Props> = ({
             e.preventDefault();
           }}
         >
-          <Loading mediasLength={medias.length} mediaReady={mediaReady} />
-          <div className={styles.dotted}>
-            {/* filename (key) to JSX element (value) mapping */}
-            {medias.map((media: Media, index: number) => {
-              return (
-                <div
-                  key={media.filename}
-                  className={styles.filePreviewContainer}
-                >
-                  <div className={styles.fileNamePreview}>
-                    {trimmedName(media.filename, MAXLEN)}
-                  </div>
-                  <div className={styles.previewContainer}>{media.element}</div>
-                  <Button
-                    variant="danger"
-                    className={styles.deleteButton}
-                    onClick={() => removeMedia(index)}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              );
-            })}
-            <AddMediaIcon createMediaElement={createMediaElement} />
-          </div>
+          <ViewMedia
+            medias={medias}
+            removeMedia={removeMedia}
+            createMediaElement={createMediaElement}
+          />
           <Button
             className={styles.createVideoButton}
             onClick={() => setShow(true)}
             variant="success"
           >
-            Create Video
+            Create Video 🎬
           </Button>
         </div>
       ) : (
-        <span>Drag &amp; Drop your files here 📥</span>
+        <>
+          <AddMediaIcon createMediaElement={createMediaElement} />
+          <span> Or </span>
+          <span className={styles.desktopOnly}>
+            Drag &amp; Drop your files here 📥
+          </span>
+        </>
       )}
     </div>
   );

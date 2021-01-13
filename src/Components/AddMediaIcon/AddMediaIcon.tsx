@@ -28,7 +28,7 @@ export const AddMediaIcon: React.FC<Props> = ({ createMediaElement }) => {
       <label htmlFor="fileUpload">
         <div className={styles.addfileButton}>
           <img className={styles.icon} src={icon} alt="add file icon" />
-          <p> Add Files </p>
+          <p> + Add Files </p>
         </div>
       </label>
       <input
