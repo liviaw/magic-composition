@@ -61,8 +61,8 @@ const initMediaElements: ( files: File[]) => void = (
           className={styles.renderMedia}
           src={URL.createObjectURL(file)}
           onLoad={() => {
-            addMedia();
             if (newDuration[file.name] === false) {
+              addMedia();
               addDuration(imageDuration);
               // set duration state as true so that it will not reset it again
               newDuration[file.name] = true;
@@ -112,11 +112,15 @@ const initMediaElements: ( files: File[]) => void = (
         <Modal.Body>
         {mediaReady}
         {medias.length }
+        <div className={styles.renderMediaContainer}>
+            {medias[0]["element"]}
+          </div> 
           {/* if not ready, show spinner, then store files in elements */}
-          {mediaReady === medias.length ?
+          {/* {mediaReady === medias.length ?
           <div className={styles.renderMediaContainer}>
             {medias[mediaCounter]["element"]}
-          </div> : <RotateLoader color="#00C4CC"/>}
+          </div> : <RotateLoader color="#00C4CC"/>
+          } */}
           
           <VideoProgressBar totalVideoDuration={totalVideoDuration/1000} />
         </Modal.Body>

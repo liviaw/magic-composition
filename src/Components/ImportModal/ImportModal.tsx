@@ -4,7 +4,8 @@ import {
   isVideo,
   ErrorModal,
   showError,
-  MediaPreview
+  MediaPreview,
+  Loading,
 } from "..";
 import styles from "./ImportModal.module.css";
 import character from "../../Media/character.png";
@@ -16,6 +17,7 @@ type Props = {
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
   removeFile: (index: number) => void;
   addFile: (newMedia: File[]) => void;
+  addDuration: (index: number, duration: number) => void;
 };
 
 export const ImportModal: React.FC<Props> = ({
@@ -24,9 +26,11 @@ export const ImportModal: React.FC<Props> = ({
   setFiles,
   removeFile,
   addFile,
+  addDuration,
 }) => {
   const [onDragState, setOnDragState] = useState<boolean>(false);
   const [onDropState, setOnDropState] = useState<boolean>(false);
+  const [mediaReady, setMediaReady] = useState<number>(0);
 
   const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     setOnDropState(true);
@@ -74,6 +78,9 @@ export const ImportModal: React.FC<Props> = ({
       setOnDragState(true);
     }
   };
+  const addMedia = () => {
+    setMediaReady((m) => m + 1);
+  };
 
   return (
     <div
@@ -109,8 +116,14 @@ export const ImportModal: React.FC<Props> = ({
             e.preventDefault();
           }}
         >
-          {/* <Loading mediasLength={files.length} mediaReady={mediaReady}/> */}
-          <MediaPreview files={files} removeFile={removeFile} addFile={addFile}/> 
+          <Loading mediasLength={files.length} mediaReady={mediaReady} />
+          <MediaPreview
+            files={files}
+            removeFile={removeFile}
+            addFile={addFile}
+            addDuration={addDuration}
+            addMedia={addMedia}
+          />
           <Button
             className={styles.createVideoButton}
             onClick={() => setShow(true)}
