@@ -9,6 +9,7 @@ import {
   Media,
   AddMediaIcon,
   imageDuration,
+  Loading
 } from "..";
 import styles from "./ImportModal.module.css";
 import character from "../../Media/character.png";
@@ -16,77 +17,106 @@ import { Button } from "react-bootstrap";
 
 type Props = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
-  medias: Media[];
-  setMedias: React.Dispatch<React.SetStateAction<Media[]>>;
+  files: File[];
   removeFile: (index: number) => void;
-  addMedia: () => void;
-  addFile: (newMedia: Media[]) => void;
+  addFile: (newMedia: File[]) => void;
   setVideoPlaying: React.Dispatch<React.SetStateAction<boolean>>;
-  addDuration: (extraDuration: number) => void;
+  addDuration: (index:number, duration: number) => void;
 };
 
 export const ImportModal: React.FC<Props> = ({
   setShow,
-  medias,
-  setMedias,
+  files,
   removeFile,
-  addMedia,
   addFile,
   setVideoPlaying,
   addDuration,
 }) => {
   const [onDragState, setOnDragState] = useState<boolean>(false);
   const [onDropState, setOnDropState] = useState<boolean>(false);
-
-  const createMediaElement: (addFiles: Media[], file: File) => void = (
-    addFiles,
-    file: File
-  ) => {
-    if (isImage(file)) {
-      let el: JSX.Element = (
-        <img
-          className={styles.renderMedia}
-          src={URL.createObjectURL(file)}
-          onLoad={() => {
-            addMedia();
-            addDuration(imageDuration);
-          }}
-          alt={file.name}
-        />
-      );
-      let newMedia = new Media(file.name, "image", el);
-      addFiles.push(newMedia);
-    } else if (isVideo(file)) {
-      let el: JSX.Element = (
-        <ReactPlayer
-          url={URL.createObjectURL(file)}
-          width="100%"
-          height="50%"
-          playing={true}
-          onError={() => alert(file + " is unable to play")}
-          id={file.name}
-          volume={0}
-          onReady={addMedia}
-          onStart={() => setVideoPlaying(true)}
-          onEnded={() => setVideoPlaying(false)}
-          onDuration={(duration) => {
-            console.log("duration is " + duration);
-            addDuration(duration * 1000);
-          }}
-        />
-      );
-      let newMedia = new Media(file.name, "video", el);
-      addFiles.push(newMedia);
-    } else {
-      showError("invalid file " + file.name);
+  const [mediaReady, setMediaReady] = useState<number>(0);
+  const [medias, setMedias] = useState<Media[]>([]);
+  const [counter, setCounter] = useState<number>(0);
+  const removeMedia = (index: number): void => {
+    const newMedias = [...medias];
+    removeFile(index);
+    if (index > -1) {
+      newMedias.splice(index, 1);
     }
+    setMedias(newMedias);
+  };
+  const addMedia = (newMedia: Media[]): void => {
+    let newMedias = [...medias, ...newMedia];
+    setMedias(newMedias);
+  };
+
+  const addMediaReady = () => {
+    setMediaReady(m => m + 1);
+  }
+  const createMediaElement: (attachedFiles: File[]) => void = (
+    attachedFiles,
+  ) => {
+    const newMedias: Media[] = [];
+    attachedFiles.forEach((file) =>{
+      if (isImage(file)) {
+        const newDuration: {[filename:string]:boolean} = {[file.name]:false};
+        let el: JSX.Element = (
+          <img
+            className={styles.renderMedia}
+            src={URL.createObjectURL(file)}
+            onLoad={() => {
+              if (newDuration[file.name] === false) {
+                console.log("IMG duration is " + imageDuration);
+                addMediaReady();
+                addDuration(counter, imageDuration);
+                // set duration state as true so that it will not reset it again
+                newDuration[file.name] = true;
+              }
+            }}
+            alt={file.name}
+          />
+        );
+        let newMedia = new Media(file.name, "image", el);
+        newMedias.push(newMedia);
+        setCounter(c => c+1);
+      } else if (isVideo(file)) {
+        const newDuration: {[filename:string]:boolean} = {[file.name]:false};
+        let el: JSX.Element = (
+          <ReactPlayer
+            url={URL.createObjectURL(file)}
+            width="100%"
+            height="50%"
+            playing={true}
+            onError={() => alert(file + " is unable to play")}
+            id={file.name}
+            volume={0}
+            loop={true}
+            onReady={addMediaReady}
+            onStart={() => setVideoPlaying(true)}
+            onEnded={() => setVideoPlaying(false)}
+            onDuration={(duration) => {
+              if (newDuration[file.name] === false) {
+                addDuration(counter, duration * 1000);
+                // set durationState as true
+                newDuration[file.name] = true;
+              }
+            }}
+          />
+        );
+        let newMedia = new Media(file.name, "video", el);
+        newMedias.push(newMedia);
+        setCounter(c => c+1);
+      }
+    })
+    addFile(attachedFiles);
+    addMedia(newMedias);
   };
   const MAXLEN = 10;
 
   const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     setOnDropState(true);
     e.preventDefault();
-    const dup: Media[] = [];
+    const attachedFiles: File[] = [];
 
     if (e.dataTransfer.items) {
       // Use DataTransferItemList interface to access the file(s)
@@ -98,18 +128,30 @@ export const ImportModal: React.FC<Props> = ({
             return;
           }
           setOnDropState(true);
-          createMediaElement(dup, file);
+          if (isImage(file) || isVideo(file)) {
+            attachedFiles.push(file);
+          } else {
+            showError("invalid file " + file.name);
+          }
+          
         }
         setOnDropState(true);
       }
     } else {
       // Use DataTransfer interface to access the file(s)
       for (let i = 0; i < e.dataTransfer.files.length; i++) {
-        createMediaElement(dup, e.dataTransfer.files[i]);
+        let file = e.dataTransfer.files[i];
+        attachedFiles.push(file);
+        if (isImage(file) || isVideo(file)) {
+          attachedFiles.push(file);
+        } else {
+          showError("invalid file " + file.name);
+        }
       }
     }
+    
+    createMediaElement(attachedFiles);
     setOnDropState(true);
-    setMedias(dup);
   };
   const dragOverHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -155,6 +197,7 @@ export const ImportModal: React.FC<Props> = ({
             e.preventDefault();
           }}
         >
+          <Loading mediasLength={medias.length} mediaReady={mediaReady}/>
           <div className={styles.dotted}>
             {/* filename (key) to JSX element (value) mapping */}
             {medias.map((media: Media, index: number) => {
@@ -170,14 +213,14 @@ export const ImportModal: React.FC<Props> = ({
                   <Button
                     variant="danger"
                     className={styles.deleteButton}
-                    onClick={() => removeFile(index)}
+                    onClick={() => removeMedia(index)}
                   >
                     Delete
                   </Button>
                 </div>
               );
             })}
-            <AddMediaIcon addFile={addFile} createMediaElement={createMediaElement} />
+            <AddMediaIcon createMediaElement={createMediaElement} />
           </div>
             <Button
               className={styles.createVideoButton}
