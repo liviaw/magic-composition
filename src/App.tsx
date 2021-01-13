@@ -5,7 +5,6 @@ import { ImportModal, Header, VideoModal } from "./Components/";
 const App: React.FC = () => {
   const [show, setShow] = useState<boolean>(false);
   const [files, setFiles] = useState<File[]>([]);
-  const [mediaReady, setMediaReady] = useState<number>(0);
   // mapping of file index to original duration of video/images
   const [oriDur, setOriDur] = useState<{ [fileindex: number]: number }>({});
 
