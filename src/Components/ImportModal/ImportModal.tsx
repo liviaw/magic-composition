@@ -9,7 +9,7 @@ import {
   Media,
   AddMediaIcon,
   imageDuration,
-  Loading
+  Loading,
 } from "..";
 import styles from "./ImportModal.module.css";
 import character from "../../Media/character.png";
@@ -21,7 +21,7 @@ type Props = {
   removeFile: (index: number) => void;
   addFile: (newMedia: File[]) => void;
   setVideoPlaying: React.Dispatch<React.SetStateAction<boolean>>;
-  addDuration: (index:number, duration: number) => void;
+  addDuration: (index: number, duration: number) => void;
 };
 
 export const ImportModal: React.FC<Props> = ({
@@ -51,22 +51,23 @@ export const ImportModal: React.FC<Props> = ({
   };
 
   const addMediaReady = () => {
-    setMediaReady(m => m + 1);
-  }
+    setMediaReady((m) => m + 1);
+  };
   const createMediaElement: (attachedFiles: File[]) => void = (
-    attachedFiles,
+    attachedFiles
   ) => {
     const newMedias: Media[] = [];
-    attachedFiles.forEach((file) =>{
+    attachedFiles.forEach((file) => {
       if (isImage(file)) {
-        const newDuration: {[filename:string]:boolean} = {[file.name]:false};
+        const newDuration: { [filename: string]: boolean } = {
+          [file.name]: false,
+        };
         let el: JSX.Element = (
           <img
             className={styles.renderMedia}
             src={URL.createObjectURL(file)}
             onLoad={() => {
               if (newDuration[file.name] === false) {
-                console.log("IMG duration is " + imageDuration);
                 addMediaReady();
                 addDuration(counter, imageDuration);
                 // set duration state as true so that it will not reset it again
@@ -78,9 +79,11 @@ export const ImportModal: React.FC<Props> = ({
         );
         let newMedia = new Media(file.name, "image", el);
         newMedias.push(newMedia);
-        setCounter(c => c+1);
+        setCounter((c) => c + 1);
       } else if (isVideo(file)) {
-        const newDuration: {[filename:string]:boolean} = {[file.name]:false};
+        const newDuration: { [filename: string]: boolean } = {
+          [file.name]: false,
+        };
         let el: JSX.Element = (
           <ReactPlayer
             url={URL.createObjectURL(file)}
@@ -105,9 +108,9 @@ export const ImportModal: React.FC<Props> = ({
         );
         let newMedia = new Media(file.name, "video", el);
         newMedias.push(newMedia);
-        setCounter(c => c+1);
+        setCounter((c) => c + 1);
       }
-    })
+    });
     addFile(attachedFiles);
     addMedia(newMedias);
   };
@@ -133,7 +136,6 @@ export const ImportModal: React.FC<Props> = ({
           } else {
             showError("invalid file " + file.name);
           }
-          
         }
         setOnDropState(true);
       }
@@ -149,7 +151,7 @@ export const ImportModal: React.FC<Props> = ({
         }
       }
     }
-    
+
     createMediaElement(attachedFiles);
     setOnDropState(true);
   };
@@ -197,7 +199,7 @@ export const ImportModal: React.FC<Props> = ({
             e.preventDefault();
           }}
         >
-          <Loading mediasLength={medias.length} mediaReady={mediaReady}/>
+          <Loading mediasLength={medias.length} mediaReady={mediaReady} />
           <div className={styles.dotted}>
             {/* filename (key) to JSX element (value) mapping */}
             {medias.map((media: Media, index: number) => {
@@ -222,16 +224,17 @@ export const ImportModal: React.FC<Props> = ({
             })}
             <AddMediaIcon createMediaElement={createMediaElement} />
           </div>
-            <Button
-              className={styles.createVideoButton}
-              onClick={() => setShow(true)}
-              variant="success"
-            >
-              Create Video
-            </Button>
+          <Button
+            className={styles.createVideoButton}
+            onClick={() => setShow(true)}
+            variant="success"
+          >
+            Create Video
+          </Button>
         </div>
-      ) : <span>Drag &amp; Drop your files here 📥</span>}
+      ) : (
+        <span>Drag &amp; Drop your files here 📥</span>
+      )}
     </div>
   );
 };
-
