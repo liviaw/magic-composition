@@ -17,7 +17,6 @@ type Props = {
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
   removeFile: (index: number) => void;
   addFile: (newMedia: File[]) => void;
-  addDuration: (extraDuration: number) => void;
 };
 
 export const ImportModal: React.FC<Props> = ({

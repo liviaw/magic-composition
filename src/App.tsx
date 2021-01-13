@@ -5,7 +5,6 @@ import { ImportModal, Header} from "./Components/";
 const App: React.FC = () => {
   const [show, setShow] = useState<boolean>(false);
   const [files, setFiles] = useState<File[]>([]);
-  const [totalVideoDuration, setTotalVideoDuration] = useState<number>(0);
 
   const removeFile: (index: number) => void = (index: number) => {
     const newFiles = [...files];
@@ -18,9 +17,7 @@ const App: React.FC = () => {
     let newMedias = [...files, ...newFiles];
     setFiles(newMedias);
   };
-  const addDuration: (extraDuration: number) => void = (extraDuration: number) => {
-    setTotalVideoDuration(oldDur => oldDur + extraDuration);
-  };
+
   return (
     <div className="App">
       <Header />
@@ -30,7 +27,6 @@ const App: React.FC = () => {
         setFiles={setFiles}
         removeFile={removeFile}
         addFile={addFile}
-        addDuration={addDuration}
       /> 
       {show ?
         <VideoModal setShow={setShow} show={show} files={files} totalVideoDuration={totalVideoDuration}/> : null
