@@ -30,6 +30,35 @@ export const trimmedName = (filename: string) => {
   }
   return filename;
 };
+// duration is the length of each media displayed in video
+// if there are too many photos, then mb dont show all? (for now)
+// length is the length of the final video
+// durations and lengths in seconds
+//
+export const template = {
+  "nature":{
+      title: "calm",
+      minDuration: 3,
+      maxLength: 50,
+      slots: [],
+      musicTrack: "https://www.youtube.com/watch?v=-FKe4vQ4dME&list=RDLeV4u5Y-3ac&index=18",
+  },
+  "dreamy": {
+      title: "dreamy",
+      maxDuration: 60,
+      minDuration: 5,
+      slots: [],
+      musicTrack:"https://www.youtube.com/watch?v=RF7q8NNjUWU",
+  },
+  "exciting": {
+      title: "chill",
+      maxDuration: 50,
+      minDuration: 1,
+      maxLength: 20,
+      slots: [],
+      musicTrack: "https://www.youtube.com/watch?v=X2BYmmTI04I"
+  }
+}
 
 export const shuffleArray = (array: any[]) =>
   [...array].sort(() => Math.random() - 0.5);

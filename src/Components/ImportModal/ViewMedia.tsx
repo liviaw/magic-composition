@@ -1,14 +1,28 @@
 import React, { useState } from "react";
 import styles from "./ImportModal.module.css";
 import {trimmedName, Media, AddMediaIcon} from "..";
-import character from "../../Media/character.png";
-import { Button } from "react-bootstrap";
+import character from '../../Media/character.png';
+import { Button } from 'react-bootstrap';
+import useSound from 'use-sound';
+// import soundUrl from '../../Audio/beep.mp3';
 type Props = {
     medias: Media[];
     removeMedia:(index: number) => void;
     createMediaElement: (attachedFiles: File[]) => void;
 }
+
 export const ViewMedia: React.FC<Props> = ({medias, removeMedia, createMediaElement}) => {
+    // const soundUrl = '/../../Audio/beep.mp3';
+    const [playbackRate, setPlaybackRate] = useState<number>(0.75);
+    const [play] = useSound('../../Audio/beep.mp3', {
+        playbackRate,
+        volume: 1,
+    });
+    const handleClick = () => {
+        setPlaybackRate(playbackRate + 0.1);
+        play();
+        console.log("useless");
+      };
     return (
         <div className={styles.dotted}>
         {/* filename (key) to JSX element (value) mapping */}
@@ -23,11 +37,14 @@ export const ViewMedia: React.FC<Props> = ({medias, removeMedia, createMediaElem
             </div>
             <div className={styles.previewContainer}>{media.element}</div>
             <Button
-                variant="danger"
+                variant="light"
                 className={styles.deleteButton}
-                onClick={() => removeMedia(index)}
+                onClick={() => {
+                    handleClick();
+                    removeMedia(index);
+                }}
             >
-                Delete
+                <p>Delete 🗑 </p>
             </Button>
             </div>
         );
