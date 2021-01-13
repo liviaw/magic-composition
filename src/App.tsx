@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
-import { ImportModal, Header, AddMediaIcon, VideoModal, Loading } from "./Components/";
+import { ImportModal, Header, VideoModal, Loading } from "./Components/";
+import WebViewer from '@pdftron/webviewer';
+import { initializeVideoViewer, renderControlsToDOM } from '@pdftron/webviewer-video';
+
 
 const App: React.FC = () => {
   const [show, setShow] = useState<boolean>(false);
@@ -8,7 +11,39 @@ const App: React.FC = () => {
   const [totalVideoDuration, setTotalVideoDuration] = useState<number>(0);
   // mapping of file index to original duration of video/images
   const [oriDur, setOriDur] = useState<{ [fileindex: number]: number }>({});
+  const viewer = useRef(null);
 
+  useEffect(() => {
+    WebViewer(
+      {
+        path: '/webviewer/lib',
+        selectAnnotationOnCreation: true,
+      },
+      viewer.current,
+    ).then(async instance => {
+      // Extends WebViewer to allow loading HTML5 videos (.mp4, ogg, webm).
+      const {
+          loadVideo,
+      } = await initializeVideoViewer(
+          instance,
+          '---- Insert commercial license key here after purchase ----',
+      );
+
+      // Load a video at a specific url. Can be a local or public link
+      // If local it needs to be relative to lib/ui/index.html.
+      // Or at the root. (eg '/video.mp4')
+      const videoUrl = 'https://pdftron.s3.amazonaws.com/downloads/pl/video/video.mp4';
+      loadVideo(videoUrl);
+
+      instance.docViewer.on('documentLoaded', () => {
+        const customContainer =
+            instance.iframeWindow.document.querySelector('.custom-container');
+
+        // Inject the video Controls into WebViewer
+        renderControlsToDOM(instance, customContainer);
+      });
+    });
+  }, []);
   // oriDur = {
   //   "gribben.mp4": 5000,
   //   "cat.mp4": 7500,
@@ -29,6 +64,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
+      <div className="webviewer" ref={viewer} />
       <Header />
       <ImportModal
         setShow={setShow}

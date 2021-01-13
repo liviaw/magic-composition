@@ -213,7 +213,7 @@ export const ImportModal: React.FC<Props> = ({
           <Button
             className={styles.createVideoButton}
             onClick={() => setShow(true)}
-            variant="success"
+            variant="secondary"
           >
             Create Video 🎬
           </Button>

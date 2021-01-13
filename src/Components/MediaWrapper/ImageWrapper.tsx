@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { showError, isImage, isVideo, imageDuration } from "..";
+import React, { useEffect } from "react";
+import { imageDuration } from "..";
 import styles from "./ImageWrapper.module.css";
 
 type Props = {
@@ -10,12 +10,10 @@ type Props = {
 // if no add media, then do ot set timeout
 export const ImageWrapper: React.FC<Props> = ({ file, changeImage }) => {
   useEffect(() => {
-    console.log("timer starts");
     const timeout = setTimeout(() => {
       changeImage();
-      console.log("rovi kissed ivor");
     }, imageDuration);
-  }, []);
+  }, [file]);
   return (
     <img
       className={styles.renderMedia}

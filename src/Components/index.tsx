@@ -8,7 +8,6 @@ export { isImage, isVideo, trimmedName, imageDuration, audioSound } from "./util
 export { Loading } from './Loading/Loading';
 export { AddMediaIcon } from './AddMediaIcon/AddMediaIcon';
 export { ImageWrapper } from './MediaWrapper/ImageWrapper';
-export { VideoWrapper } from './MediaWrapper/VideoWrapper';
 
 export class Media {
   filename: string;

@@ -15,7 +15,7 @@ const MediaComponent: React.FC<MediaProps> = ({
 }) => {
   if (isImage(file)) {
     return (
-      <ImageWrapper key={file.name} file={file} changeImage={onEnded} />
+      <ImageWrapper file={file} changeImage={onEnded} />
     );
   } else if (isVideo(file)) {
     return (
@@ -50,6 +50,19 @@ export const VideoModal: React.FC<Props> = ({
 }) => {
   const [mediaCounter, setMediaCounter] = useState<number>(0);
   const currentFile = files[mediaCounter];
+  const changeImage: () => void = () => {
+    // if files are not attached or if video is playing, do not change interval
+    if (files == null) {
+      return;
+    }
+    if (mediaCounter >= files.length - 1) {
+      // clearing interval for media switching within the video
+      setMediaCounter(files.length - 1);
+    } else {
+      // video ended
+      setMediaCounter((mediaCounter) => mediaCounter + 1);
+    }
+  };
 
   return (
     <Modal centered size="lg" show={show} onHide={() => setShow(false)}>
@@ -57,9 +70,15 @@ export const VideoModal: React.FC<Props> = ({
         <Modal.Title>Here is your Video</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <MediaComponent file={currentFile} onEnded={() => setMediaCounter((old) => old + 1)} />
+      <div className={styles.renderMediaContainer}>
+        <MediaComponent file={currentFile} onEnded={changeImage} />
+      </div>
           <VideoProgressBar totalVideoDuration={Math.round(totalVideoDuration/1000)} />
+          <Button variant="outline-dark" onClick={() => setShow(false)}>
+          template 1: slow/calm
+        </Button>
       </Modal.Body>
+      
       <Modal.Footer>
         <Button variant="outline-dark" onClick={() => setShow(false)}>
           Close
