@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./ImportModal.module.css";
-import {trimmedName, Media} from "..";
+import {trimmedName, Media, AddMediaIcon} from "..";
 import character from '../../Media/character.png';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -33,9 +33,11 @@ export const ViewMedia: React.FC<Props> = ({medias, removeMedia, createMediaElem
 						}}>
             <DeleteIcon />
             </IconButton>
+
             </div>
         );
         })}
+        <AddMediaIcon createMediaElement={createMediaElement} />
     </div>
     );
 }

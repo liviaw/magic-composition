@@ -3,6 +3,8 @@ import ReactPlayer from "react-player";
 import {
   isImage,
   isVideo,
+  ErrorModal,
+  showError,
   Media,
   AddMediaIcon,
   imageDuration,
@@ -143,7 +145,9 @@ export const ImportModal: React.FC<Props> = ({
           setOnDropState(true);
           if (isImage(file) || isVideo(file)) {
             attachedFiles.push(file);
-          } 
+          } else {
+            showError("invalid file " + file.name);
+          }
         }
         setOnDropState(true);
       }
@@ -154,7 +158,9 @@ export const ImportModal: React.FC<Props> = ({
         attachedFiles.push(file);
         if (isImage(file) || isVideo(file)) {
           attachedFiles.push(file);
-        } 
+        } else {
+          showError("invalid file " + file.name);
+        }
       }
     }
 
@@ -179,6 +185,7 @@ export const ImportModal: React.FC<Props> = ({
       onDragOver={dragOverHandler}
     >
       <Loading mediasLength={medias.length} mediaReady={mediaReady} />
+      <ErrorModal />
       {!onDropState && onDragState && (
         <div
           className={styles.dropModal}
