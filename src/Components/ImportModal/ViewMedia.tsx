@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./ImportModal.module.css";
-import {trimmedName, Media, AddMediaIcon} from "..";
+import {trimmedName, Media} from "..";
 import character from '../../Media/character.png';
-import { Button } from 'react-bootstrap';
-import useSound from 'use-sound';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 // import soundUrl from '../../Audio/beep.mp3';
@@ -14,17 +12,7 @@ type Props = {
 }
 
 export const ViewMedia: React.FC<Props> = ({medias, removeMedia, createMediaElement}) => {
-    // const soundUrl = '/../../Audio/beep.mp3';
-    const [playbackRate, setPlaybackRate] = useState<number>(0.75);
-    const [play] = useSound('../../Audio/beep.mp3', {
-        playbackRate,
-        volume: 1,
-    });
-    const handleClick = () => {
-        setPlaybackRate(playbackRate + 0.1);
-        play();
-        console.log("useless");
-      };
+
     return (
         <div className={styles.dotted}>
         {/* filename (key) to JSX element (value) mapping */}
@@ -42,26 +30,13 @@ export const ViewMedia: React.FC<Props> = ({medias, removeMedia, createMediaElem
 							aria-label="delete" 
 							className={styles.deleteIconButton}
 							onClick={() => {
-								handleClick();
 								removeMedia(index);
 						}}>
             <DeleteIcon />
             </IconButton>
-            
-            {/* <Button
-                variant="light"
-                className={styles.deleteButton}
-                onClick={() => {
-                    handleClick();
-                    removeMedia(index);
-                }}
-            >
-                <p>Delete 🗑 </p>
-            </Button> */}
             </div>
         );
         })}
-        <AddMediaIcon createMediaElement={createMediaElement} />
     </div>
     );
 }
