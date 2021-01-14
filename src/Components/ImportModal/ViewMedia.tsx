@@ -12,7 +12,6 @@ type Props = {
 }
 
 export const ViewMedia: React.FC<Props> = ({medias, removeMedia, createMediaElement}) => {
-
     return (
         <div className={styles.dotted}>
         {/* filename (key) to JSX element (value) mapping */}
