@@ -38,3 +38,37 @@
     letter-spacing: -0.015em;
     line-height: 1.6;
 }
+/* mobile phone size */
+/* @media screen and (max-width: 450px) {
+} */
+
+/* tablets size */
+@media screen and (max-width: 780px) {
+    .canvalogo {
+        width: 25px;
+        margin: 0 10px 0 0;
+        left: 10px;
+        position: absolute;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+    }
+    .heading {
+        position: absolute;
+        left: 40px;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        flex-direction: row;
+        margin: 0;
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: bolder;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        letter-spacing: -0.015em;
+        line-height: 1.6;
+    }
+}
