@@ -4,6 +4,7 @@ export { isImage, isVideo, trimmedName, imageDuration, audioSound } from "./util
 export { AddMediaIcon } from './AddMediaIcon/AddMediaIcon';
 export { Loading } from './Loading/Loading';
 export { ErrorModal, showError } from "./ErrorToast/ErrorToast";
+export { ImageWrapper } from './MediaWrapper/ImageWrapper';
 
 
 export class Media {
