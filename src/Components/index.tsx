@@ -1,3 +1,14 @@
-export { default as Home } from './Home/Home';
-export { default as CreateVideo } from './CreateVideo/CreateVideo';
-export { Player } from './Import/Player';
+export { ImportModal } from "./ImportModal/ImportModal";
+export { Header } from "./Shared/Header";
+export { isImage, isVideo, trimmedName, imageDuration, audioSound } from "./utils";
+
+export class Media {
+  filename: string;
+  type: string;
+  element: JSX.Element;
+  constructor(filename: string, type: string, element: JSX.Element) {
+    this.filename = filename;
+    this.type = type;
+    this.element = element;
+  }
+}

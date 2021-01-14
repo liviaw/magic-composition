@@ -1,33 +1,32 @@
-import React, {useEffect, useState} from 'react';
-import './App.css';
-import {Player, Home, CreateVideo} from './Components/';
-
-
-import sampimage1 from './Media/image1.png';
-// import samplevideo1 from './Media/video2.mp4';
-
-import ReactPlayer, { SourceProps } from 'react-player/lazy';
-
-import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'; 
+import React, { useState } from "react";
+import "./App.css";
+import { ImportModal, Header } from "./Components/";
 
 const App: React.FC = () => {
+  const [files, setFiles] = useState<File[]>([]);
+  const [show, setShow] = useState<boolean>(false);
+  const removeFile = (index: number): void => {
+    const newFiles = [...files];
+    if (index > -1) {
+      newFiles.splice(index, 1);
+    }
+    setFiles(newFiles);
+  };
+  const addFile = (addedFiles: File[]): void => {
+    let newFiles: File[] = [...files, ...addedFiles];
+    setFiles(newFiles);
+  };
 
   return (
     <div className="App">
-      <Router>
-        <Switch>
-        <Route exact path="/">
-              <Home />
-            </Route>
-        <Route path="/create">
-        <CreateVideo/>
-        </Route>
-        {/* <Route component={NoMatch}/> */}
-        </Switch>
-    </Router>
-
+      <Header />
+      <ImportModal
+        setShow={setShow}
+        removeFile={removeFile}
+        addFile={addFile}
+      />
     </div>
   );
-}
+};
 
 export default App;
