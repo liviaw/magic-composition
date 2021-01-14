@@ -4,7 +4,9 @@ import {
   isImage,
   isVideo,
   Media,
+  AddMediaIcon,
   imageDuration,
+  Loading,
 } from "..";
 import { ViewMedia, DragModal } from "./ViewMedia";
 import styles from "./ImportModal.module.css";
@@ -14,12 +16,18 @@ type Props = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   removeFile: (index: number) => void;
   addFile: (newMedia: File[]) => void;
+  setTotalVideoDuration: React.Dispatch<React.SetStateAction<number>>;
+  setOriDur: React.Dispatch<
+    React.SetStateAction<{ [fileindex: number]: number }>
+  >;
 };
 
 export const ImportModal: React.FC<Props> = ({
   setShow,
   removeFile,
-  addFile
+  addFile,
+  setTotalVideoDuration,
+  setOriDur,
 }) => {
   const [onDragState, setOnDragState] = useState<boolean>(false);
   const [onDropState, setOnDropState] = useState<boolean>(false);
@@ -65,9 +73,13 @@ export const ImportModal: React.FC<Props> = ({
                 addMediaReady();
                 // set duration state as true so that it will not reset it again
                 newDuration[file.name] = true;
+                setTotalVideoDuration((d) => d + imageDuration);
                 let tempDur: { [fileindex: number]: number } = {};
                 tempDur[index] = imageDuration;
-                
+                setOriDur((prevState) => ({
+                  ...prevState,
+                  ...tempDur,
+                }));
               }
             }}
             alt={file.name}
@@ -93,9 +105,14 @@ export const ImportModal: React.FC<Props> = ({
               if (newDuration[file.name] === false) {
                 // set duration state as true so that it will not reset it again
                 newDuration[file.name] = true;
+                setTotalVideoDuration((d) => d + duration * 1000);
                 let tempDur: { [fileindex: number]: number } = {};
                 tempDur[index] = imageDuration;
                 addMediaReady();
+                setOriDur((prevState) => ({
+                  ...prevState,
+                  ...tempDur,
+                }));
                 // set durationState as true
                 newDuration[file.name] = true;
               }
@@ -126,7 +143,7 @@ export const ImportModal: React.FC<Props> = ({
           setOnDropState(true);
           if (isImage(file) || isVideo(file)) {
             attachedFiles.push(file);
-          }
+          } 
         }
         setOnDropState(true);
       }
@@ -161,6 +178,7 @@ export const ImportModal: React.FC<Props> = ({
       onDrop={dropHandler}
       onDragOver={dragOverHandler}
     >
+      <Loading mediasLength={medias.length} mediaReady={mediaReady} />
       {!onDropState && onDragState && (
         <div
           className={styles.dropModal}
@@ -195,6 +213,7 @@ export const ImportModal: React.FC<Props> = ({
         </div>
       ) : (
         <>
+          <AddMediaIcon createMediaElement={createMediaElement} />
           <span> Or </span>
           <span className={styles.desktopOnly}>
             Drag &amp; Drop your files here 📥

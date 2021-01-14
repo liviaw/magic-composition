@@ -5,6 +5,10 @@ import { ImportModal, Header } from "./Components/";
 const App: React.FC = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [show, setShow] = useState<boolean>(false);
+  const [totalVideoDuration, setTotalVideoDuration] = useState<number>(0);
+  // mapping of file index to original duration of video/images
+  const [oriDur, setOriDur] = useState<{ [fileindex: number]: number }>({});
+
   const removeFile = (index: number): void => {
     const newFiles = [...files];
     if (index > -1) {
@@ -24,6 +28,8 @@ const App: React.FC = () => {
         setShow={setShow}
         removeFile={removeFile}
         addFile={addFile}
+        setTotalVideoDuration={setTotalVideoDuration}
+        setOriDur={setOriDur}
       />
     </div>
   );
