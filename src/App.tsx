@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
-import { ImportModal, Header } from "./Components/";
-
+import {  Header } from "./Components/Shared/Header";
+import { ImportModal } from "./Components/ImportModal/ImportModal";
 const App: React.FC = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [show, setShow] = useState<boolean>(false);
