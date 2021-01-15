@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 @import url('https://fonts.googleapis.com/css?family=Lily+Script+One');
 
+:root {
+  --half-canva-blue:rgb(0, 196, 204, 50%)f;
+  --light-white: rgb(220, 220, 220);
+  --medium-white:rgb(250, 250, 250);
+}
+
 .App {
   /* text-align: center; */
   display: flex;
@@ -10,7 +16,7 @@
 }
 
 .canvaHomePage {
-    background-color: rgb(220, 220, 220);
+    background-color: var(--light-white);
     background-image: url('./Media/canvaHomePage.png');
     height:  100vh;
     width: 100vw;
