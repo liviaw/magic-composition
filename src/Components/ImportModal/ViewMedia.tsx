@@ -41,22 +41,11 @@ export const ViewMedia: React.FC<Props> = ({medias, removeMedia, createMediaElem
 							aria-label="delete" 
 							className={styles.deleteIconButton}
 							onClick={() => {
-								handleClick();
-								removeMedia(index);
+									handleClick();
+									removeMedia(index);
 						}}>
-            <DeleteIcon />
+                <DeleteIcon />
             </IconButton>
-            
-            {/* <Button
-                variant="light"
-                className={styles.deleteButton}
-                onClick={() => {
-                    handleClick();
-                    removeMedia(index);
-                }}
-            >
-                <p>Delete 🗑 </p>
-            </Button> */}
             </div>
         );
         })}

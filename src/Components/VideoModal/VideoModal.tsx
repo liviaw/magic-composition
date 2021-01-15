@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { Media, VideoProgressBar, imageDuration, ImageWrapper, isImage, isVideo, audioSound } from "..";
+import { Media, VideoProgressBar, ImageWrapper, isImage, isVideo, audioSound } from "..";
+import {templates} from '../utils';
 import styles from "./VideoModal.module.css";
 import ReactPlayer from "react-player";
 import ReactAudioPlayer from 'react-audio-player';
@@ -106,7 +107,21 @@ export const VideoModal: React.FC<Props> = ({
         <MediaComponent file={currentFile} onEnded={changeImage} />
       </div>
           <VideoProgressBar totalVideoDuration={Math.round(totalVideoDuration/1000)} />
-          <Button variant="outline-dark" onClick={template1}>
+          {templates.map((template)=> {
+            console.log(template.title);
+            
+            return (
+            <Button key={template.title} variant="outline-dark" onClick={() => {
+              duration = template.minDuration * 1000;
+              console.log("template " + template);
+              // musicURL
+              setMediaCounter(0)
+            }}>
+            {template.title}
+          </Button>)
+          }
+          )}
+          {/* <Button variant="outline-dark" onClick={template1}>
           template 1: slow/calm
         </Button>
         <Button variant="outline-dark" onClick={template2}>
@@ -114,7 +129,7 @@ export const VideoModal: React.FC<Props> = ({
         </Button>
         <Button variant="outline-dark" onClick={template3}>
           template 3: Adventurous
-        </Button>
+        </Button> */}
       </Modal.Body>
 
       <Modal.Footer>
