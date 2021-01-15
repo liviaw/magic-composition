@@ -1,8 +1,3 @@
-:root {
-  --half-canva-blue:rgb(0, 196, 204, 50%);
-  --light-white: rgb(220, 220, 220);
-  --medium-white:rgb(250, 250, 250);
-}
 .renderMedia {
     width: 100%;
     height: auto; 
@@ -70,7 +65,7 @@
     width: 10vw;
     min-width: 120px;
     min-height: 125px;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: var(--translucent-white);
     border-radius: 5px;
     padding: 5px 20px;
     margin: 10px;
@@ -85,7 +80,7 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255);
+    background-color: white;
   }
   .fileNamePreview {
     font-size: 0.8rem;
@@ -97,9 +92,9 @@
     height: 100%;
     overflow-x: hidden;
     overflow-y: hidden;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 4px 8px 0 var(--shadow-black), 0 6px 20px 0 var(--shadow-gray);
     object-fit: cover;
-    border: 1px solid rgba(219, 198, 179, 0.445);
+    border: 1px solid var(--brown);
   }
   
   .createVideoButton {
