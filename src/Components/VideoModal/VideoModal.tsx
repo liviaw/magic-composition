@@ -113,7 +113,7 @@ export const VideoModal: React.FC<Props> = ({
             return (
             <Button key={template.title} variant="outline-dark" onClick={() => {
               duration = template.minDuration * 1000;
-              console.log("template " + template);
+              console.log("template " + template.title);
               // musicURL
               setMediaCounter(0)
             }}>
