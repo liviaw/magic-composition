@@ -1,10 +1,11 @@
 import React from "react";
 import styles from "./ImportModal.module.css";
-import {trimmedName, Media} from "..";
+import {trimmedName} from "../utils";
 import character from '../../Media/character.png';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-// import soundUrl from '../../Audio/beep.mp3';
+import { Media } from "../Media";
+
 type Props = {
     medias: Media[];
     removeMedia:(index: number) => void;
