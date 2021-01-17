@@ -12,14 +12,23 @@ type Props = {
   removeFile: (index: number) => void;
   addFile: (attachedFiles: File[]) => void;
   setMediaReady: (func: (numberReady: number) => number) => void;
-  setOriDur: React.Dispatch<
-    React.SetStateAction<{ [fileindex: number]: number }>
-	>;
-	oriDur:{ [fileindex: number]: number };
+  setOriDur: (
+    func: (prevDur: {
+      [fileindex: number]: number;
+    }) => { [fileindex: number]: number }
+  ) => void;
+  oriDur: { [fileindex: number]: number };
 };
 
-export const ViewMedia: React.FC<Props> = ({files,removeFile,addFile,setMediaReady,setOriDur,oriDur}) => {
-	console.log("files length is " + files.length);
+export const ViewMedia: React.FC<Props> = ({
+  files,
+  removeFile,
+  addFile,
+  setMediaReady,
+  setOriDur,
+  oriDur,
+}) => {
+  console.log("files length is " + files.length);
   return (
     <div className={styles.dotted}>
       {/* filename (key) to JSX element (value) mapping */}
@@ -33,7 +42,7 @@ export const ViewMedia: React.FC<Props> = ({files,removeFile,addFile,setMediaRea
               <ImportComponent
                 file={file}
                 index={index}
-								setOriDur={setOriDur}
+                setOriDur={setOriDur}
                 oriDur={oriDur}
                 setMediaReady={setMediaReady}
               />

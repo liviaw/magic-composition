@@ -14,6 +14,7 @@ export const ImageWrapper: React.FC<Props> = ({ file, changeImage, duration }) =
     const timeout = setTimeout(() => {
       changeImage();
     }, duration);
+    return () => clearTimeout(timeout);
   }, [file]);
   return (
     <img

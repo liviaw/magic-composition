@@ -6,9 +6,11 @@ import styles from "./ImportModal.module.css";
 type MediaProps = {
   file: File;
   index: number;
-  setOriDur: React.Dispatch<
-    React.SetStateAction<{ [fileindex: number]: number }>
-  >;
+  setOriDur: (
+    func: (prevDur: {
+      [fileindex: number]: number;
+    }) => { [fileindex: number]: number }
+  ) => void;
   setMediaReady: (func: (numberReady: number) => number) => void;
   oriDur: { [fileindex: number]: number };
 };
@@ -19,7 +21,6 @@ export const ImportComponent: React.FC<MediaProps> = ({
   oriDur,
   setMediaReady,
 }) => {
-  console.log("outside import component");
   // { [filename: string]: boolean }
   const [loaded, setLoaded] = useState<boolean>(false);
   const importRef: any = useRef(undefined);
@@ -38,7 +39,6 @@ export const ImportComponent: React.FC<MediaProps> = ({
       />
     );
   } else {
-    console.log("import VIDEO component");
     return (
       <ReactPlayer
         ref={(newRef: any) => {
@@ -68,13 +68,10 @@ export const ImportComponent: React.FC<MediaProps> = ({
             setLoaded(true);
             console.log(oriDur);
             setMediaReady((m: number) => m + 1);
-            setOriDur((prevState) => (
-              {
+            setOriDur((prevState) => ({
               ...prevState,
               [index]: duration,
-              }
-            )
-            );
+            }));
           }
         }}
       />

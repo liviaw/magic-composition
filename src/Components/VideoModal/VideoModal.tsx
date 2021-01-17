@@ -26,8 +26,6 @@ export const VideoModal: React.FC<Props> = ({
   const [shuffledCounter, setShuffledCounter] = useState<number[]>(
     shuffle(files.length)
   );
-  // const [seek, setSeek] = useState<boolean>(false);
-  // const [played, setPlayed] = useState<number>(0);
   // default template is neutral, short
   const [currTemplate, setCurrTemplate] = useState<templateEl>(
     templates.neutral
@@ -37,6 +35,7 @@ export const VideoModal: React.FC<Props> = ({
   );
   const [musicLoaded, setMusicLoaded] = useState<boolean>(false);
   const [length, setLength] = useState<slotEl>(currTemplate.medium);
+  const [currProgress, setCurrProgress] = useState<number>(0);
   useEffect(() => {
     music.addEventListener("canplaythrough", (event) => {
       setMusicLoaded(true);
@@ -96,18 +95,23 @@ export const VideoModal: React.FC<Props> = ({
               <MediaComponent
                 file={files[shuffledCounter[mediaCounter]]}
                 onEnded={changeImage}
-                interval={length.slot[mediaCounter] * 1000}
+                interval={length.slot[mediaCounter]}
                 mediaDur={oriDur[shuffledCounter[mediaCounter]]}
+                setCurrProgress={setCurrProgress}
               />
             </div>
             {/* <VideoProgressBar
               totalVideoDuration={Math.round(length.slotLength)}
+              currProgress={currProgress}
             /> */}
             <span> Playing Music: {currTemplate.musicName}</span>
             <br/>
+            <span> style: {currTemplate.title}</span>
+            <br/>
+            <span> tempo: {length.length}</span>
+            <br/>
 
             {Object.values(templates).map((template) => {
-              console.log(template.title);
               return (
                 <Button
                   key={template.title}
