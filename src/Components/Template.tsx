@@ -154,8 +154,8 @@ export const templates:{[name: string]: templateEl} = {
         },
         long: {
             length: "long",
-            slot:[2,7,2,5,5,3,3,3,3,2,7,5,5,3,6,2,2,4,2,3,2,2,5,2],
-            slotLength: 85,
+            slot:[2,2,1,5,5,3,3,3,3,2,7,5,5,3,6,2,2,4,2,3,2,2,5,2],
+            slotLength: 79,
         }  
     }
 }
