@@ -5,35 +5,36 @@ import ReactPlayer from "react-player";
 type MediaProps = {
   file: File;
   onEnded: () => void;
+  interval: number;
 };
 let duration:number = 1000;
-export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded }) => {
-    const temp: any = useRef(undefined);
+export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval }) => {
+    const mediaRef: any = useRef(undefined);
     if (isImage(file)) {
     return (
-      <ImageWrapper file={file} changeImage={onEnded} duration={duration} />
+      <ImageWrapper file={file} changeImage={onEnded} duration={interval} />
     );
   } else if (isVideo(file)) {
     return (
       <ReactPlayer
         ref={(newRef: any) => {
-            temp.current= newRef;
+            mediaRef.current= newRef;
         }}
         url={URL.createObjectURL(file)}
         width="100%"
-        controls={true}
         height="50%"
-        playing={false}
+        playing={true}
         onError={() => alert(file + " is unable to play")}
         id={file.name}
         volume={Math.random() * audioSound}
         onEnded={onEnded}
         onPlay={ () => {
-            console.log("NULLLLLLLL " + temp + " fsdsd " + temp.current);
-            if (temp != null && temp.current != null ) {
-                temp.current.seekTo(0.4, "fraction");
-                console.log("seek not null");
-            } }
+            console.log("NULLLLLLLL " + mediaRef + " fsdsd " + mediaRef.current);
+            // if (mediaRef != null && mediaRef.current != null ) {
+            //     mediaRef.current.seekTo(0.4, "fraction");
+            //     console.log("seek not null");
+            // }
+         }
         }
       />
 

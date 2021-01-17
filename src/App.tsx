@@ -11,7 +11,7 @@ const App: React.FC = () => {
   const [oriDur, setOriDur] = useState<{ [fileindex: number]: number }>({});
 
   // oriDur = {
-  //   "gribben.mp4": 5000,
+  //   "tiramisu.mp4": 5000,
   //   "cat.mp4": 7500,
   //   "puppies.jpg": 3000,
   //    "plantvideo.mp4": 8000,
@@ -27,8 +27,6 @@ const App: React.FC = () => {
     let newFiles: File[] = [...files, ...addedFiles];
     setFiles(newFiles);
   };
-
-  console.log(oriDur);
 
   return (
     <Container fluid className="App">
