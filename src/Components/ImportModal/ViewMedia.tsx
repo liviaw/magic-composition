@@ -31,11 +31,11 @@ export const ViewMedia: React.FC<Props> = ({files,removeFile,addFile,setMediaRea
             </div>
             <div className={styles.previewContainer}>
               <ImportComponent
-								setMediaReady={setMediaReady}
                 file={file}
                 index={index}
 								setOriDur={setOriDur}
-								oriDur={oriDur}
+                oriDur={oriDur}
+                setMediaReady={setMediaReady}
               />
             </div>
             <IconButton

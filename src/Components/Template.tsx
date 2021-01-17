@@ -2,6 +2,9 @@
 import oceanMusic from "../Audio/ocean.mp3";
 import neutral from "../Audio/summer.mp3";
 import extreme from "../Audio/extreme.mp3";
+import jazzy from "../Audio/jazzy.mp3";
+import gentle from "../Audio/gentle.mp3";
+import uplifting from "../Audio/uplifting.mp3";
 
 // duration is the length of each media displayed in video
 // if there are too many photos, then mb dont show all? (for now)
@@ -35,18 +38,40 @@ export const templates:{[name: string]: templateEl} = {
         musicName: "ocean sound",
         short: {
             length: "short",
-            slot:[7,5,5,7,6],
-            slotLength: 30,
+            slot:[7,8,8,7,6],
+            slotLength: 36,
         },
         medium: {
             length: "medium",
-            slot:[7,5,5,3,6,7,5,5,3,6],
-            slotLength: 52,
+            slot:[7,10,8,5,6,7,5,5,3,6],
+            slotLength: 62,
         },
         long: {
             length: "long",
             slot:[5,15,5,10,7,8,3,5,15,12,7,3,6],
             slotLength: 101
+        }    
+    },
+    gentle: 
+    {
+        title: "gentle",
+        musicTrack: oceanMusic,
+        musicDuration: 295,
+        musicName: "Always with me - spirited away - Youmi Kimura",
+        short: {
+            length: "short",
+            slot:[7,5,5,7,6],
+            slotLength: 30,
+        },
+        medium: {
+            length: "medium",
+            slot:[7,10,8,5,6,7,5,5,6],
+            slotLength: 59,
+        },
+        long: {
+            length: "long",
+            slot:[5,15,5,10,7,8,3,5,15,12,7,3,5],
+            slotLength: 100
         }    
     },
     neutral: {
@@ -70,8 +95,8 @@ export const templates:{[name: string]: templateEl} = {
             slotLength: 93,
         }  
     },
-    happy: {
-        title: "happy",
+    epic: {
+        title: "epic",
         musicTrack:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/557257/wwy.mp3",
         musicDuration: 192,
         musicName: "idk what song this is",
@@ -90,6 +115,27 @@ export const templates:{[name: string]: templateEl} = {
             slot:[5,7,2,5,5,3,6,3,2,7,5,5,3,6,2,2,4,2,3,2,2,5,4],
             slotLength: 90,
         }  
+    },
+    jazzy: {
+        title: "jazzy",
+        musicTrack: jazzy,
+        musicDuration: 331,
+        musicName: "Dusk - Orchard Heights",
+        short: {
+            length: "short",
+            slot:[7,5,5,3,6],
+            slotLength: 26,
+        },
+        medium: {
+            length: "medium",
+            slot:[5,7,2,5,5,3,6,7,5,5,3,6,2,2,4,7],
+            slotLength: 74,
+        },
+        long: {
+            length: "long",
+            slot:[5,7,2,5,5,3,6,3,2,7,5,5,3,6,2,2,4,2,3,2,2,5,4],
+            slotLength: 90,
+        } 
     },
     extreme: {
         title: "extreme",

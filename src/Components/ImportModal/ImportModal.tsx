@@ -124,8 +124,15 @@ export const ImportModal: React.FC<Props> = ({
           />
           <Button
             className={styles.createVideoButton}
-            onClick={() => setShow(true)}
+            onClick={
+              () => {
+                if (mediaReady !== 0 && mediaReady === files.length){
+                  setShow(true);
+                }
+              }
+            }
             variant="secondary"
+            disabled={mediaReady === 0 || mediaReady !== files.length}
           >
             Create Video 🎬
           </Button>
