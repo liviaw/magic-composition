@@ -1,11 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  Media,
-  VideoProgressBar,
-  ImageWrapper,
   isImage,
-  isVideo,
-  audioSound,
   showError,
 } from "..";
 import ReactPlayer from "react-player";
@@ -19,12 +14,14 @@ type MediaProps = {
   setOriDur: React.Dispatch<
     React.SetStateAction<{ [fileindex: number]: number }>
   >;
+  oriDur:{ [fileindex: number]: number };
 };
 export const ImportComponent: React.FC<MediaProps> = ({
   setMediaReady,
   file,
   index,
   setOriDur,
+  oriDur,
 }) => {
   console.log("outside import component");
   // { [filename: string]: boolean }
@@ -55,17 +52,18 @@ export const ImportComponent: React.FC<MediaProps> = ({
         id={file.name}
         volume={0}
         loop={true}
-        onDuration={(duration) => {
-          // set duration state as true so that it will not reset it again
-          if (!loaded) {
-            setLoaded(true);
-						setMediaReady((m: number) => m + 1);
-            setOriDur((prevState) => ({
-              ...prevState,
-              [index]: duration,
-            }));
-          }
-        }}
+        // onDuration={(duration) => {
+        // //   // set duration state as true so that it will not reset it again
+        // //   // if (!loaded) {
+        // //     setLoaded(true);
+        // console.log(oriDur);
+				// 		// setMediaReady((m: number) => m + 1);
+        //     setOriDur((prevState) => ({
+        //       ...prevState,
+        //       [index]: duration,
+        //     }));
+        //   }
+        // }
       />
     );
   }

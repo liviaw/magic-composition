@@ -7,12 +7,11 @@ type MediaProps = {
   onEnded: () => void;
   interval: number;
 };
-let duration:number = 1000;
 export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval }) => {
     const mediaRef: any = useRef(undefined);
     if (isImage(file)) {
     return (
-      <ImageWrapper file={file} changeImage={onEnded} duration={interval} />
+      <ImageWrapper file={file} changeImage={onEnded} duration={interval} key={file.name}/>
     );
   } else if (isVideo(file)) {
     return (

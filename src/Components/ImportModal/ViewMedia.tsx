@@ -14,10 +14,11 @@ type Props = {
   setMediaReady: (func: (numberReady: number) => number) => void;
   setOriDur: React.Dispatch<
     React.SetStateAction<{ [fileindex: number]: number }>
-  >;
+	>;
+	oriDur:{ [fileindex: number]: number };
 };
 
-export const ViewMedia: React.FC<Props> = ({files,removeFile,addFile,setMediaReady,setOriDur,}) => {
+export const ViewMedia: React.FC<Props> = ({files,removeFile,addFile,setMediaReady,setOriDur,oriDur}) => {
 	console.log("files length is " + files.length);
   return (
     <div className={styles.dotted}>
@@ -33,7 +34,8 @@ export const ViewMedia: React.FC<Props> = ({files,removeFile,addFile,setMediaRea
 								setMediaReady={setMediaReady}
                 file={file}
                 index={index}
-                setOriDur={setOriDur}
+								setOriDur={setOriDur}
+								oriDur={oriDur}
               />
             </div>
             <IconButton

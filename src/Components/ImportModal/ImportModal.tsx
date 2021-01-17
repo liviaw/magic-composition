@@ -23,6 +23,7 @@ type Props = {
   setOriDur: React.Dispatch<
     React.SetStateAction<{ [fileindex: number]: number }>
   >;
+  oriDur: { [fileindex: number]: number };
 };
 
 export const ImportModal: React.FC<Props> = ({
@@ -32,6 +33,7 @@ export const ImportModal: React.FC<Props> = ({
   addFile,
   setTotalVideoDuration,
   setOriDur,
+  oriDur,
 }) => {
   const [onDragState, setOnDragState] = useState<boolean>(false);
   const [onDropState, setOnDropState] = useState<boolean>(false);
@@ -118,6 +120,7 @@ export const ImportModal: React.FC<Props> = ({
             addFile={addFile}
             setMediaReady={setMediaReady}
             setOriDur={setOriDur}
+            oriDur={oriDur}
           />
           <Button
             className={styles.createVideoButton}

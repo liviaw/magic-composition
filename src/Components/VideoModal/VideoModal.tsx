@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Modal, Container } from "react-bootstrap";
 import { VideoProgressBar } from "..";
 import { templates, templateEl, slotEl } from "../Template";
 import styles from "./VideoModal.module.css";
-import {shuffle} from "../utils";
+import { shuffle } from "../utils";
 import { MediaComponent } from "./MediaComponent";
 import RotateLoader from "react-spinners/RotateLoader";
 let duration: number = 1000;
@@ -24,16 +24,22 @@ export const VideoModal: React.FC<Props> = ({
   totalVideoDuration,
 }) => {
   const [mediaCounter, setMediaCounter] = useState<number>(0);
-  const [shuffledCounter, setShuffledCounter] = useState<number[]>(shuffle(files.length));
+  const [shuffledCounter, setShuffledCounter] = useState<number[]>(
+    shuffle(files.length)
+  );
   // const [seek, setSeek] = useState<boolean>(false);
   // const [played, setPlayed] = useState<number>(0);
   // default template is neutral, short
-  const [defTemplate, setDefTemplate] = useState<templateEl>(templates["happy"]);
-  const [music, setMusic] = useState<HTMLAudioElement>(new Audio(defTemplate.musicTrack));
+  const [defTemplate, setDefTemplate] = useState<templateEl>(
+    templates["happy"]
+  );
+  const [music, setMusic] = useState<HTMLAudioElement>(
+    new Audio(defTemplate.musicTrack)
+  );
   const [musicLoaded, setMusicLoaded] = useState<boolean>(false);
   const [length, setLength] = useState<slotEl>(defTemplate.medium);
   useEffect(() => {
-    music.addEventListener('canplaythrough', (event) => {
+    music.addEventListener("canplaythrough", (event) => {
       setMusicLoaded(true);
     });
   }, []);
@@ -70,7 +76,11 @@ export const VideoModal: React.FC<Props> = ({
           <Container fluid>
             <div className={styles.renderMediaContainer}>
               {/* file={shuffleArray(currentFile)} */}
-              <MediaComponent file={files[shuffledCounter[mediaCounter]]} onEnded={changeImage} interval={length.slot[mediaCounter]*1000}/>
+              <MediaComponent
+                file={files[shuffledCounter[mediaCounter]]}
+                onEnded={changeImage}
+                interval={length.slot[mediaCounter] * 1000}
+              />
             </div>
             <VideoProgressBar
               totalVideoDuration={Math.round(length.slotLength)}
@@ -93,10 +103,49 @@ export const VideoModal: React.FC<Props> = ({
               );
             })}
           </Container>
-        ) : 
-        // using the canva brand color
-        <RotateLoader color="#00C4CC" />}
-
+        ) : (
+          // using the canva brand color
+          <RotateLoader color="#00C4CC" />
+        )}
+        <Button
+          key="Short"
+          variant="light"
+          onClick={() => {
+            if (length.length !== "short") {
+              setLength(defTemplate.short);
+              setShuffledCounter(shuffle(files.length));
+              setMediaCounter(0);
+            }
+          }}
+        >
+          Short
+        </Button>
+        <Button
+          key="Medium"
+          variant="light"
+          onClick={() => {
+            if (length.length !== "medium") {
+              setLength(defTemplate.medium);
+              setShuffledCounter(shuffle(files.length));
+              setMediaCounter(0);
+            }
+          }}
+        >
+          Medium
+        </Button>
+        <Button
+          key="long"
+          variant="light"
+          onClick={() => {
+            if (length.length !== "long") {
+              setLength(defTemplate.long);
+              setShuffledCounter(shuffle(files.length));
+              setMediaCounter(0);
+            }
+          }}
+        >
+          Long
+        </Button>
       </Modal.Body>
 
       <Modal.Footer>

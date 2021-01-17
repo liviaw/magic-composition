@@ -38,6 +38,7 @@ const App: React.FC = () => {
         addFile={addFile}
         setTotalVideoDuration={setTotalVideoDuration}
         setOriDur={setOriDur}
+        oriDur={oriDur}
       />
       {show ? (
         <VideoModal

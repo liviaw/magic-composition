@@ -10,6 +10,7 @@ import extreme from "../Audio/extreme.mp3";
 //
 
 export type slotEl = {
+    length: "short" | "medium" | "long",
     slot:number[],
     slotLength: number,
 }
@@ -33,14 +34,17 @@ export const templates:{[name: string]: templateEl} = {
         musicDuration: 101,
         musicName: "ocean sound",
         short: {
+            length: "short",
             slot:[7,5,5,7,6],
             slotLength: 30,
         },
         medium: {
+            length: "medium",
             slot:[7,5,5,3,6,7,5,5,3,6],
             slotLength: 52,
         },
         long: {
+            length: "long",
             slot:[5,15,5,10,7,8,3,5,15,12,7,3,6],
             slotLength: 101
         }    
@@ -51,14 +55,17 @@ export const templates:{[name: string]: templateEl} = {
         musicDuration: 181,
         musicName: "Summertime Rain",
         short: {
+            length: "short",
             slot:[7,5,5,3,6,5],
             slotLength: 31,
         },
         medium: {
+            length: "medium",
             slot:[5,7,5,5,3,6,7,5,5,3,6,4,2,4,3],
             slotLength: 70,
         },
         long: {
+            length: "long",
             slot:[5,7,2,5,5,6,6,3,2,7,5,5,3,6,2,2,4,2,3,2,2,5,4],
             slotLength: 93,
         }  
@@ -67,16 +74,19 @@ export const templates:{[name: string]: templateEl} = {
         title: "happy",
         musicTrack:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/557257/wwy.mp3",
         musicDuration: 192,
+        musicName: "idk what song this is",
         short: {
+            length: "short",
             slot:[7,5,5,3,6],
             slotLength: 26,
         },
-        musicName: "idk what song this is",
         medium: {
+            length: "medium",
             slot:[5,7,2,5,5,3,6,7,5,5,3,6,2,2,4,7],
             slotLength: 74,
         },
         long: {
+            length: "long",
             slot:[5,7,2,5,5,3,6,3,2,7,5,5,3,6,2,2,4,2,3,2,2,5,4],
             slotLength: 90,
         }  
@@ -87,14 +97,17 @@ export const templates:{[name: string]: templateEl} = {
         musicDuration: 122,
         musicName: "adrenalize",
         short: {
+            length: "short",
             slot:[7,5,5,3,6],
             slotLength: 26,
         },
         medium: {
+            length: "medium",
             slot:[2,7,2,5,5,3,6,7,5,5,3,6,2,2,4,2],
             slotLength: 66,
         },
         long: {
+            length: "long",
             slot:[2,7,2,5,5,3,3,3,3,2,7,5,5,3,6,2,2,4,2,3,2,2,5,2],
             slotLength: 85,
         }  
