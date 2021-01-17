@@ -38,24 +38,24 @@ export const templates:{[name: string]: templateEl} = {
         musicName: "ocean sound",
         short: {
             length: "short",
-            slot:[7,8,8,7,6],
-            slotLength: 36,
+            slot:[15,15,12],
+            slotLength: 42,
         },
         medium: {
             length: "medium",
-            slot:[7,10,8,5,6,7,5,5,3,6],
-            slotLength: 62,
+            slot:[7,10,9,8,7,8,15,6],
+            slotLength: 70,
         },
         long: {
             length: "long",
-            slot:[5,15,5,10,7,8,3,5,15,12,7,3,6],
-            slotLength: 101
+            slot:[15,8,10,7,13,7,15,12,13],
+            slotLength: 100
         }    
     },
     gentle: 
     {
         title: "gentle",
-        musicTrack: oceanMusic,
+        musicTrack: gentle,
         musicDuration: 295,
         musicName: "Always with me - spirited away - Youmi Kimura",
         short: {
@@ -70,8 +70,8 @@ export const templates:{[name: string]: templateEl} = {
         },
         long: {
             length: "long",
-            slot:[5,15,5,10,7,8,3,5,15,12,7,3,5],
-            slotLength: 100
+            slot:[7,15,5,10,7,8,4,5,15,12,7,3,5],
+            slotLength: 103,
         }    
     },
     neutral: {
@@ -86,13 +86,35 @@ export const templates:{[name: string]: templateEl} = {
         },
         medium: {
             length: "medium",
-            slot:[5,7,5,5,3,6,7,5,5,3,6,4,2,4,3],
-            slotLength: 70,
+            slot:[5,7,5,5,3,6,7,5,5,6,4,4,3],
+            slotLength: 65,
+        },
+        // mb add start time and end time of music
+        long: {
+            length: "long",
+            slot:[5,7,2,5,5,6,6,3,7,5,5,3,6,4,5,8,4],
+            slotLength: 86,
+        }  
+    },
+    uplifting: {
+        title: "uplifting",
+        musicTrack:uplifting,
+        musicDuration: 291,
+        musicName: "Kimino nawa instrumental",
+        short: {
+            length: "short",
+            slot:[6,6,6,3,5],
+            slotLength: 26,
+        },
+        medium: {
+            length: "medium",
+            slot:[5,7,5,5,6,7,5,5,3,6,4,2,4,3],
+            slotLength: 67,
         },
         long: {
             length: "long",
-            slot:[5,7,2,5,5,6,6,3,2,7,5,5,3,6,2,2,4,2,3,2,2,5,4],
-            slotLength: 93,
+            slot:[5,7,2,5,5,6,6,5,7,5,5,3,6,2,4,5,4,5,4,9],
+            slotLength: 100,
         }  
     },
     epic: {
@@ -102,13 +124,13 @@ export const templates:{[name: string]: templateEl} = {
         musicName: "idk what song this is",
         short: {
             length: "short",
-            slot:[7,5,5,3,6],
-            slotLength: 26,
+            slot:[3,5,5,3,6],
+            slotLength: 22,
         },
         medium: {
             length: "medium",
-            slot:[5,7,2,5,5,3,6,7,5,5,3,6,2,2,4,7],
-            slotLength: 74,
+            slot:[5,7,2,5,5,3,6,6,5,5,3,6,2,2,4,6],
+            slotLength: 72,
         },
         long: {
             length: "long",
@@ -149,13 +171,13 @@ export const templates:{[name: string]: templateEl} = {
         },
         medium: {
             length: "medium",
-            slot:[2,7,2,5,5,3,6,7,5,5,3,6,2,2,4,2],
-            slotLength: 66,
+            slot:[2,3,2,1,2,4,2,3,4,5,4,3,2,2,4,2,1,3],
+            slotLength: 49,
         },
         long: {
             length: "long",
-            slot:[2,2,1,5,5,3,3,3,3,2,7,5,5,3,6,2,2,4,2,3,2,2,5,2],
-            slotLength: 79,
+            slot:[2,2,1,5,5,3,3,3,3,2,2,5,3,3,5,3,3,2,2,4,2,3,2,3,2,5,2,5],
+            slotLength: 85,
         }  
     }
 }

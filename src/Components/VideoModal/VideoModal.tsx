@@ -49,14 +49,17 @@ export const VideoModal: React.FC<Props> = ({
     if (files == null) {
       return;
     }
-    if (mediaCounter >= files.length - 1 || length.slot.length < mediaCounter ) {
-      // if(length.length === "long") {
-      //   setMediaCounter(0);
-      // } else {
+    if (length.slot.length < mediaCounter ) {
+      setMediaCounter(files.length - 1);
+      music.pause();
+    } else if (mediaCounter >= files.length - 1 ) {
+      if(length.length === "long") {
+        setMediaCounter(0);
+      } else {
         // clearing interval for media switching within the video
         setMediaCounter(files.length - 1);
         music.pause();
-      // }
+      }
     } else {
       // video ended
       setMediaCounter((mediaCounter) => mediaCounter + 1);
@@ -64,6 +67,7 @@ export const VideoModal: React.FC<Props> = ({
   };
 
   const getTotalDur = (): number => {
+    let totalDuration:number = 0;
     return 0;
   }
 
@@ -93,6 +97,7 @@ export const VideoModal: React.FC<Props> = ({
                 file={files[shuffledCounter[mediaCounter]]}
                 onEnded={changeImage}
                 interval={length.slot[mediaCounter] * 1000}
+                mediaDur={oriDur[shuffledCounter[mediaCounter]]}
               />
             </div>
             {/* <VideoProgressBar

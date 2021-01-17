@@ -6,8 +6,9 @@ type MediaProps = {
   file: File;
   onEnded: () => void;
   interval: number;
+  mediaDur:number;
 };
-export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval }) => {
+export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, mediaDur }) => {
     const mediaRef: any = useRef(undefined);
     if (isImage(file)) {
     return (
@@ -29,6 +30,9 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval }
         onEnded={onEnded}
         onPlay={ () => {
             console.log("NULLLLLLLL " + mediaRef + " fsdsd " + mediaRef.current);
+            if (mediaDur > interval && mediaRef != null && mediaRef.current != null) {
+                mediaRef.current.seekTo(mediaDur - interval, 'seconds');
+            }
             // if (mediaRef != null && mediaRef.current != null ) {
             //     mediaRef.current.seekTo(0.4, "fraction");
             //     console.log("seek not null");
