@@ -65,3 +65,12 @@ export const shuffleArray = (array: any[]) =>
 
 export const imageDuration = 3000;
 export const audioSound = 0.5;
+
+
+
+// http://stackoverflow.com/questions/962802#962890
+export const shuffle = (arraySize: number) => {
+  // array of indices
+  for (var array=[],i=0;i<arraySize;++i) array[i]=i;
+  return shuffleArray(array);
+}

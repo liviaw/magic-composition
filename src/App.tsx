@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import { ImportModal, Header, VideoModal, Loading } from "./Components/";
+import { Container } from "react-bootstrap";
 
 const App: React.FC = () => {
   const [show, setShow] = useState<boolean>(false);
@@ -27,11 +28,14 @@ const App: React.FC = () => {
     setFiles(newFiles);
   };
 
+  console.log(oriDur);
+
   return (
-    <div className="App">
+    <Container fluid className="App">
       <Header />
       <ImportModal
         setShow={setShow}
+        files={files}
         removeFile={removeFile}
         addFile={addFile}
         setTotalVideoDuration={setTotalVideoDuration}
@@ -46,7 +50,7 @@ const App: React.FC = () => {
           totalVideoDuration={totalVideoDuration}
         />
       ) : null}
-    </div>
+    </Container>
   );
 };
 

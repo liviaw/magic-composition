@@ -4,10 +4,10 @@ import styles from "./AddMediaIcon.module.css";
 import { Media, isImage, isVideo, showError } from "..";
 
 type Props = {
-  createMediaElement: (files: File[]) => void;
+  addFile: (files: File[]) => void;
 };
 
-export const AddMediaIcon: React.FC<Props> = ({ createMediaElement }) => {
+export const AddMediaIcon: React.FC<Props> = ({ addFile }) => {
   const handleVideoUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -21,7 +21,7 @@ export const AddMediaIcon: React.FC<Props> = ({ createMediaElement }) => {
         showError("invalid file " + files[i].name);
       }
     }
-    createMediaElement(addedFiles);
+    addFile(addedFiles);
   };
   return (
     <div className={styles.addMediaIconContainer}>
