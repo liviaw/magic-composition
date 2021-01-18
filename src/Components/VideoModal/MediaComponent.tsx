@@ -7,9 +7,8 @@ type MediaProps = {
   onEnded: () => void;
   interval: number;
   mediaDur:number;
-  setCurrProgress: (func: (progress: number) => number) => void;
 };
-export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, mediaDur, setCurrProgress }) => {
+export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, mediaDur }) => {
     const mediaRef: any = useRef(undefined);
     if (isImage(file)) {
     return (
@@ -30,7 +29,8 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, 
         volume={Math.random() * audioSound}
         onEnded={onEnded}
         // onProgress={({playedSeconds}) => {
-        //     setCurrProgress((curr: number) => curr + playedSeconds)
+        //   console.log(playedSeconds);
+        //     setCurrProgress((curr: number) => curr + 1)
         // }}
         onPlay={ () => {
             // console.log("NULLLLLLLL " + mediaRef + " fsdsd " + mediaRef.current);

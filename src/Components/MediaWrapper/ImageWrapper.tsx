@@ -7,9 +7,9 @@ type Props = {
   changeImage: () => void;
   duration: number;
 };
-// future: add media can be optional
+// future: add media can be optional 
 // if no add media, then do ot set timeout
-export const ImageWrapper: React.FC<Props> = ({ file, changeImage, duration }) => {
+export const ImageWrapper: React.FC<Props> = ({ file, changeImage, duration}) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       changeImage();

@@ -4,15 +4,33 @@ import { useInterval } from 'beautiful-react-hooks';
 
 type Props = {
     totalVideoDuration: number;
-    currProgress: number;
 }
 
 export const VideoProgressBar: React.FC<Props> = ({
-    totalVideoDuration,currProgress,
+    totalVideoDuration,
 }) => {
     const [progressInterval, setProgressInterval] = useState<number>(100);
     const [currentProgressTime, setCurrentProgressTime] = useState<number>(0);
     const [videoOver, setVideoOver] = useState<boolean>(false);
+    const [barProgress, setBarProgress] = useState<number>(0);
+    useEffect(()=> {
+        setBarProgress(0);
+        setCurrentProgressTime(0);
+    }, [totalVideoDuration]);
+    const updateProgress = () => {
+        if (currentProgressTime >= totalVideoDuration) {
+            // video finishes
+            setBarProgress(100);
+            setVideoOver(true);
+            clearInterval();
+        } else {
+            // updates progress
+            let currentSec = currentProgressTime + progressInterval/1000;
+            setCurrentProgressTime(currentSec);
+            setBarProgress(Math.round(currentSec / totalVideoDuration * 100));
+        }
+    }
+    const [isCleared, clearInterval] = useInterval(updateProgress, progressInterval);
 
     const formattedTime = (duration: number):string => 
     {   
@@ -38,7 +56,7 @@ export const VideoProgressBar: React.FC<Props> = ({
             {/* {videoOver ? <ReplayButton/> : <></>} */}
             <span>{formattedTime(currentProgressTime) + " / " + formattedTime(totalVideoDuration)}</span>
             <br/>
-            <ProgressBar now={currProgress/totalVideoDuration} />
+            <ProgressBar now={barProgress}/>
         </div>
     )
 }

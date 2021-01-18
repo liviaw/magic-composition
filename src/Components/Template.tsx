@@ -23,6 +23,7 @@ export type templateEl = {
     musicTrack: string,
     musicDuration: number,
     musicName: string,
+    musicOptions: string[],
     short: slotEl,
     medium: slotEl,
     long: slotEl,
@@ -36,19 +37,20 @@ export const templates:{[name: string]: templateEl} = {
         musicTrack: oceanMusic,
         musicDuration: 101,
         musicName: "ocean sound",
+        musicOptions: [],
         short: {
             length: "short",
-            slot:[15,15,12],
-            slotLength: 42,
+            slot:[14,14,12],
+            slotLength: 40,
         },
         medium: {
             length: "medium",
-            slot:[7,10,9,8,7,8,15,6],
-            slotLength: 70,
+            slot:[15,15,9,8,7,8,10,6],
+            slotLength: 78,
         },
         long: {
             length: "long",
-            slot:[15,8,10,7,13,7,15,12,13],
+            slot:[15,20,15,17,13,20],
             slotLength: 100
         }    
     },
@@ -58,6 +60,7 @@ export const templates:{[name: string]: templateEl} = {
         musicTrack: gentle,
         musicDuration: 295,
         musicName: "Always with me - spirited away - Youmi Kimura",
+        musicOptions: [],
         short: {
             length: "short",
             slot:[7,5,5,7,6],
@@ -79,6 +82,7 @@ export const templates:{[name: string]: templateEl} = {
         musicTrack:neutral,
         musicDuration: 181,
         musicName: "Summertime Rain",
+        musicOptions: [],
         short: {
             length: "short",
             slot:[7,5,5,3,6,5],
@@ -101,6 +105,7 @@ export const templates:{[name: string]: templateEl} = {
         musicTrack:uplifting,
         musicDuration: 291,
         musicName: "Kimino nawa instrumental",
+        musicOptions: [],
         short: {
             length: "short",
             slot:[6,6,6,3,5],
@@ -121,7 +126,8 @@ export const templates:{[name: string]: templateEl} = {
         title: "epic",
         musicTrack:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/557257/wwy.mp3",
         musicDuration: 192,
-        musicName: "idk what song this is",
+        musicName: "Remix Music",
+        musicOptions: [],
         short: {
             length: "short",
             slot:[3,5,5,3,6],
@@ -134,8 +140,8 @@ export const templates:{[name: string]: templateEl} = {
         },
         long: {
             length: "long",
-            slot:[5,7,2,5,5,3,6,3,2,7,5,5,3,6,2,2,4,2,3,2,2,5,4],
-            slotLength: 90,
+            slot:[5,7,3,5,5,3,6,3,2,7,5,5,3,6,2,2,4,2,3,2,2,5,4],
+            slotLength: 91,
         }  
     },
     jazzy: {
@@ -143,6 +149,7 @@ export const templates:{[name: string]: templateEl} = {
         musicTrack: jazzy,
         musicDuration: 331,
         musicName: "Dusk - Orchard Heights",
+        musicOptions: [],
         short: {
             length: "short",
             slot:[7,5,5,3,6],
@@ -150,12 +157,12 @@ export const templates:{[name: string]: templateEl} = {
         },
         medium: {
             length: "medium",
-            slot:[5,7,2,5,5,3,6,7,5,5,3,6,2,2,4,7],
+            slot:[5,3,4,2,5,5,3,6,7,5,5,3,6,2,2,4,7],
             slotLength: 74,
         },
         long: {
             length: "long",
-            slot:[5,7,2,5,5,3,6,3,2,7,5,5,3,6,2,2,4,2,3,2,2,5,4],
+            slot:[5,5,4,2,5,5,3,6,3,2,2,2,3,5,5,3,6,2,2,4,2,3,2,5,4],
             slotLength: 90,
         } 
     },
@@ -164,6 +171,7 @@ export const templates:{[name: string]: templateEl} = {
         musicTrack: extreme,
         musicDuration: 122,
         musicName: "adrenalize",
+        musicOptions: [],
         short: {
             length: "short",
             slot:[7,5,5,3,6],
@@ -176,8 +184,8 @@ export const templates:{[name: string]: templateEl} = {
         },
         long: {
             length: "long",
-            slot:[1,1,2,2,1,3,3,3,3,2,2,3,2,3,3,1,2,1,1,3,3,2,2,4,2,3,2,3,2,1,2,5],
-            slotLength: 73,
+            slot:[1,1,2,2,1,3,3,3,3,2,2,3,2,3,3,1,2,1,1,3,3,2,2,4,2,3,2,3,2,1,2,2],
+            slotLength: 70,
         }  
     }
 }

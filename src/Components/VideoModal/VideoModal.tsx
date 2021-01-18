@@ -3,7 +3,7 @@ import { Button, Modal, Container } from "react-bootstrap";
 import { VideoProgressBar } from "..";
 import { templates, templateEl, slotEl } from "../Template";
 import styles from "./VideoModal.module.css";
-import { shuffle } from "../utils";
+import { isImage, shuffle } from "../utils";
 import { MediaComponent } from "./MediaComponent";
 import RotateLoader from "react-spinners/RotateLoader";
 // import templatesJson from '../../templates.json';
@@ -35,7 +35,6 @@ export const VideoModal: React.FC<Props> = ({
   );
   const [musicLoaded, setMusicLoaded] = useState<boolean>(false);
   const [length, setLength] = useState<slotEl>(currTemplate.medium);
-  const [currProgress, setCurrProgress] = useState<number>(0);
   useEffect(() => {
     music.addEventListener("canplaythrough", (event) => {
       setMusicLoaded(true);
@@ -51,6 +50,7 @@ export const VideoModal: React.FC<Props> = ({
     if (length.slot.length < mediaCounter ) {
       setMediaCounter(files.length - 1);
       music.pause();
+      console.log("not enough media");
     } else if (mediaCounter >= files.length - 1 ) {
       if(length.length === "long") {
         setMediaCounter(0);
@@ -67,7 +67,15 @@ export const VideoModal: React.FC<Props> = ({
 
   const getTotalDur = (): number => {
     let totalDuration:number = 0;
-    return 0;
+    for (let i = 0; i < Math.min(files.length,length.slot.length); i++) {
+      if(isImage(files[shuffledCounter[i]])) {
+        totalDuration = totalDuration + length.slot[i];
+      } else {
+        totalDuration = totalDuration + Math.min(oriDur[shuffledCounter[i]],length.slot[i]);
+      }
+    }
+    console.log("total duration is " + totalDuration);
+    return Math.round(totalDuration);
   }
 
   const stopMusic = (): void => {
@@ -75,14 +83,13 @@ export const VideoModal: React.FC<Props> = ({
     setMediaCounter(0);
   }
 
-  console.log(music.currentSrc);
   music.play();
   console.log(music.readyState);
   console.log("shuffled arrays is");
   console.log(shuffledCounter);
 
   return (
-    <Modal centered size="lg" show={show} onHide={() => {setShow(false);setMediaCounter(0); stopMusic();}}>
+    <Modal centered size="lg" show={show} onHide={() => {setShow(false);stopMusic();}}>
       <Modal.Header closeButton>
         <Modal.Title>Here is your Video</Modal.Title>
       </Modal.Header>
@@ -97,13 +104,11 @@ export const VideoModal: React.FC<Props> = ({
                 onEnded={changeImage}
                 interval={length.slot[mediaCounter]}
                 mediaDur={oriDur[shuffledCounter[mediaCounter]]}
-                setCurrProgress={setCurrProgress}
               />
             </div>
-            {/* <VideoProgressBar
-              totalVideoDuration={Math.round(length.slotLength)}
-              currProgress={currProgress}
-            /> */}
+            <VideoProgressBar
+              totalVideoDuration={getTotalDur()}
+            />
             <span> Playing Music: {currTemplate.musicName}</span>
             <br/>
             <span> style: {currTemplate.title}</span>
@@ -122,6 +127,8 @@ export const VideoModal: React.FC<Props> = ({
                     setCurrTemplate(template);
                     setMusic(new Audio(template.musicTrack));
                     setShuffledCounter(shuffle(files.length));
+                    // how do you make sure it sticks with what user picked b4?
+                    setLength(template.medium);
                   }}
                 >
                   {template.title}
