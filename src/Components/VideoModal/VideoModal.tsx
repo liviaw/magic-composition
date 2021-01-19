@@ -6,6 +6,7 @@ import styles from "./VideoModal.module.css";
 import { isImage, shuffle } from "../utils";
 import { MediaComponent } from "./MediaComponent";
 import RotateLoader from "react-spinners/RotateLoader";
+import {VideoCarousel} from "./VideoCarousel";
 // import templatesJson from '../../templates.json';
 
 type Props = {
@@ -47,18 +48,26 @@ export const VideoModal: React.FC<Props> = ({
     if (files == null) {
       return;
     }
-    if (length.slot.length < mediaCounter ) {
+    // if () {
+    //   // too many media or too little slots
+    // } else 
+    if (music.ended) {
+      // should never go here? Because I set up the templates to be short or equal to music lengtj
       setMediaCounter(files.length - 1);
+      console.log("music has ended");
+    } else if (length.slot.length < mediaCounter) {
+      setMediaCounter(files.length - 1);
+      console.log("too many media or too little slots");
       music.pause();
-      console.log("not enough media");
     } else if (mediaCounter >= files.length - 1 ) {
-      if(length.length === "long") {
-        setMediaCounter(0);
-      } else {
+      console.log("not enough media");
+      // if(length.length === "long") {
+      //   setMediaCounter(0);
+      // } else {
         // clearing interval for media switching within the video
         setMediaCounter(files.length - 1);
         music.pause();
-      }
+      // }
     } else {
       // video ended
       setMediaCounter((mediaCounter) => mediaCounter + 1);
@@ -78,7 +87,8 @@ export const VideoModal: React.FC<Props> = ({
     return Math.round(totalDuration);
   }
 
-  const stopMusic = (): void => {
+  const resetVideo = (): void => {
+    music.load();
     music.pause();
     setMediaCounter(0);
   }
@@ -89,11 +99,12 @@ export const VideoModal: React.FC<Props> = ({
   console.log(shuffledCounter);
 
   return (
-    <Modal centered size="lg" show={show} onHide={() => {setShow(false);stopMusic();}}>
+    <Modal centered size="lg" show={show} onHide={() => {setShow(false);resetVideo();}}>
       <Modal.Header closeButton>
         <Modal.Title>Here is your Video</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+      <VideoCarousel/>
         {/* https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/readyState */}
         {musicLoaded ? (
           <Container fluid>
@@ -106,6 +117,7 @@ export const VideoModal: React.FC<Props> = ({
                 mediaDur={oriDur[shuffledCounter[mediaCounter]]}
               />
             </div>
+            
             <VideoProgressBar
               totalVideoDuration={getTotalDur()}
             />
@@ -123,7 +135,7 @@ export const VideoModal: React.FC<Props> = ({
                   variant="outline-dark"
                   onClick={() => {
                     console.log("template "+ template.title + " is clicked!");
-                    stopMusic();
+                    resetVideo();
                     setCurrTemplate(template);
                     setMusic(new Audio(template.musicTrack));
                     setShuffledCounter(shuffle(files.length));
@@ -187,7 +199,7 @@ export const VideoModal: React.FC<Props> = ({
       <Modal.Footer>
         <Button variant="outline-dark" 
           onClick={() => {
-            stopMusic();
+            resetVideo();
             setShow(false);
           }
           }>
@@ -196,7 +208,7 @@ export const VideoModal: React.FC<Props> = ({
         <Button
           variant="info"
           onClick={() => {
-            stopMusic();
+            resetVideo();
             setShow(false);
           }}
         >

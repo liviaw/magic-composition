@@ -45,12 +45,12 @@ export const templates:{[name: string]: templateEl} = {
         },
         medium: {
             length: "medium",
-            slot:[15,15,9,8,7,8,10,6],
+            slot:[15,15,19,8,7,14],
             slotLength: 78,
         },
         long: {
             length: "long",
-            slot:[15,20,15,17,13,20],
+            slot:[15,20,21,17,13,15],
             slotLength: 100
         }    
     },
@@ -68,13 +68,13 @@ export const templates:{[name: string]: templateEl} = {
         },
         medium: {
             length: "medium",
-            slot:[7,10,8,5,6,7,5,5,6],
-            slotLength: 59,
+            slot:[8,10,8,5,6,7,5,5,6],
+            slotLength: 60,
         },
         long: {
             length: "long",
-            slot:[7,15,5,10,7,8,4,5,15,12,7,3,5],
-            slotLength: 103,
+            slot:[14,15,10,10,7,8,4,5,15,12,7,3,5],
+            slotLength: 115,
         }    
     },
     neutral: {
@@ -90,14 +90,14 @@ export const templates:{[name: string]: templateEl} = {
         },
         medium: {
             length: "medium",
-            slot:[5,7,5,5,3,6,7,5,5,6,4,4,3],
-            slotLength: 65,
+            slot:[7,3,7,5,5,3,6,7,5,5,6,4,4,3],
+            slotLength: 70,
         },
         // mb add start time and end time of music
         long: {
             length: "long",
-            slot:[5,7,2,5,5,6,6,3,7,5,5,3,6,4,5,8,4],
-            slotLength: 86,
+            slot:[15,10, 10, 11, 5, 5 ,25,20],
+            slotLength: 100
         }  
     },
     uplifting: {
@@ -118,8 +118,8 @@ export const templates:{[name: string]: templateEl} = {
         },
         long: {
             length: "long",
-            slot:[5,7,2,5,5,6,6,5,7,5,5,3,6,2,4,5,4,5,4,9],
-            slotLength: 100,
+            slot:[10,7,7,8,8,6,6,5,7,5,5,3,6,2,4,5,4,5,4,9],
+            slotLength: 116,
         }  
     },
     epic: {
@@ -140,8 +140,8 @@ export const templates:{[name: string]: templateEl} = {
         },
         long: {
             length: "long",
-            slot:[5,7,3,5,5,3,6,3,2,7,5,5,3,6,2,2,4,2,3,2,2,5,4],
-            slotLength: 91,
+            slot:[7,7,3,5,5,3,6,3,2,7,5,5,3,6,2,2,4,2,3,2,2,5,4],
+            slotLength: 93,
         }  
     },
     jazzy: {
@@ -152,8 +152,8 @@ export const templates:{[name: string]: templateEl} = {
         musicOptions: [],
         short: {
             length: "short",
-            slot:[7,5,5,3,6],
-            slotLength: 26,
+            slot:[3,7,5,5,3,6],
+            slotLength: 29,
         },
         medium: {
             length: "medium",
@@ -162,8 +162,8 @@ export const templates:{[name: string]: templateEl} = {
         },
         long: {
             length: "long",
-            slot:[5,5,4,2,5,5,3,6,3,2,2,2,3,5,5,3,6,2,2,4,2,3,2,5,4],
-            slotLength: 90,
+            slot:[5,5,8,3,5,5,3,6,3,2,2,2,3,5,5,3,6,2,2,4,2,3,2,5,4],
+            slotLength: 95,
         } 
     },
     extreme: {
@@ -174,18 +174,18 @@ export const templates:{[name: string]: templateEl} = {
         musicOptions: [],
         short: {
             length: "short",
-            slot:[7,5,5,3,6],
-            slotLength: 26,
+            slot:[2,1,3,3,6],
+            slotLength: 15,
         },
         medium: {
             length: "medium",
-            slot:[2,3,2,1,2,4,2,3,4,5,4,3,2,2,4,2,1,3],
-            slotLength: 49,
+            slot:[2,1,2,1,2,2,1,2,3,4,5,4,3,2,2,4,2,1,3],
+            slotLength: 45,
         },
         long: {
             length: "long",
-            slot:[1,1,2,2,1,3,3,3,3,2,2,3,2,3,3,1,2,1,1,3,3,2,2,4,2,3,2,3,2,1,2,2],
-            slotLength: 70,
+            slot:[2,2,2,2,1,3,3,3,3,2,2,3,2,3,3,1,2,1,1,3,3,2,2,4,2,3,2,3,2,1,2,2],
+            slotLength: 72,
         }  
     }
 }

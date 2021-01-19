@@ -51,6 +51,7 @@ export const ImportComponent: React.FC<MediaProps> = ({
         onError={() => showError(file.name + " is unable to play")}
         id={file.name}
         volume={0}
+        muted={true}
         // onPlay={() => {
         //   if (importRef != null && importRef.current != null) {
         //     console.log(file.name + " "+importRef.current.getDuration());

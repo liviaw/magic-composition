@@ -6,7 +6,8 @@ import { Container } from "react-bootstrap";
 const App: React.FC = () => {
   const [show, setShow] = useState<boolean>(false);
   const [files, setFiles] = useState<File[]>([]);
-  const [totalVideoDuration, setTotalVideoDuration] = useState<number>(0);
+  // not used, will get rid
+  const [totalVideoDuration, setTotalVideoDuration] = useState<number>(0); 
   // mapping of file index to original duration of video/images
   const [oriDur, setOriDur] = useState<{ [fileindex: number]: number }>({});
 
