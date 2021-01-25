@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Container } from "react-bootstrap";
+import { Button, Modal, Container, Carousel } from "react-bootstrap";
 import { VideoProgressBar } from "..";
 import { templates, templateEl, slotEl } from "../Template";
 import styles from "./VideoModal.module.css";
@@ -36,6 +36,12 @@ export const VideoModal: React.FC<Props> = ({
   );
   const [musicLoaded, setMusicLoaded] = useState<boolean>(false);
   const [length, setLength] = useState<slotEl>(currTemplate.medium);
+  const [index, setIndex] = useState(0);
+
+  const handleSelect = (selectedIndex: number, e: any) => {
+    setIndex(selectedIndex);
+  };
+
   useEffect(() => {
     music.addEventListener("canplaythrough", (event) => {
       setMusicLoaded(true);
@@ -104,8 +110,7 @@ export const VideoModal: React.FC<Props> = ({
         <Modal.Title>Here is your Video</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-      <VideoCarousel/>
-        {/* https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/readyState */}
+      <Carousel>
         {musicLoaded ? (
           <Container fluid>
             <div className={styles.renderMediaContainer}>
@@ -194,6 +199,7 @@ export const VideoModal: React.FC<Props> = ({
         >
           Long
         </Button>
+        </Carousel>
       </Modal.Body>
 
       <Modal.Footer>
