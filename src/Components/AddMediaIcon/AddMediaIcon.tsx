@@ -1,27 +1,23 @@
-import React, { useRef } from "react";
-import icon from "./photo.svg";
+import React from "react";
+import icon from "./addPhotoIcon.svg";
 import styles from "./AddMediaIcon.module.css";
-import { Media, isImage, isVideo, showError } from "..";
+import type { MediaPresenter } from "../MediaPresenter";
 
 type Props = {
-  addFile: (files: File[]) => void;
+  mediaPresenter: MediaPresenter;
 };
 
-export const AddMediaIcon: React.FC<Props> = ({ addFile }) => {
+export const AddMediaIcon: React.FC<Props> = ({ mediaPresenter }) => {
   const handleVideoUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (event.target.files === null) return;
     let files: FileList = event.target.files;
-    const addedFiles: File[] = [];
-    for (let i = 0; i < files.length; i++) {
-      if (isImage(files[i]) || isVideo(files[i])) {
-        addedFiles.push(files[i]);
-      } else {
-        showError("invalid file " + files[i].name);
-      }
-    }
-    addFile(addedFiles);
+    Array.from(files).forEach((file: File) => {
+      mediaPresenter.addFile(file);
+      console.log("im so sad :(");
+      console.log(mediaPresenter.getFilesLength());
+    })
   };
   return (
     <div className={styles.addMediaIconContainer}>

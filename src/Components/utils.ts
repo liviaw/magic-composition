@@ -9,15 +9,15 @@ export const saveToLocal = () => {
   // reader.readAsDataURL(this.files[0]);
 };
 
-let imageFormat = new RegExp("image/*");
-let videoFormat = new RegExp("video/*");
-export const isImage = (file: File) => {
-  return imageFormat.test(file.type);
-};
+// let imageFormat = new RegExp("image/*");
+// let videoFormat = new RegExp("video/*");
+// export const isImage = (file: File) => {
+//   return imageFormat.test(file.type);
+// };
 
-export const isVideo = (file: File) => {
-  return videoFormat.test(file.type);
-};
+// export const isVideo = (file: File) => {
+//   return videoFormat.test(file.type);
+// };
 export const MAXLEN = 10;
 export const trimmedName = (filename: string) => {
   if (filename.length >= MAXLEN) {
@@ -30,15 +30,3 @@ export const trimmedName = (filename: string) => {
   }
   return filename;
 };
-export const shuffleArray = (array: any[]) =>
-[...array].sort(() => Math.random() - 0.5);
-
-export const imageDuration = 3000;
-export const audioSound = 0.5;
-
-// http://stackoverflow.com/questions/962802#962890
-export const shuffle = (arraySize: number) => {
-// array of indices
-for (var array=[],i=0;i<arraySize;++i) array[i]=i;
-return shuffleArray(array);
-}

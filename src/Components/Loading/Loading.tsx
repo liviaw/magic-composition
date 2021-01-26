@@ -2,7 +2,7 @@ import React from 'react';
 import LoadingBar from 'react-top-loading-bar'
 
 type Props = {
-    mediasLength:number,
+    mediasLength: number,
     mediaReady: number
 }
 

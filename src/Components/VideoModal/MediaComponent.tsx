@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Media, VideoProgressBar, ImageWrapper, isImage, isVideo, audioSound } from "..";
+import { ImageWrapper } from "../MediaWrapper/ImageWrapper";
 import ReactPlayer from "react-player";
+import { MediaPresenter } from "../MediaPresenter";
 
 type MediaProps = {
   file: File;
@@ -10,11 +11,11 @@ type MediaProps = {
 };
 export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, mediaDur }) => {
     const mediaRef: any = useRef(undefined);
-    if (isImage(file)) {
+    if (MediaPresenter.isImage(file)) {
     return (
       <ImageWrapper file={file} changeImage={onEnded} duration={interval * 1000} key={file.name}/>
     );
-  } else if (isVideo(file)) {
+  } else if (MediaPresenter.isVideo(file)) {
     return (
       <ReactPlayer
         ref={(newRef: any) => {
@@ -26,14 +27,13 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, 
         playing={true}
         onError={() => alert(file + " is unable to play")}
         id={file.name}
-        volume={Math.random() * audioSound}
+        volume={Math.random() * MediaPresenter.audioSound}
         onEnded={onEnded}
         // onProgress={({playedSeconds}) => {
         //   console.log(playedSeconds);
         //     setCurrProgress((curr: number) => curr + 1)
         // }}
         onPlay={ () => {
-            // console.log("NULLLLLLLL " + mediaRef + " fsdsd " + mediaRef.current);
             console.log(interval);
             if (mediaDur > interval) {
                 console.log("HELLO");

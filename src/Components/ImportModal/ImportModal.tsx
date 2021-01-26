@@ -1,78 +1,55 @@
 import React, { useState, useEffect } from "react";
-import ReactPlayer from "react-player";
-import {
-  isImage,
-  isVideo,
-  ErrorModal,
-  showError,
-  Media,
-  AddMediaIcon,
-  imageDuration,
-  Loading,
-} from "..";
-import { ViewMedia, DragModal } from "./ViewMedia";
+import { Loading } from '../Loading/Loading';
+import { AddMediaIcon } from '../AddMediaIcon/AddMediaIcon';
+import { ErrorModal } from "../ErrorToast/ErrorToast";
+import { DragModal, ImportComponents } from "./MediaPreviewer";
 import styles from "./ImportModal.module.css";
 import { Button, Container } from "react-bootstrap";
+import type { MediaPresenter } from "../MediaPresenter";
+import { makeAutoObservable } from "mobx";
+import { observer } from "mobx-react-lite";
 
 type Props = {
-  setShow: React.Dispatch<React.SetStateAction<boolean>>;
-  files:File[];
-  removeFile: (index: number) => void;
-  addFile: (newMedia: File[]) => void;
-  setTotalVideoDuration: React.Dispatch<React.SetStateAction<number>>;
-  setOriDur: React.Dispatch<
-    React.SetStateAction<{ [fileindex: number]: number }>
-  >;
-  oriDur: { [fileindex: number]: number };
+  setShow: (show: boolean) => void;
+  mediaPresenter: MediaPresenter;
 };
 
 export const ImportModal: React.FC<Props> = ({
   setShow,
-  files,
-  removeFile,
-  addFile,
-  setTotalVideoDuration,
-  setOriDur,
-  oriDur,
+  mediaPresenter,
 }) => {
   const [onDragState, setOnDragState] = useState<boolean>(false);
   const [onDropState, setOnDropState] = useState<boolean>(false);
   const [mediaReady, setMediaReady] = useState<number>(0);
+  const [filesLen, setFilesLen] = useState<number>(mediaPresenter.getFilesLength());
+
+  useEffect(() => {
+    setFilesLen(mediaPresenter.getFilesLength());
+    console.log("calll meee helloo");
+  }, [filesLen]);
  
   // creating elemenets to be displayed for preview
   const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setOnDropState(true);
-    const attachedFiles: File[] = [];
     if (e.dataTransfer.items) {
       // Use DataTransferItemList interface to access the file(s)
-      for (let i = 0; i < e.dataTransfer.items.length; i++) {
+      Array.from(e.dataTransfer.items).forEach((item: any) => {
         // If dropped items aren't files, reject them
-        if (e.dataTransfer.items[i].kind === "file") {
-          let file = e.dataTransfer.items[i].getAsFile();
+        if (item.kind === "file") {
+          let file = item.getAsFile();
           if (file == null) {
             return;
           }
-          if (isImage(file) || isVideo(file)) {
-            attachedFiles.push(file);
-          } else {
-            showError("invalid file " + file.name);
-          }
+          mediaPresenter.addFile(file);
         }
-      }
+      })
     } else {
       // Use DataTransfer interface to access the file(s)
-      for (let i = 0; i < e.dataTransfer.files.length; i++) {
-        let file = e.dataTransfer.files[i];
-        attachedFiles.push(file);
-        if (isImage(file) || isVideo(file)) {
-          attachedFiles.push(file);
-        } else {
-          showError("invalid file " + file.name);
-        }
-      }
+      Array.from(e.dataTransfer.files).forEach((file: File) => {
+        mediaPresenter.addFile(file);
+      })
     }
-    addFile(attachedFiles);
   };
   const dragOverHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -92,7 +69,7 @@ export const ImportModal: React.FC<Props> = ({
       onDrop={dropHandler}
       onDragOver={dragOverHandler}
     >
-      <Loading mediasLength={files.length} mediaReady={mediaReady} />
+      <Loading mediasLength={mediaPresenter.getFilesLength()} mediaReady={mediaReady} />
       <ErrorModal />
       {!onDropState && onDragState && (
         <div
@@ -106,7 +83,7 @@ export const ImportModal: React.FC<Props> = ({
         </div>
       )}
       {/* set drag and drop as true, even if user input using icon */}
-      {(onDropState && onDragState)  || files.length !== 0 ? (
+      {(onDropState && onDragState)  || (filesLen !== 0) ? (
         <div
           className={styles.dropModal}
           onDragLeave={(e) => {
@@ -114,25 +91,18 @@ export const ImportModal: React.FC<Props> = ({
             e.preventDefault();
           }}
         >
-          <ViewMedia
-            files={files}
-            removeFile={removeFile}
-            addFile={addFile}
-            setMediaReady={setMediaReady}
-            setOriDur={setOriDur}
-            oriDur={oriDur}
-          />
+          <ImportComponents mediaPresenter={mediaPresenter} setMediaReady={setMediaReady}/>
           <Button
             className={styles.createVideoButton}
             onClick={
               () => {
-                if (mediaReady !== 0 && mediaReady === files.length){
+                if (mediaReady !== 0 && mediaReady === mediaPresenter.getFilesLength() ){
                   setShow(true);
                 }
               }
             }
             variant="secondary"
-            disabled={mediaReady === 0 || mediaReady !== files.length}
+            disabled={mediaReady === 0 || mediaReady !== mediaPresenter.getFilesLength() }
           >
             Create Video 🎬
           </Button>
@@ -140,7 +110,7 @@ export const ImportModal: React.FC<Props> = ({
         </div>
       ) : (
         <>
-          <AddMediaIcon addFile={addFile} />
+          <AddMediaIcon mediaPresenter={mediaPresenter} />
           <span> Or </span>
           <span className={styles.desktopOnly}>
             Drag &amp; Drop your files here 📥

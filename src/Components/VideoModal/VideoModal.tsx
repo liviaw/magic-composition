@@ -1,31 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal, Container, Carousel } from "react-bootstrap";
-import { VideoProgressBar } from "..";
+import { VideoProgressBar } from "./VideoProgressBar";
 import { templates, templateEl, slotEl } from "../Template";
 import styles from "./VideoModal.module.css";
-import { isImage, shuffle } from "../utils";
 import { MediaComponent } from "./MediaComponent";
 import RotateLoader from "react-spinners/RotateLoader";
-import {VideoCarousel} from "./VideoCarousel";
-// import templatesJson from '../../templates.json';
+import { MediaPresenter } from "../MediaPresenter";
 
 type Props = {
-  setShow: React.Dispatch<React.SetStateAction<boolean>>;
+  setShow: (show: boolean) => void;
   show: boolean;
-  files: File[];
-  oriDur: { [fileindex: number]: number };
-  totalVideoDuration: number;
+  mediaPresenter: MediaPresenter;
 };
 export const VideoModal: React.FC<Props> = ({
   setShow,
   show,
-  files,
-  oriDur,
-  totalVideoDuration,
+  mediaPresenter
 }) => {
   const [mediaCounter, setMediaCounter] = useState<number>(0);
   const [shuffledCounter, setShuffledCounter] = useState<number[]>(
-    shuffle(files.length)
+    mediaPresenter.shuffleArray()
   );
   // default template is neutral, short
   const [currTemplate, setCurrTemplate] = useState<templateEl>(
@@ -51,27 +45,28 @@ export const VideoModal: React.FC<Props> = ({
   // incrementing index of media[]
   const changeImage = (): void => {
     // if files are not attached or if video is playing, do not change interval
-    if (files == null) {
+    if (mediaPresenter.getFiles() === []) {
       return;
     }
     // if () {
     //   // too many media or too little slots
     // } else 
+    let filesLen = mediaPresenter.getFilesLength();
     if (music.ended) {
       // should never go here? Because I set up the templates to be short or equal to music lengtj
-      setMediaCounter(files.length - 1);
+      setMediaCounter(filesLen- 1);
       console.log("music has ended");
     } else if (length.slot.length < mediaCounter) {
-      setMediaCounter(files.length - 1);
+      setMediaCounter(filesLen  - 1);
       console.log("too many media or too little slots");
       music.pause();
-    } else if (mediaCounter >= files.length - 1 ) {
+    } else if (mediaCounter >= filesLen  - 1 ) {
       console.log("not enough media");
       // if(length.length === "long") {
       //   setMediaCounter(0);
       // } else {
         // clearing interval for media switching within the video
-        setMediaCounter(files.length - 1);
+        setMediaCounter(filesLen - 1);
         music.pause();
       // }
     } else {
@@ -82,11 +77,12 @@ export const VideoModal: React.FC<Props> = ({
 
   const getTotalDur = (): number => {
     let totalDuration:number = 0;
-    for (let i = 0; i < Math.min(files.length,length.slot.length); i++) {
-      if(isImage(files[shuffledCounter[i]])) {
+    let files = mediaPresenter.getFiles();
+    for (let i = 0; i < Math.min(mediaPresenter.getFilesLength(),length.slot.length); i++) {
+      if(MediaPresenter.isImage(files[shuffledCounter[i]])) {
         totalDuration = totalDuration + length.slot[i];
       } else {
-        totalDuration = totalDuration + Math.min(oriDur[shuffledCounter[i]],length.slot[i]);
+        totalDuration = totalDuration + Math.min(mediaPresenter.getDuration(shuffledCounter[i]),length.slot[i]);
       }
     }
     console.log("total duration is " + totalDuration);
@@ -116,10 +112,10 @@ export const VideoModal: React.FC<Props> = ({
             <div className={styles.renderMediaContainer}>
               {/* file={shuffleArray(currentFile)} */}
               <MediaComponent
-                file={files[shuffledCounter[mediaCounter]]}
+                file={mediaPresenter.getFile(shuffledCounter[mediaCounter])}
                 onEnded={changeImage}
                 interval={length.slot[mediaCounter]}
-                mediaDur={oriDur[shuffledCounter[mediaCounter]]}
+                mediaDur={mediaPresenter.getDuration(shuffledCounter[mediaCounter])}
               />
             </div>
             
@@ -143,7 +139,7 @@ export const VideoModal: React.FC<Props> = ({
                     resetVideo();
                     setCurrTemplate(template);
                     setMusic(new Audio(template.musicTrack));
-                    setShuffledCounter(shuffle(files.length));
+                    setShuffledCounter(mediaPresenter.shuffleArray());
                     // how do you make sure it sticks with what user picked b4?
                     setLength(template.medium);
                   }}
@@ -163,7 +159,7 @@ export const VideoModal: React.FC<Props> = ({
           onClick={() => {
             if (length.length !== "short") {
               setLength(currTemplate.short);
-              setShuffledCounter(shuffle(files.length));
+              setShuffledCounter(mediaPresenter.shuffleArray());
               setMediaCounter(0);
               music.load();
             }
@@ -177,7 +173,7 @@ export const VideoModal: React.FC<Props> = ({
           onClick={() => {
             if (length.length !== "medium") {
               setLength(currTemplate.medium);
-              setShuffledCounter(shuffle(files.length));
+              setShuffledCounter(mediaPresenter.shuffleArray());
               setMediaCounter(0);
               music.load();
             }
@@ -191,7 +187,7 @@ export const VideoModal: React.FC<Props> = ({
           onClick={() => {
             if (length.length !== "long") {
               setLength(currTemplate.long);
-              setShuffledCounter(shuffle(files.length));
+              setShuffledCounter(mediaPresenter.shuffleArray());
               setMediaCounter(0);
               music.load();
             }

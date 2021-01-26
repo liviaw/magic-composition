@@ -1,53 +1,29 @@
 import React, { useState } from "react";
 import "./App.css";
-import { ImportModal, Header, VideoModal, Loading } from "./Components/";
+import { ImportModal } from "./Components/ImportModal/ImportModal";
+import { Header } from "./Components/Shared/Header";
 import { Container } from "react-bootstrap";
+import { MediaPresenter } from "./Components/MediaPresenter";
+import { VideoModal } from "./Components/VideoModal/VideoModal";
+
+
 
 const App: React.FC = () => {
   const [show, setShow] = useState<boolean>(false);
-  const [files, setFiles] = useState<File[]>([]);
-  // not used, will get rid
-  const [totalVideoDuration, setTotalVideoDuration] = useState<number>(0); 
-  // mapping of file index to original duration of video/images
-  const [oriDur, setOriDur] = useState<{ [fileindex: number]: number }>({});
-
-  // oriDur = {
-  //   "tiramisu.mp4": 5000,
-  //   "cat.mp4": 7500,
-  //   "puppies.jpg": 3000,
-  //    "plantvideo.mp4": 8000,
-  // }
-  const removeFile = (index: number): void => {
-    const newFiles = [...files];
-    if (index > -1) {
-      newFiles.splice(index, 1);
-    }
-    setFiles(newFiles);
-  };
-  const addFile = (addedFiles: File[]): void => {
-    let newFiles: File[] = [...files, ...addedFiles];
-    setFiles(newFiles);
-  };
+  const [mediaPresenter, setMediaPresenter] = useState(new MediaPresenter());
 
   return (
     <Container fluid className="App">
       <Header />
       <ImportModal
         setShow={setShow}
-        files={files}
-        removeFile={removeFile}
-        addFile={addFile}
-        setTotalVideoDuration={setTotalVideoDuration}
-        setOriDur={setOriDur}
-        oriDur={oriDur}
+        mediaPresenter={mediaPresenter}
       />
       {show ? (
         <VideoModal
           setShow={setShow}
           show={show}
-          files={files}
-          oriDur={oriDur}
-          totalVideoDuration={totalVideoDuration}
+          mediaPresenter={mediaPresenter}
         />
       ) : null}
     </Container>
