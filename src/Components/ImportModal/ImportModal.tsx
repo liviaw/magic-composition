@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Loading } from '../Loading/Loading';
 import { AddMediaIcon } from '../AddMediaIcon/AddMediaIcon';
-import { ErrorModal } from "../ErrorToast/ErrorToast";
+import { ErrorToast } from "../ErrorToast/ErrorToast";
 import { DragModal, ImportComponents } from "./MediaPreviewer";
 import styles from "./ImportModal.module.css";
 import { Button, Container } from "react-bootstrap";
 import type { MediaPresenter } from "../MediaPresenter";
-import { makeAutoObservable } from "mobx";
-import { observer } from "mobx-react-lite";
 
 type Props = {
   setShow: (show: boolean) => void;
@@ -21,13 +19,6 @@ export const ImportModal: React.FC<Props> = ({
   const [onDragState, setOnDragState] = useState<boolean>(false);
   const [onDropState, setOnDropState] = useState<boolean>(false);
   const [mediaReady, setMediaReady] = useState<number>(0);
-  const [filesLen, setFilesLen] = useState<number>(mediaPresenter.getFilesLength());
-
-  useEffect(() => {
-    setFilesLen(mediaPresenter.getFilesLength());
-    console.log("calll meee helloo");
-  }, [filesLen]);
- 
   // creating elemenets to be displayed for preview
   const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -83,7 +74,7 @@ export const ImportModal: React.FC<Props> = ({
         </div>
       )}
       {/* set drag and drop as true, even if user input using icon */}
-      {(onDropState && onDragState)  || (filesLen !== 0) ? (
+      {(onDropState && onDragState)  || (mediaPresenter.getFilesLength()) ? (
         <div
           className={styles.dropModal}
           onDragLeave={(e) => {

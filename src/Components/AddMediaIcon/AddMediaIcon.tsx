@@ -15,8 +15,6 @@ export const AddMediaIcon: React.FC<Props> = ({ mediaPresenter }) => {
     let files: FileList = event.target.files;
     Array.from(files).forEach((file: File) => {
       mediaPresenter.addFile(file);
-      console.log("im so sad :(");
-      console.log(mediaPresenter.getFilesLength());
     })
   };
   return (

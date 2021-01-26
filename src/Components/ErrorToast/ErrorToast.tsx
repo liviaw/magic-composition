@@ -9,7 +9,7 @@ export const showError: (msg: string) => React.ReactText = (msg: string) =>
     autoClose: 5000,
   });
 
-export const ErrorModal: React.FC = () => (
+export const ErrorToast: React.FC = () => (
   <ToastContainer
     position="top-center"
     autoClose={5000}
