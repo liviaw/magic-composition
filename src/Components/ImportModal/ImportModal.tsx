@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Loading } from '../Loading/Loading';
+import { AddMediaIcon } from '../AddMediaIcon/AddMediaIcon';
 import { ErrorToast } from "../ErrorToast/ErrorToast";
 import { DragModal, ImportComponents } from "./MediaPreviewer";
 import styles from "./ImportModal.module.css";
@@ -100,6 +101,7 @@ export const ImportModal: React.FC<Props> = ({
         </div>
       ) : (
         <>
+          <AddMediaIcon mediaPresenter={mediaPresenter} />
           <span> Or </span>
           <span className={styles.desktopOnly}>
             Drag &amp; Drop your files here 📥
