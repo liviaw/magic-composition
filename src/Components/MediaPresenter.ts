@@ -60,11 +60,9 @@ export class MediaPresenter {
       this.played.splice(index, 1);
     }
   }
-
   setCustomOrder(value: boolean) {
     this.customOrder = value;
   }
-
   @mobx.action
   setDuration(index: number, duration: number): void {
     this.durations[index] = duration;

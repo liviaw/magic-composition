@@ -6,9 +6,7 @@ import { Container } from "react-bootstrap";
 import { MediaPresenter } from "./Components/MediaPresenter";
 import { VideoModal } from "./Components/VideoModal/VideoModal";
 
-
-
-const App: React.FC = () => {
+const App: React.FC = () => { 
   const [show, setShow] = useState<boolean>(false);
   const [mediaPresenter, setMediaPresenter] = useState(new MediaPresenter());
 
