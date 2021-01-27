@@ -28,11 +28,13 @@ export class MediaPresenter {
 
   static isImage(file: File) {
     const imageFormat = new RegExp("image/*");
+    console.log("isimage", file);
     return imageFormat.test(file.type);
   }
 
   static isVideo(file: File) {
     const videoFormat = new RegExp("video/*");
+    console.log("isvideo", file);
     return videoFormat.test(file.type);
   }
 
@@ -60,9 +62,11 @@ export class MediaPresenter {
       this.played.splice(index, 1);
     }
   }
+
   setCustomOrder(value: boolean) {
     this.customOrder = value;
   }
+
   @mobx.action
   setDuration(index: number, duration: number): void {
     this.durations[index] = duration;
