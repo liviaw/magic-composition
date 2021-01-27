@@ -1,25 +1,21 @@
-import React, { useRef } from "react";
-import icon from "./photo.svg";
+import React from "react";
+import icon from "./addPhotoIcon.svg";
 import styles from "./AddMediaIcon.module.css";
-import { Media, isImage, isVideo } from "..";
+import type { MediaPresenter } from "../MediaPresenter";
 
 type Props = {
-  createMediaElement: (files: File[]) => void;
+  mediaPresenter: MediaPresenter;
 };
 
-export const AddMediaIcon: React.FC<Props> = ({ createMediaElement }) => {
-  const handleVideoUpload = async (
+export const AddMediaIcon: React.FC<Props> = ({ mediaPresenter }) => {
+  const handleMediaUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (event.target.files === null) return;
-    let files: FileList = event.target.files;
-    const addedFiles: File[] = [];
-    for (let i = 0; i < files.length; i++) {
-      if (isImage(files[i]) || isVideo(files[i])) {
-        addedFiles.push(files[i]);
-      } 
-    }
-    createMediaElement(addedFiles);
+    const files: FileList = event.target.files;
+    Array.from(files).forEach((file: File) => {
+      mediaPresenter.addFile(file);
+    })
   };
   return (
     <div className={styles.addMediaIconContainer}>
@@ -35,7 +31,7 @@ export const AddMediaIcon: React.FC<Props> = ({ createMediaElement }) => {
         id="fileUpload"
         type="file"
         accept="video/* image/*"
-        onChange={handleVideoUpload}
+        onChange={handleMediaUpload}
       />
     </div>
   );
