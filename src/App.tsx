@@ -1,31 +1,22 @@
 import React, { useState } from "react";
 import "./App.css";
-import {  Header } from "./Components/Shared/Header";
 import { ImportModal } from "./Components/ImportModal/ImportModal";
+import { Header } from "./Components/Shared/Header";
+import { Container } from "react-bootstrap";
+import { MediaPresenter } from "./Components/MediaPresenter";
+
 const App: React.FC = () => {
-  const [files, setFiles] = useState<File[]>([]);
   const [show, setShow] = useState<boolean>(false);
-  const removeFile = (index: number): void => {
-    const newFiles = [...files];
-    if (index > -1) {
-      newFiles.splice(index, 1);
-    }
-    setFiles(newFiles);
-  };
-  const addFile = (addedFiles: File[]): void => {
-    let newFiles: File[] = [...files, ...addedFiles];
-    setFiles(newFiles);
-  };
+  const [mediaPresenter, setMediaPresenter] = useState(new MediaPresenter());
 
   return (
-    <div className="App">
+    <Container fluid className="App">
       <Header />
       <ImportModal
         setShow={setShow}
-        removeFile={removeFile}
-        addFile={addFile}
+        mediaPresenter={mediaPresenter}
       />
-    </div>
+    </Container>
   );
 };
 
