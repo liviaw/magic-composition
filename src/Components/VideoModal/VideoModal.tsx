@@ -96,9 +96,6 @@ export const VideoModal: React.FC<Props> = ({
   }
 
   music.play();
-  console.log(music.readyState);
-  console.log("shuffled arrays is");
-  console.log(shuffledCounter);
 
   return (
     <Modal centered size="lg" show={show} onHide={() => {setShow(false);resetVideo();}}>
