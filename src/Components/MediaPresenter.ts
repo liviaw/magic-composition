@@ -1,30 +1,39 @@
+import * as mobx from 'mobx';
+
 const MAXLEN = 10;
 
+
 export class MediaPresenter {
+
+  @mobx.observable.deep
   files: File[] = [];
+  @mobx.observable.deep
   durations: number[] = [];
   customOrder: boolean = false;
-
-  static imageFormat = new RegExp("image/*");
-  static videoFormat = new RegExp("video/*");
 
   // this is temporary, will remove
   imageDuration: number = 3000;
   static audioSound: number = 0.5;
 
-  addFile(newFile: File): void {
-    if (MediaPresenter.isImage(newFile) || MediaPresenter.isVideo(newFile)) {
-      this.files = [...this.files, newFile];
-    } 
-  }
-
   static isImage(file: File) {
-    return MediaPresenter.imageFormat.test(file.type);
+    const imageFormat = new RegExp("image/*");
+    return imageFormat.test(file.type);
   }
 
   static isVideo(file: File) {
-    return MediaPresenter.videoFormat.test(file.type);
+    const videoFormat = new RegExp("video/*");
+    return videoFormat.test(file.type);
   }
+  @mobx.action.bound
+  addFile(newFile: File): void {
+    console.log("top ", this.files);
+    if (MediaPresenter.isImage(newFile) || MediaPresenter.isVideo(newFile)) {
+      this.files = [...this.files, newFile];
+      console.log(newFile.name);
+    } 
+    console.log(this.files);
+  }
+  @mobx.action.bound
   removeFile(index: number): void {
     if (index > -1) {
       let temp = this.files;
@@ -32,11 +41,10 @@ export class MediaPresenter {
       this.files = [...temp];
     }
   }
-
   setCustomOrder(value: boolean) {
     this.customOrder = value;
   }
-
+  @mobx.action
   setDuration(index: number, duration: number): void {
     this.durations[index] = duration;
   }
@@ -56,21 +64,16 @@ export class MediaPresenter {
     return(this.files.indexOf(file));
   }
 
-  getFiles(): File[] {
-    if (this.files === []) {
-      alert("empty");
-    }
-    return this.files;
-  }
-
-  getFilesLength(): number {
+  //call it by: mediaPresenter.filesLength
+  @mobx.computed
+  get filesLength(): number {
     return this.files.length;
   }
   // http://stackoverflow.com/questions/962802#962890
   shuffleArray(): number[] {
-    if (this.customOrder) {
-      return new Array(this.files.length);
-    }
+    // if (this.customOrder) {
+    //   return new Array(this.files.length);
+    // }
     for (var array = [], i = 0; i < this.files.length; ++i) array[i] = i;
     return [...array].sort(() => Math.random() - 0.5);
   }
