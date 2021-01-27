@@ -13,7 +13,6 @@ export const MediaComponent: React.FC<MediaProps> = ({
   setMediaReady,
   index,
 }) => {
-  // { [filename: string]: boolean }
   const [loaded, setLoaded] = useState<boolean>(false);
   const importRef: any = useRef(undefined);
   if (MediaPresenter.isImage(mediaPresenter.getFile(index))) {
