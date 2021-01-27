@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 
+yarn.lock
 /node_modules/.cache/.eslintcache
 
 # testing
