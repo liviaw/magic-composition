@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ImportModal.module.css";
 import { trimmedName } from "../utils";
-import { AddMediaIcon } from "../AddMediaIcon/AddMediaIcon";
 import character from "../../Media/character.png";
 import { MediaComponent } from "./MediaComponent";
 import IconButton from "@material-ui/core/IconButton";
@@ -69,7 +68,6 @@ export const ImportComponents: React.FC<Props> = ({
           </div>
         );
       })}
-      <AddMediaIcon mediaPresenter={mediaPresenter} />
     </div>
   );
 };

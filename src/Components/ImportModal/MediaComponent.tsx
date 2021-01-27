@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import { showError } from "../ErrorToast/ErrorToast";
 import ReactPlayer from "react-player";
 import styles from "./ImportModal.module.css";
 import { MediaPresenter } from "../MediaPresenter";
@@ -14,7 +13,6 @@ export const MediaComponent: React.FC<MediaProps> = ({
   setMediaReady,
   index,
 }) => {
-  // { [filename: string]: boolean }
   const [loaded, setLoaded] = useState<boolean>(false);
   const importRef: any = useRef(undefined);
   if (MediaPresenter.isImage(mediaPresenter.getFile(index))) {
@@ -41,7 +39,6 @@ export const MediaComponent: React.FC<MediaProps> = ({
         width="100%"
         height="50%"
         playing={true}
-        onError={() => showError(mediaPresenter.getFileName(index) + " is unable to play")}
         id={mediaPresenter.getFileName(index)}
         volume={0}
         muted={true}
