@@ -10,8 +10,8 @@ type MediaProps = {
   mediaDur:number;
 };
 export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, mediaDur }) => {
-    const mediaRef: any = useRef(undefined);
-    if (MediaPresenter.isImage(file)) {
+  const mediaRef: any = useRef(undefined);
+  if (MediaPresenter.isImage(file)) {
     return (
       <ImageWrapper file={file} changeImage={onEnded} duration={interval * 1000} key={file.name}/>
     );
@@ -29,6 +29,7 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, 
         id={file.name}
         volume={Math.random() * MediaPresenter.audioSound}
         onEnded={onEnded}
+        // TODO
         // onProgress={({playedSeconds}) => {
         //   console.log(playedSeconds);
         //     setCurrProgress((curr: number) => curr + 1)
@@ -36,12 +37,13 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, 
         onPlay={ () => {
             console.log(interval);
             if (mediaDur > interval) {
-                console.log("HELLO");
+              //TODO, match with music
+              console.log("HELLO");
             }
             if (mediaDur > interval && mediaRef != null && mediaRef.current != null) {
-                mediaRef.current.seekTo(mediaDur - interval, 'seconds');
-                console.log("seek not null");
+              mediaRef.current.seekTo(mediaDur - interval, 'seconds');
             }
+            // TODO
             // if (mediaRef != null && mediaRef.current != null ) {
             //     mediaRef.current.seekTo(0.4, "fraction");
             // }

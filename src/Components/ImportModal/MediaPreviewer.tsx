@@ -8,11 +8,9 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import type { MediaPresenter } from "../MediaPresenter";
 import Switch from "@material-ui/core/Switch";
-import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import FormControl from "@material-ui/core/FormControl";
 import Grid from '@material-ui/core/Grid';
 import { observer } from 'mobx-react';
 type Props = {

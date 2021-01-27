@@ -3,18 +3,18 @@ import { showError } from "../ErrorToast/ErrorToast";
 import ReactPlayer from "react-player";
 import styles from "./ImportModal.module.css";
 import { MediaPresenter } from "../MediaPresenter";
+import { observer } from 'mobx-react';
 
 type MediaProps = {
   mediaPresenter: MediaPresenter;
   setMediaReady: (func: (numberReady: number) => number) => void;
   index: number;
 };
-export const MediaComponent: React.FC<MediaProps> = ({
+export const MediaComponent: React.FC<MediaProps> = observer(({
   mediaPresenter,
   setMediaReady,
   index,
 }) => {
-  // { [filename: string]: boolean }
   const [loaded, setLoaded] = useState<boolean>(false);
   const importRef: any = useRef(undefined);
   if (MediaPresenter.isImage(mediaPresenter.getFile(index))) {
@@ -56,4 +56,4 @@ export const MediaComponent: React.FC<MediaProps> = ({
       />
     );
   }
-};
+});

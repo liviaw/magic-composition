@@ -4,11 +4,16 @@ const MAXLEN = 10;
 
 
 export class MediaPresenter {
-
+  constructor() {
+    mobx.makeObservable(this);
+  }
+  // make need to change to .deep
   @mobx.observable.deep
   files: File[] = [];
+
   @mobx.observable.deep
   durations: number[] = [];
+
   customOrder: boolean = false;
 
   // this is temporary, will remove
@@ -17,33 +22,36 @@ export class MediaPresenter {
 
   static isImage(file: File) {
     const imageFormat = new RegExp("image/*");
+    console.log("isimage", file);
     return imageFormat.test(file.type);
   }
 
   static isVideo(file: File) {
     const videoFormat = new RegExp("video/*");
+    console.log("isvideo", file);
     return videoFormat.test(file.type);
   }
-  @mobx.action.bound
+
+  @mobx.action
   addFile(newFile: File): void {
-    console.log("top ", this.files);
     if (MediaPresenter.isImage(newFile) || MediaPresenter.isVideo(newFile)) {
-      this.files = [...this.files, newFile];
-      console.log(newFile.name);
+      this.files.push(newFile);
+      this.durations.push(0);
     } 
-    console.log(this.files);
   }
-  @mobx.action.bound
+  
+  @mobx.action
   removeFile(index: number): void {
     if (index > -1) {
-      let temp = this.files;
-      temp.splice(index, 1);
-      this.files = [...temp];
+      this.files.splice(index, 1);
+      this.durations.splice(index, 1);
     }
   }
+
   setCustomOrder(value: boolean) {
     this.customOrder = value;
   }
+
   @mobx.action
   setDuration(index: number, duration: number): void {
     this.durations[index] = duration;
@@ -54,6 +62,7 @@ export class MediaPresenter {
   }
 
   getFile(index: number): File {
+    console.log("index is " + index);
     return this.files[index];
   }
 
@@ -69,12 +78,15 @@ export class MediaPresenter {
   get filesLength(): number {
     return this.files.length;
   }
+
   // http://stackoverflow.com/questions/962802#962890
   shuffleArray(): number[] {
-    // if (this.customOrder) {
-    //   return new Array(this.files.length);
-    // }
     for (var array = [], i = 0; i < this.files.length; ++i) array[i] = i;
+    console.log(this.files.length);
+    if (this.customOrder) {
+      console.log("custom order is on");
+      return array;
+    }
     return [...array].sort(() => Math.random() - 0.5);
   }
   swicthOrder(index: number, newIndex: any): void {

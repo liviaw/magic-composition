@@ -6,17 +6,20 @@ import styles from "./VideoModal.module.css";
 import { MediaComponent } from "./MediaComponent";
 import RotateLoader from "react-spinners/RotateLoader";
 import { MediaPresenter } from "../MediaPresenter";
+import { observer } from 'mobx-react';
 
 type Props = {
   setShow: (show: boolean) => void;
   show: boolean;
   mediaPresenter: MediaPresenter;
 };
-export const VideoModal: React.FC<Props> = ({
+export const VideoModal: React.FC<Props> = observer(({
   setShow,
   show,
   mediaPresenter
 }) => {
+  // not sure if it's called blue
+  const canvaBlue = "#00C4CC";
   const [mediaCounter, setMediaCounter] = useState<number>(0);
   const [shuffledCounter, setShuffledCounter] = useState<number[]>(
     mediaPresenter.shuffleArray()
@@ -48,9 +51,7 @@ export const VideoModal: React.FC<Props> = ({
     if (mediaPresenter.files === []) {
       return;
     }
-    // if () {
-    //   // too many media or too little slots
-    // } else 
+    // TODO: if too many media or too little slots, manage it.
     let filesLen = mediaPresenter.filesLength;
     if (music.ended) {
       // should never go here? Because I set up the templates to be short or equal to music lengtj
@@ -58,13 +59,9 @@ export const VideoModal: React.FC<Props> = ({
       console.log("music has ended");
     } else if (length.slot.length < mediaCounter) {
       setMediaCounter(filesLen  - 1);
-      console.log("too many media or too little slots");
       music.pause();
     } else if (mediaCounter >= filesLen  - 1 ) {
       console.log("not enough media");
-      // if(length.length === "long") {
-      //   setMediaCounter(0);
-      // } else {
         // clearing interval for media switching within the video
         setMediaCounter(filesLen - 1);
         music.pause();
@@ -85,7 +82,6 @@ export const VideoModal: React.FC<Props> = ({
         totalDuration = totalDuration + Math.min(mediaPresenter.getDuration(shuffledCounter[i]),length.slot[i]);
       }
     }
-    console.log("total duration is " + totalDuration);
     return Math.round(totalDuration);
   }
 
@@ -107,7 +103,6 @@ export const VideoModal: React.FC<Props> = ({
         {musicLoaded ? (
           <Container fluid>
             <div className={styles.renderMediaContainer}>
-              {/* file={shuffleArray(currentFile)} */}
               <MediaComponent
                 file={mediaPresenter.getFile(shuffledCounter[mediaCounter])}
                 onEnded={changeImage}
@@ -148,7 +143,7 @@ export const VideoModal: React.FC<Props> = ({
           </Container>
         ) : (
           // using the canva brand color
-          <RotateLoader color="#00C4CC" />
+          <RotateLoader color={canvaBlue} />
         )}
         <Button
           key="Short"
@@ -216,4 +211,4 @@ export const VideoModal: React.FC<Props> = ({
       </Modal.Footer>
     </Modal>
   );
-};
+});

@@ -12,12 +12,12 @@ type Props = {
   mediaPresenter: MediaPresenter;
 };
 
-
 export const ImportModal: React.FC<Props> = observer(({
   setShow,
   mediaPresenter,
 }) => {
   const [onDragState, setOnDragState] = useState<boolean>(false);
+  // drop state can be deleted and check files length instead
   const [onDropState, setOnDropState] = useState<boolean>(false);
   const [mediaReady, setMediaReady] = useState<number>(0);
 
@@ -53,8 +53,6 @@ export const ImportModal: React.FC<Props> = observer(({
       setOnDragState(true);
     }
   };
-  console.log("importmodal");
-  console.log(mediaPresenter.filesLength);
   return (
     <Container
       fluid
