@@ -3,12 +3,14 @@
 
 :root {
   --half-canva-blue:rgb(0, 196, 204, 50%);
-  --light-white: rgb(220, 220, 220);
+  --light-white: rgb(100, 100, 100);
   --medium-white:rgb(250, 250, 250);
+  --medium-translucent-white:rgb(250, 250, 250, 0.7);
   --brown:rgba(219, 198, 179, 0.445);
   --shadow-black: rgba(0, 0, 0, 0.2);
   --shadow-gray: rgba(0, 0, 0, 0.19);
   --translucent-white: rgba(255, 255, 255, 0.7);
+  --semi-translucent-white: rgba(225, 225, 225, 0.7);
 }
 .App {
   /* text-align: center; */
