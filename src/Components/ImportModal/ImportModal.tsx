@@ -3,7 +3,7 @@ import ReactPlayer from "react-player";
 import {
   isImage,
   isVideo,
-  ErrorModal,
+  ErrorToast,
   showError,
   Media,
   AddMediaIcon,
@@ -185,7 +185,7 @@ export const ImportModal: React.FC<Props> = ({
       onDragOver={dragOverHandler}
     >
       <Loading mediasLength={medias.length} mediaReady={mediaReady} />
-      <ErrorModal />
+      <ErrorToast />
       {!onDropState && onDragState && (
         <div
           className={styles.dropModal}

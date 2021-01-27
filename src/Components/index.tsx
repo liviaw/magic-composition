@@ -3,7 +3,7 @@ export { Header } from "./Shared/Header";
 export { isImage, isVideo, trimmedName, imageDuration, audioSound } from "./utils";
 export { AddMediaIcon } from './AddMediaIcon/AddMediaIcon';
 export { Loading } from './Loading/Loading';
-export { ErrorModal, showError } from "./ErrorToast/ErrorToast";
+export { ErrorToast, showError } from "./ErrorToast/ErrorToast";
 export { ImageWrapper } from './MediaWrapper/ImageWrapper';
 
 
