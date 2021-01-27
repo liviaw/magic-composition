@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Loading } from '../Loading/Loading';
+import { AddMediaIcon } from '../AddMediaIcon/AddMediaIcon';
 import { DragModal, ImportComponents } from "./MediaPreviewer";
 import styles from "./ImportModal.module.css";
 import { Button, Container } from "react-bootstrap";
@@ -57,6 +59,7 @@ export const ImportModal: React.FC<Props> = ({
       onDrop={dropHandler}
       onDragOver={dragOverHandler}
     >
+      <Loading mediasLength={mediaPresenter.getFilesLength()} mediaReady={mediaReady} />
       {!onDropState && onDragState && (
         <div
           className={styles.dropModal}
@@ -96,6 +99,7 @@ export const ImportModal: React.FC<Props> = ({
         </div>
       ) : (
         <>
+          <AddMediaIcon mediaPresenter={mediaPresenter} />
           <span> Or </span>
           <span className={styles.desktopOnly}>
             Drag &amp; Drop your files here 📥

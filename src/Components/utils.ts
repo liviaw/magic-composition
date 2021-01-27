@@ -1,12 +1,13 @@
-let imageFormat = new RegExp("image/*");
-let videoFormat = new RegExp("video/*");
-export const isImage = (file: File) => {
-  return imageFormat.test(file.type);
+export const saveToLocal = () => {
+  var reader: FileReader = new FileReader();
+  reader.onload = function (e) {
+    const thisImage: string | ArrayBuffer | null = reader.result;
+    if (typeof thisImage === "string") {
+      localStorage.setItem("imgData", thisImage);
+    }
+  };
 };
 
-export const isVideo = (file: File) => {
-  return videoFormat.test(file.type);
-};
 export const MAXLEN = 10;
 export const trimmedName = (filename: string) => {
   if (filename.length >= MAXLEN) {
@@ -19,8 +20,3 @@ export const trimmedName = (filename: string) => {
   }
   return filename;
 };
-export const shuffleArray = (array: any[]) =>
-  [...array].sort(() => Math.random() - 0.5);
-
-export const imageDuration = 3000;
-export const audioSound = 0.5;
