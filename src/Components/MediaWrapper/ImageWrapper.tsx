@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { imageDuration } from "..";
 import styles from "./ImageWrapper.module.css";
 
 type Props = {
