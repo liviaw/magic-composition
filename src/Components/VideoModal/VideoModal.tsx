@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal, Container, Carousel } from "react-bootstrap";
 import { VideoProgressBar } from "./VideoProgressBar";
-import { templates, templateEl, slotEl } from "../Template";
+import { templates } from "../Template";
+import type { templateEl, slotEl } from "../Template";
 import styles from "./VideoModal.module.css";
 import { MediaComponent } from "./MediaComponent";
 import RotateLoader from "react-spinners/RotateLoader";
@@ -24,9 +25,9 @@ export const VideoModal: React.FC<Props> = observer(({
   const [shuffledCounter, setShuffledCounter] = useState<number[]>(
     mediaPresenter.shuffleArray()
   );
-  // default template is neutral, short
+  // default template is calm, short
   const [currTemplate, setCurrTemplate] = useState<templateEl>(
-    templates.neutral
+    templates[0].tracks[0]
   );
   const [music, setMusic] = useState<HTMLAudioElement>(
     new Audio(currTemplate.musicTrack)
@@ -116,7 +117,7 @@ export const VideoModal: React.FC<Props> = observer(({
             />
             <span> Playing Music: {currTemplate.musicName}</span>
             <br/>
-            <span> style: {currTemplate.title}</span>
+            <span> style: {currTemplate}</span>
             <br/>
             <span> tempo: {length.length}</span>
             <br/>

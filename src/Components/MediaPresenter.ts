@@ -13,6 +13,8 @@ export class MediaPresenter {
 
   @mobx.observable.deep
   durations: number[] = [];
+  // this is for videos, which parts of it have been played
+  played: number[][] = [];
 
   customOrder: boolean = false;
 

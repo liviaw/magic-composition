@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Loading } from '../Loading/Loading';
 import { AddMediaIcon } from '../AddMediaIcon/AddMediaIcon';
-import { DragModal, ImportComponents } from "./MediaPreviewer";
+import { DragModal, MediaPreviewer } from "./MediaPreviewer";
 import styles from "./ImportModal.module.css";
 import { Button, Container } from "react-bootstrap";
 import type { MediaPresenter } from "../MediaPresenter";
@@ -83,7 +83,7 @@ export const ImportModal: React.FC<Props> = observer(({
             e.preventDefault();
           }}
         >
-          <ImportComponents mediaPresenter={mediaPresenter} setMediaReady={setMediaReady}/>
+          <MediaPreviewer mediaPresenter={mediaPresenter} setMediaReady={setMediaReady}/>
           <Button
             className={styles.createVideoButton}
             onClick={
