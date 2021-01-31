@@ -24,7 +24,7 @@ export type templateEl = {
 	long: slotEl;
 };
 
-type musicElement = { style: string, tracks: templateEl[] };
+export type musicElement = { style: string, tracks: templateEl[] };
 
 //style = templates[index].style
 //track = templates[index].tracks[trackIndex]

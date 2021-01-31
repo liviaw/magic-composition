@@ -7,10 +7,8 @@
 /public
 
 yarn.lock
-package.json
-tsconfig.json
 /node_modules/.cache/.eslintcache
-public/index.html 
+
 # testing
 /coverage
 

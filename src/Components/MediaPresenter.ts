@@ -13,10 +13,14 @@ export class MediaPresenter {
 
   @mobx.observable.deep
   durations: number[] = [];
+  // for now its a 1D array but can be expanded as [][] to play different parts
   // this is for videos, which parts of it have been played
-  played: number[][] = [];
+  played: number[] = [];
 
   customOrder: boolean = false;
+
+  @mobx.observable
+  currFileIndex: number = 0;
 
   // this is temporary, will remove
   imageDuration: number = 3000;
@@ -39,6 +43,7 @@ export class MediaPresenter {
     if (MediaPresenter.isImage(newFile) || MediaPresenter.isVideo(newFile)) {
       this.files.push(newFile);
       this.durations.push(0);
+      this.played.push(0);
     } 
   }
   
@@ -47,6 +52,7 @@ export class MediaPresenter {
     if (index > -1) {
       this.files.splice(index, 1);
       this.durations.splice(index, 1);
+      this.played.splice(index, 1);
     }
   }
 
@@ -94,10 +100,17 @@ export class MediaPresenter {
   swicthOrder(index: number, newIndex: any): void {
     if (typeof newIndex === "string") {
       newIndex = parseInt(newIndex);
-    } else if (typeof newIndex === "number") {
-      let temp = this.files[index];
-      this.files[index] = this.files[newIndex];
-      this.files[newIndex] = temp;
+    } 
+    let fileTemp: File;
+    let durTemp: number;
+    let playedTemp: number;
+    if (newIndex > -1) {
+      [fileTemp] = this.files.splice(newIndex, 1);
+      [durTemp] = this.durations.splice(newIndex, 1);
+      [playedTemp] = this.played.splice(newIndex, 1);
+      this.files.splice(index, 0, fileTemp);
+      this.durations.splice(index, 0, durTemp);
+      this.played.splice(index, 0, playedTemp);
     }
   }
   trimmedName(filename: string): string {

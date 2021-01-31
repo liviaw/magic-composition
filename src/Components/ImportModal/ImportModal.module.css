@@ -6,9 +6,7 @@
   .canvaHomePage {
     background-color: var(--medium-white);
     min-height: 90vh;
-    width: 100vw;
-    margin: 0 auto;
-    background-size: cover;
+    margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -23,7 +21,6 @@
     display: flex;
     justify-content: center;
     position: relative;
-    margin: 10px 0;
   }
   
   .dropModalText {
@@ -61,14 +58,14 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 20vh;
-    width: 10vw;
+    height: 60px;
+    width: 30px;
     min-width: 120px;
     min-height: 125px;
     background-color: var(--translucent-white);
     border-radius: 5px;
-    padding: 5px 20px;
-    margin: 10px;
+    padding: 5px 10px;
+    margin: 5px;
     overflow: hidden;
   }
   .previewContainer {
