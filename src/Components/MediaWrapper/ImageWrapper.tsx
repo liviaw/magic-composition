@@ -70,7 +70,7 @@ export const ImageWrapper: React.FC<Props> = ({ file, changeImage, duration, pla
 
   return (
     <img
-      className={styles.renderMedia}
+    className={play? styles.clear  : styles.blur}
       src={URL.createObjectURL(file)}
       alt={file.name}
     />

@@ -75,7 +75,7 @@ export const templates2:{[name: string]: templateEl} = {
             length: "long",
             slot:[14,15,10,10,7,8,4,5,15,12,7,3,5],
             slotLength: 115,
-        }    
+        },    
     },
     neutral: {
         title: "neutral",

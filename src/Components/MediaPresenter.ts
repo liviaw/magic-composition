@@ -39,6 +39,11 @@ export class MediaPresenter {
   }
 
   @mobx.action
+  setFileIndex(newIndex: number): void {
+    this.currFileIndex = newIndex;
+  }
+
+  @mobx.action
   addFile(newFile: File): void {
     if (MediaPresenter.isImage(newFile) || MediaPresenter.isVideo(newFile)) {
       this.files.push(newFile);
@@ -79,6 +84,10 @@ export class MediaPresenter {
   }
   getFileIndex(file: File):number {
     return(this.files.indexOf(file));
+  }
+
+  getCurrFile():File {
+    return(this.files[this.currFileIndex]);
   }
 
   //call it by: mediaPresenter.filesLength
