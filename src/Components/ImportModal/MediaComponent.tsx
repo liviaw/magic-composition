@@ -17,11 +17,11 @@ export const MediaComponent: React.FC<MediaProps> = observer(({
 }) => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const importRef: any = useRef(undefined);
-  if (MediaPresenter.isImage(mediaPresenter.getFile(index))) {
+  if (MediaPresenter.isImage(mediaPresenter.getPreviewFile(index))) {
     return (
       <img
         className={styles.renderMedia}
-        src={URL.createObjectURL(mediaPresenter.getFile(index))}
+        src={URL.createObjectURL(mediaPresenter.getPreviewFile(index))}
         onLoad={() => {
           if (!loaded) {
             setMediaReady((m: number) => m + 1);
@@ -37,7 +37,7 @@ export const MediaComponent: React.FC<MediaProps> = observer(({
         ref={(newRef: any) => {
           importRef.current = newRef;
         }}
-        url={URL.createObjectURL(mediaPresenter.getFile(index))}
+        url={URL.createObjectURL(mediaPresenter.getPreviewFile(index))}
         width="100%"
         height="50%"
         playing={true}

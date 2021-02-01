@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useRef } from "react";
 import { ImageWrapper } from "../MediaWrapper/ImageWrapper";
 import ReactPlayer from "react-player";
 import { MediaPresenter } from "../MediaPresenter";
@@ -18,10 +18,10 @@ type MediaProps = {
 export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, mediaDur, play, playfrom, setPlay }) => {
 
 
-  const resetPlayer = () => {
-    // reset music counter
-    // reset file counter
-  }
+  // const resetPlayer = () => {
+  //   // reset music counter
+  //   // reset file counter
+  // }
 
   const changeImage = (): void => {
     onEnded(interval * 1000);
@@ -49,7 +49,7 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, 
         className={play? styles.clear  : styles.blur}
         // TODO
         onProgress={({playedSeconds}) => {
-          console.log(playedSeconds);
+          // console.log(playedSeconds);
           if (playedSeconds >= interval) {
             // setPlay(false);
             onEnded(interval)
@@ -83,5 +83,4 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, 
 
     );
   }
-  return null;
 };

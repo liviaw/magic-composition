@@ -22,19 +22,20 @@ export class MediaPresenter {
   @mobx.observable
   currFileIndex: number = 0;
 
+  seeds: number[][] = [];
+  seedsIndex: number[] = [];
+
   // this is temporary, will remove
   imageDuration: number = 3000;
   static audioSound: number = 0.5;
 
   static isImage(file: File) {
     const imageFormat = new RegExp("image/*");
-    console.log("isimage", file);
     return imageFormat.test(file.type);
   }
 
   static isVideo(file: File) {
     const videoFormat = new RegExp("video/*");
-    console.log("isvideo", file);
     return videoFormat.test(file.type);
   }
 
@@ -74,18 +75,18 @@ export class MediaPresenter {
     return this.durations[index];
   }
 
-  getFile(index: number): File {
-    console.log("index is " + index);
-    return this.files[index];
-  }
-
   getFileName(index: number): string {
     return this.files[index].name;
   }
   getFileIndex(file: File):number {
     return(this.files.indexOf(file));
   }
-
+  getPreviewFile(fileIndex: number): File {
+    return this.files[fileIndex];
+  }
+  getFile(mediaCounter: number, styleIndex: number): File {
+    return this.files[this.seeds[styleIndex][mediaCounter]];
+  }
   getCurrFile():File {
     return(this.files[this.currFileIndex]);
   }
@@ -99,9 +100,7 @@ export class MediaPresenter {
   // http://stackoverflow.com/questions/962802#962890
   shuffleArray(): number[] {
     for (var array = [], i = 0; i < this.files.length; ++i) array[i] = i;
-    console.log(this.files.length);
     if (this.customOrder) {
-      console.log("custom order is on");
       return array;
     }
     return [...array].sort(() => Math.random() - 0.5);
@@ -132,5 +131,40 @@ export class MediaPresenter {
       );
     }
     return filename;
+  }
+
+  // more on seed random generator https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
+  // shuffling using the The Fisher Yates Method
+  // Not ure how to shuffle based of value because its a file, so it shdnt matter
+  shuffle(array: number[], seed: number) {  
+    var m = array.length, t, i;
+    // While there are still elements remaining to shuffle
+    while (m) {
+      // Pick a remaining element…
+      i = Math.floor(this.random(seed) * m--);   
+  
+      // And swap it with the current element.
+      t = array[m];
+      array[m] = array[i];
+      array[i] = t;
+      ++seed;             
+    }
+    return array;
+  }
+  random(seed:number) {
+    var x = Math.sin(seed++) * 10000; 
+    return x - Math.floor(x);
+  }
+
+  initTemplates(templateSize: number) {
+    for (let j = 0; j < templateSize; j++) {
+      for (var array = [], i = 0; i < this.files.length; ++i) array[i] = i;
+      this.seeds.push(this.shuffle(array, j));
+    }
+  }
+
+  resetSeed(styleIndex: number) {
+    for (var array = [], i = 0; i < this.files.length; ++i) array[i] = i;
+    this.seeds.splice(styleIndex, 1, this.shuffle(array, styleIndex + this.seeds.length));
   }
 }

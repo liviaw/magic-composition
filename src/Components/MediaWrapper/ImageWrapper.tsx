@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useTimeout } from 'beautiful-react-hooks'; 
+// import { useTimeout } from 'beautiful-react-hooks'; 
 import styles from "./ImageWrapper.module.css";
 
 type Props = {
@@ -10,10 +10,10 @@ type Props = {
 };
 
 
-type timerProps = {
-  changeImage: () => void;
-  duration: number;
-};
+// type timerProps = {
+//   changeImage: () => void;
+//   duration: number;
+// };
 
 class Timer {
   callback: () => void;

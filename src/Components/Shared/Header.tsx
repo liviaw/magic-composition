@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./shared.module.css";
 import canvalogo from "../../Media/canvalogo.png";
 

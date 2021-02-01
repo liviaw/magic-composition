@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./ImportModal.module.css";
-import { trimmedName } from "../utils";
 import { AddMediaIcon } from "../AddMediaIcon/AddMediaIcon";
 import character from "../../Media/character.png";
 import { MediaComponent } from "./MediaComponent";
@@ -43,7 +42,7 @@ export const MediaPreviewer: React.FC<Props> = observer(
           return (
             <div key={file.name} className={styles.filePreviewContainer}>
               <div className={styles.fileNamePreview}>
-                {trimmedName(file.name)}
+                {mediaPresenter.trimmedName(file.name)}
               </div>
               <div className={styles.previewContainer}>
                 {customOrder ? (

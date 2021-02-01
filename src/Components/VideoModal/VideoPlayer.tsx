@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Button, Modal, Container, Carousel } from "react-bootstrap";
-import { VideoProgressBar } from "./VideoProgressBar";
+import React, { useState } from "react";
+// import { VideoProgressBar } from "./VideoProgressBar";
 import styles from "./VideoModal.module.css";
 import { MediaComponent } from "./MediaComponent";
-import RotateLoader from "react-spinners/RotateLoader";
+// import RotateLoader from "react-spinners/RotateLoader";
 import { MediaPresenter } from "../MediaPresenter";
 import { observer } from "mobx-react";
-import ReactPlayer from "react-player";
+// import ReactPlayer from "react-player";
 import playButton from "./playButton.png";
 import pauseButton from "./pauseButton.png";
 import type { slotEl } from "../Template";
@@ -15,10 +14,11 @@ type Props = {
   mediaPresenter: MediaPresenter;
   slot: slotEl;
   music: HTMLAudioElement;
+  styleIndex: number;
 };
 
 export const VideoPlayer: React.FC<Props> = observer(
-  ({ mediaPresenter, slot, music }) => {
+  ({ mediaPresenter, slot, music, styleIndex }) => {
     // default template is calm, medium
 
     const [mediaCounter, setMediaCounter] = useState<number>(0);
@@ -57,7 +57,7 @@ export const VideoPlayer: React.FC<Props> = observer(
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         <MediaComponent
-          file={mediaPresenter.getFile(mediaCounter)}
+          file={mediaPresenter.getFile(mediaCounter, styleIndex)}
           onEnded={changeImage}
           interval={slot.slot[mediaCounter]}
           mediaDur={mediaPresenter.getDuration(mediaCounter)}
@@ -78,9 +78,9 @@ export const VideoPlayer: React.FC<Props> = observer(
         ) : (
           <img
             onClick={() => {
-              setPlay(true);
-              music.currentTime=slot.start;
-              music.play();
+              // music.currentTime=slot.start;
+                music.play();
+                setPlay(true);
             }}
             className={styles.playButton}
             src={playButton}

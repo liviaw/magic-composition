@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Container, Carousel } from "react-bootstrap";
-import { VideoProgressBar } from "./VideoProgressBar";
+import { Button, Modal, Container } from "react-bootstrap";
+// import { VideoProgressBar } from "./VideoProgressBar";
 import { templates } from "../Template";
 import type { musicElement, trackEl, slotEl } from "../Template";
 import styles from "./VideoModal.module.css";
-import { MediaComponent } from "./MediaComponent";
-import RotateLoader from "react-spinners/RotateLoader";
+// import { MediaComponent } from "./MediaComponent";
+// import RotateLoader from "react-spinners/RotateLoader";
 import { MediaPresenter } from "../MediaPresenter";
 import { observer } from "mobx-react";
-import ReactPlayer from "react-player";
+// import ReactPlayer from "react-player";
 import { VideoPlayer } from "./VideoPlayer";
+import shuffleButton from "./shuffleButton.png";
+
 
 type Props = {
   setShow: (show: boolean) => void;
@@ -18,6 +20,7 @@ type Props = {
 };
 export const VideoModal: React.FC<Props> = observer(
   ({ setShow, show, mediaPresenter }) => {
+    const [currStyleIndex, setCurrStyleIndex] = useState<number>(0);
     const [currStyle, setCurrStyle] = useState<musicElement>(templates[0]);
     // the index of tracks
     const [trackIndex, setTrackIndex] = useState<number>(0);
@@ -33,21 +36,30 @@ export const VideoModal: React.FC<Props> = observer(
     );
 
     useEffect(() => {
-      music.addEventListener("canplaythrough", (event) => {
-        setMusicLoaded(true);
-        music.currentTime = currSlot.start;
-      });
-    }, []);
+      mediaPresenter.initTemplates(templates.length);
+    }, [mediaPresenter]);
+
+    // useEffect(() => {
+    //   mediaPresenter.initTemplates(templates.length);
+    //   music.addEventListener("canplaythrough", (event) => {
+    //     setMusicLoaded(true);
+    //     console.log("init music");
+    //   });
+    // }, []);
 
     useEffect(() => {
       setCurrTrack(currStyle.tracks[trackIndex]);
+      music.currentTime=currSlot.start;
       music.addEventListener("canplaythrough", (event) => {
-        setMusicLoaded(true);
+        if (music.readyState >= 3){
+          setMusicLoaded(true);
+        }
       });
-    }, [currStyle, trackIndex]);
+    }, [currStyle, trackIndex, music, music.readyState, currSlot.start]);
 
     useEffect(() => {
       setMusic(new Audio(currTrack.musicTrack));
+      // we can make it same as before, don't always go back to medium
       setCurrSlot(currTrack.medium);
     }, [currTrack]);
 
@@ -57,6 +69,9 @@ export const VideoModal: React.FC<Props> = observer(
       setMusicLoaded(false);
     };
     const previousMusic = () => {
+      if (currStyle.tracks.length === 1) {
+        return;
+      }
       resetVideo();
       if (trackIndex === 0) {
         setTrackIndex(currStyle.tracks.length - 1);
@@ -66,6 +81,9 @@ export const VideoModal: React.FC<Props> = observer(
     };
 
     const nextMusic = () => {
+      if (currStyle.tracks.length === 1) {
+        return;
+      }
       resetVideo();
       if (trackIndex === currStyle.tracks.length - 1) {
         setTrackIndex(0);
@@ -90,24 +108,51 @@ export const VideoModal: React.FC<Props> = observer(
         <Modal.Body>
           <Container>
             <div className={styles.frame}>
-              <div className={styles.previousRound} onClick={previousMusic}>
+              <div
+                className={
+                  currStyle.tracks.length <= 1
+                  ? styles.disabledPreviousRound
+                  : styles.previousRound
+                }
+                onClick={previousMusic}
+              >
                 &#8249;
               </div>
               {musicLoaded ? (
                 // whenever slot or music changes, videPlayer will re-render,
                 // which resets the video
                 <VideoPlayer
-                  mediaPresenter={mediaPresenter}
-                  slot={currSlot}
-                  music={music}
+                mediaPresenter={mediaPresenter}
+                slot={currSlot}
+                music={music}
+                styleIndex={currStyleIndex}
                 />
-              ) : (
-                <p>Creating video...</p>
-              )}
-              <div className={styles.nextRound} onClick={nextMusic}>
+                ) : (
+                  <p>Creating video...</p>
+                  )}
+              <div
+                className={
+                  currStyle.tracks.length <= 1
+                  ? styles.disabledNextRound
+                  : styles.nextRound
+                }
+                onClick={nextMusic}
+              >
                 &#8250;
               </div>
+                <img
+                  className={styles.shuffleButton}
+                  onClick={() => {
+                    resetVideo();
+                    mediaPresenter.resetSeed(currStyleIndex);
+                    music.pause();
+                  }}
+                  src={shuffleButton}
+                  alt="shuffle button"
+                />
             </div>
+                  
+
             <span> Playing Music: {currTrack.musicName}</span>
             <br />
             <span> style: {currStyle.style}</span>
@@ -116,17 +161,18 @@ export const VideoModal: React.FC<Props> = observer(
             <br />
           </Container>
           <p>Moods: </p>
-          {Object.values(templates).map((template) => {
+          {Object.values(templates).map((template, index) => {
             return (
               <Button
                 key={template.style}
                 variant="outline-dark"
                 disabled={currStyle === template ? true : false}
+                className={styles.tooltip}
                 onClick={() => {
                   if (currStyle !== template) {
                     resetVideo();
                     setCurrStyle(template);
-                    // setShuffledCounter(mediaPresenter.shuffleArray());
+                    setCurrStyleIndex(index);
                     // how do you make sure it sticks with what user picked b4?
 
                     // uncomment this to set all tracks back to track #0
@@ -134,6 +180,7 @@ export const VideoModal: React.FC<Props> = observer(
                   }
                 }}
               >
+                {currStyle === template ? <span className={styles.tooltiptext}>Currently Playing {template.style}</span>:null}
                 {template.style}
               </Button>
             );
@@ -141,10 +188,12 @@ export const VideoModal: React.FC<Props> = observer(
           <br />
           <br />
           <p>Lengths: </p>
+
           <Button
             key="Short"
             variant="info"
             disabled={currSlot.length === "short" ? true : false}
+            className={styles.tooltip}
             onClick={() => {
               if (currSlot.length !== "short") {
                 setCurrSlot(currTrack.short);
@@ -152,15 +201,17 @@ export const VideoModal: React.FC<Props> = observer(
               }
             }}
           >
-            {" "}
-            Short
+            {currSlot.length === "short" ? <span className={styles.tooltiptext}>Currently Playing Short</span>:null}
+            {"Short"}
           </Button>
+
 
           {currTrack.medium.slot.length <= mediaPresenter.filesLength ? (
             <Button
               key="Medium"
               variant="info"
               disabled={currSlot.length === "medium" ? true : false}
+              className={styles.tooltip}
               onClick={() => {
                 if (currSlot.length !== "medium") {
                   setCurrSlot(currTrack.medium);
@@ -168,7 +219,8 @@ export const VideoModal: React.FC<Props> = observer(
                 }
               }}
             >
-              Medium
+              {currSlot.length === "medium" ? <span className={styles.tooltiptext}>Currently Playing Medium</span>:null}
+              {"Medium"}
             </Button>
           ) : null}
 
@@ -177,6 +229,7 @@ export const VideoModal: React.FC<Props> = observer(
             <Button
               key="Long"
               variant="info"
+              className={styles.tooltip}
               disabled={currSlot.length === "long" ? true : false}
               onClick={() => {
                 if (currSlot.length !== "long") {
@@ -185,7 +238,8 @@ export const VideoModal: React.FC<Props> = observer(
                 }
               }}
             >
-              Long
+              {currSlot.length === "long" ? <span className={styles.tooltiptext}>Currently Playing Long</span>:null}
+              {"Long"}
             </Button>
           ) : null}
         </Modal.Body>

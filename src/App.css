@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css?family=Lily+Script+One');
 
 :root {
+  --canva-blue:#00c4cc;
   --half-canva-blue:#00c4cc80;
   /* rgb(100, 100, 100); */
   --light-white: #646464; 
