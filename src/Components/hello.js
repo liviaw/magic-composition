@@ -93,5 +93,5 @@ function switchorder(index, newIndex) {
   console.log(arr);
 }
 
-switchorder(2,4);
+switchorder(2,90);
 // switchorder(2,5);

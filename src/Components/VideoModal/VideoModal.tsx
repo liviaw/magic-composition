@@ -65,7 +65,7 @@ export const VideoModal: React.FC<Props> = observer(
 
     const resetVideo = (): void => {
       music.load();
-      music.pause();
+      // music.pause();
       setMusicLoaded(false);
     };
     const previousMusic = () => {

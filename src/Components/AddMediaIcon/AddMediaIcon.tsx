@@ -2,6 +2,7 @@ import React from "react";
 import icon from "./addPhotoIcon.svg";
 import styles from "./AddMediaIcon.module.css";
 import type { MediaPresenter } from "../MediaPresenter";
+import { showError } from "../ErrorToast/ErrorToast";
 
 type Props = {
   mediaPresenter: MediaPresenter;
@@ -14,7 +15,9 @@ export const AddMediaIcon: React.FC<Props> = ({ mediaPresenter }) => {
     if (event.target.files === null) return;
     const files: FileList = event.target.files;
     Array.from(files).forEach((file: File) => {
-      mediaPresenter.addFile(file);
+      if (!mediaPresenter.addFile(file)) {
+        showError(file.name + "is not an acceptable file format");
+      }
     })
   };
   return (

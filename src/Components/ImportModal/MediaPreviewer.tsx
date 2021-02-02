@@ -59,7 +59,7 @@ export const MediaPreviewer: React.FC<Props> = observer(
                       (item, index) => index
                     ).map((num: number) => (
                       <MenuItem key={num} value={num}>
-                        {num}
+                        {(num+1)}
                       </MenuItem>
                     ))}
                   </Select>
@@ -75,6 +75,7 @@ export const MediaPreviewer: React.FC<Props> = observer(
                 className={styles.deleteIconButton}
                 onClick={() => {
                   mediaPresenter.removeFile(index);
+                  setMediaReady((m: number) => m - 1);
                 }}
               >
                 <DeleteIcon />

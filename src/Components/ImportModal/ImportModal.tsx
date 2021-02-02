@@ -6,6 +6,7 @@ import styles from "./ImportModal.module.css";
 import { Button, Container } from "react-bootstrap";
 import type { MediaPresenter } from "../MediaPresenter";
 import { observer } from 'mobx-react';
+import { ErrorToast, showError } from "../ErrorToast/ErrorToast";
 
 type Props = {
   setShow: (show: boolean) => void;
@@ -34,13 +35,17 @@ export const ImportModal: React.FC<Props> = observer(({
           if (file == null) {
             return;
           }
-          mediaPresenter.addFile(file);
+          if (!mediaPresenter.addFile(file)) {
+            showError(file.name + "is not an acceptable file format");
+          }
         }
       })
     } else {
       // Use DataTransfer interface to access the file(s)
       Array.from(e.dataTransfer.files).forEach((file: File) => {
-        mediaPresenter.addFile(file);
+        if (!mediaPresenter.addFile(file)) {
+          showError(file.name + "is not an acceptable file format");
+        }
       })
     }
   };
@@ -62,6 +67,7 @@ export const ImportModal: React.FC<Props> = observer(({
       onDragOver={dragOverHandler}
     >
       <Loading mediasLength={mediaPresenter.filesLength} mediaReady={mediaReady} />
+      <ErrorToast />
       {!onDropState && onDragState && (
         <div
           className={styles.dropModal}

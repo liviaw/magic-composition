@@ -97,6 +97,7 @@ export const VideoPlayer: React.FC<Props> = observer(
             onClick={() => {
               setMediaCounter(0);
               music.load();
+              music.currentTime=slot.start;
               music.play();
               setPlay(true);
             }}

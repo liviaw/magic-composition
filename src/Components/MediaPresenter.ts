@@ -44,12 +44,14 @@ export class MediaPresenter {
   }
 
   @mobx.action
-  addFile(newFile: File): void {
+  addFile(newFile: File): boolean {
     if (MediaPresenter.isImage(newFile) || MediaPresenter.isVideo(newFile)) {
       this.files.push(newFile);
       this.durations.push(0);
       this.played.push(0);
+      return true;
     } 
+    return false;
   }
   
   @mobx.action
@@ -124,29 +126,13 @@ export class MediaPresenter {
     let durTemp: number;
     let playedTemp: number;
     if (newIndex > -1) {
-      // [fileTemp] = this.files.splice(newIndex, 1);
-      // [durTemp] = this.durations.splice(newIndex, 1);
-      // [playedTemp] = this.played.splice(newIndex, 1);
-      // this.files.splice(index, 0, fileTemp);
-      // this.durations.splice(index, 0, durTemp);
-      // this.played.splice(index, 0, playedTemp);
-
-      let temp: File = this.files[index];
-      this.files[index] = this.files[newIndex];
-      this.files[newIndex] = temp;
-
-      durTemp = this.durations[index];
-      playedTemp = this.played[index];
-      
-      this.durations[index] = this.durations[newIndex];
-      this.durations[newIndex] = durTemp;
-      this.played[index] = this.played[newIndex];
-      this.played[newIndex] = playedTemp;
+      [fileTemp] = this.files.splice(index, 1);
+      [durTemp] = this.durations.splice(index, 1);
+      [playedTemp] = this.played.splice(index, 1);
+      this.files.splice(newIndex, 0, fileTemp);
+      this.durations.splice(newIndex, 0, durTemp);
+      this.played.splice(newIndex, 0, playedTemp);
     }
-
-
-
-
   }
   trimmedName(filename: string): string {
     if (filename.length >= MAXLEN) {

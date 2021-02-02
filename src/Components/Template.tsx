@@ -51,17 +51,17 @@ export const templates: musicElement[] = [
 				},
 				medium: {
 					start: 0,
-					end: 47,
+					end: 38,
 					length: "medium",
-					slot: [6, 4, 6, 5, 8, 6, 7, 5],
+					slot: [6, 6, 5, 8, 6, 7],
 					slotLength: 47,
 				},
 				long: {
 					start: 0,
-					end: 100,
+					end: 60,
 					length: "long",
-					slot: [7, 8, 15, 6, 9, 10, 17, 13, 15],
-					slotLength: 100,
+					slot: [7, 8, 15, 6, 9, 15],
+					slotLength: 60,
 				},
 			},
 			{
