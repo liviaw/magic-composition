@@ -60,7 +60,7 @@ export const VideoModal: React.FC<Props> = observer(
     useEffect(() => {
       setMusic(new Audio(currTrack.musicTrack));
       // we can make it same as before, don't always go back to medium
-      setCurrSlot(currTrack.medium);
+      setCurrSlot(currTrack.short);
     }, [currTrack]);
 
     const resetVideo = (): void => {
@@ -206,7 +206,7 @@ export const VideoModal: React.FC<Props> = observer(
           </Button>
 
 
-          {currTrack.medium.slot.length <= mediaPresenter.filesLength ? (
+          {currTrack.medium.slot.length <= mediaPresenter.filesLength * 1.5 && (
             <Button
               key="Medium"
               variant="info"
@@ -222,10 +222,10 @@ export const VideoModal: React.FC<Props> = observer(
               {currSlot.length === "medium" ? <span className={styles.tooltiptext}>Currently Playing Medium</span>:null}
               {"Medium"}
             </Button>
-          ) : null}
+          )}
 
-          {currTrack.medium.slot.length <= mediaPresenter.filesLength ||
-          currTrack.long.slot.length <= mediaPresenter.filesLength ? (
+          {currTrack.medium.slot.length <= mediaPresenter.filesLength * 1.5 &&
+          currTrack.long.slot.length <= mediaPresenter.filesLength * 1.5 && (
             <Button
               key="Long"
               variant="info"
@@ -241,7 +241,7 @@ export const VideoModal: React.FC<Props> = observer(
               {currSlot.length === "long" ? <span className={styles.tooltiptext}>Currently Playing Long</span>:null}
               {"Long"}
             </Button>
-          ) : null}
+          ) }
         </Modal.Body>
         <Modal.Footer>
           <Button

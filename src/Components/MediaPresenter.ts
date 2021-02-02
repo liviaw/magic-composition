@@ -24,7 +24,7 @@ export class MediaPresenter {
   seeds: number[][] = [];
   seedsIndex: number[] = [];
 
-  static audioSound: number = 5;
+  static audioSound: number = 3;
 
   static isImage(file: File) {
     const imageFormat = new RegExp("image/*");

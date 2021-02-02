@@ -23,13 +23,14 @@ export const VideoPlayer: React.FC<Props> = observer(
     // default template is calm, short
 
     const [mediaCounter, setMediaCounter] = useState<number>(0);
-
+    const [filesLength, setFilesLentg] = useState<number>(mediaPresenter.filesLength);
     const [play, setPlay] = useState<boolean>(false);
 
     // incrementing index of media[]
     const changeImage = (playedDur: number): void => {
+      console.log(mediaCounter);
       // // if files are not attached or if video is playing, do not change interval
-      if (mediaPresenter.filesLength === 0) {
+      if ( filesLength === 0) {
         return;
       }
       // TODO: if too many media or too little slots, manage it.
@@ -41,12 +42,7 @@ export const VideoPlayer: React.FC<Props> = observer(
       } else if (slot.slot.length < mediaCounter) {
         setMediaCounter(filesLen - 1);
         music.pause();
-      } else if (mediaCounter === filesLen - 1) {
-        console.log("not enough media");
-        // clearing interval for media switching within the video
-        setMediaCounter(filesLen - 1);
-        music.pause();
-        // }
+        music.load();
       } else {
         // video ended
         // set how long the video has or image has played for
@@ -54,20 +50,25 @@ export const VideoPlayer: React.FC<Props> = observer(
         setMediaCounter((mediaCounter) => mediaCounter + 1);
       }
     };
-    console.log(mediaCounter);
+   
 
      // if the video is the last file, lower the volume of music
-     if (mediaCounter === mediaPresenter.filesLength) {
-      while (music.volume > 0) {
+     if (music.currentTime >= slot.end - 3) {
+       console.log(slot.end - music.currentTime + " seconds left");
+      if (music.volume - 0.1 > 0) {
+        console.log("before " + music.volume);
         music.volume -= 0.1;
+        console.log("after " + music.volume);
       }
     }
+
+    console.log("videplayer");
 
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
        { mediaCounter < mediaPresenter.filesLength && 
         <MediaComponent
-          file={mediaPresenter.getFile(mediaCounter, styleIndex)}
+          file={mediaPresenter.getFile(mediaCounter % filesLength, styleIndex)}
           onEnded={changeImage}
           interval={slot.slot[mediaCounter]}
           mediaDur={mediaPresenter.getDuration(mediaCounter)}
