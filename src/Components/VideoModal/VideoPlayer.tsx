@@ -56,6 +56,13 @@ export const VideoPlayer: React.FC<Props> = observer(
     };
     console.log(mediaCounter);
 
+     // if the video is the last file, lower the volume of music
+     if (mediaCounter === mediaPresenter.filesLength) {
+      while (music.volume > 0) {
+        music.volume -= 0.1;
+      }
+    }
+
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
        { mediaCounter < mediaPresenter.filesLength && 

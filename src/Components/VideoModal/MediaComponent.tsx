@@ -3,6 +3,7 @@ import { ImageWrapper } from "../MediaWrapper/ImageWrapper";
 import ReactPlayer from "react-player";
 import { MediaPresenter } from "../MediaPresenter";
 import styles from "./VideoModal.module.css";
+import { showError } from "../ErrorToast/ErrorToast";
 
 // mediaDur is how long is your video
 // interval is how long is that slot
@@ -15,7 +16,7 @@ type MediaProps = {
   playfrom:number;
   setPlay: (value: boolean) => void;
 };
-export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, mediaDur, play, playfrom, setPlay }) => {
+export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, mediaDur, play, playfrom, setPlay, }) => {
 
 
   // const resetPlayer = () => {
@@ -40,10 +41,12 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, 
             mediaRef.current= newRef;
         }}
         url={URL.createObjectURL(file)}
-        // width="100%"
-        // height="50%"
         playing={play}
-        onError={() => alert(file + " is unable to play")}
+        // idk if this will work
+        onError={() => {
+          showError(file.name + " is unable to play");
+          onEnded(interval);
+        }}
         id={file.name}
         volume={Math.random() * MediaPresenter.audioSound}
         onEnded={() => {onEnded(interval)}}
@@ -53,14 +56,15 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, 
           // console.log(playedSeconds);
           if (playedSeconds >= interval) {
             setPlay(false);
-            onEnded(interval)
+            onEnded(interval);
+          }
+         
+        }}
+        onReady={() => {
+          if (mediaRef != null && mediaRef.current != null ) {
+              mediaRef.current.seekTo(playfrom, "seconds");
           }
         }}
-        // onReady={() => {
-        //   if (mediaRef != null && mediaRef.current != null ) {
-        //       mediaRef.current.seekTo(playfrom, "seconds");
-        //   }
-        // }}
         // onPause = {() => {
         //   mediaPresenter.played += interval * 1000;
         // }}
@@ -76,9 +80,9 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, 
             // if (mediaDur > interval && mediaRef != null && mediaRef.current != null) {
             //   mediaRef.current.seekTo(mediaDur - interval, 'seconds');
             // }
-            if (mediaRef != null && mediaRef.current != null) {
-              mediaRef.current.seekTo(playfrom, "seconds");
-            }
+            // if (mediaRef != null && mediaRef.current != null) {
+            //   mediaRef.current.seekTo(playfrom, "seconds");
+            // }
             // TODO
             // if (mediaRef != null && mediaRef.current != null ) {
             //     mediaRef.current.seekTo(0.4, "fraction");

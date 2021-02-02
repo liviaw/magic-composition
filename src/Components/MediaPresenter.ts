@@ -24,9 +24,7 @@ export class MediaPresenter {
   seeds: number[][] = [];
   seedsIndex: number[] = [];
 
-  // this is temporary, will remove
-  imageDuration: number = 3000;
-  static audioSound: number = 0.5;
+  static audioSound: number = 5;
 
   static isImage(file: File) {
     const imageFormat = new RegExp("image/*");
@@ -104,7 +102,7 @@ export class MediaPresenter {
 
   @mobx.action
   addFilePlayed(fileIndex: number, playedDur: number):void {
-    this.played[fileIndex] += playedDur;
+    this.played[fileIndex] = (this.played[fileIndex] + playedDur) % this.durations[fileIndex];
   }
 
   getFilePlayed(fileIndex: number): number {
