@@ -8,6 +8,7 @@ import { observer } from "mobx-react";
 // import ReactPlayer from "react-player";
 import playButton from "./playButton.png";
 import pauseButton from "./pauseButton.png";
+import replayButton from "./replayButton.png";
 import type { slotEl } from "../Template";
 
 type Props = {
@@ -19,7 +20,7 @@ type Props = {
 
 export const VideoPlayer: React.FC<Props> = observer(
   ({ mediaPresenter, slot, music, styleIndex }) => {
-    // default template is calm, medium
+    // default template is calm, short
 
     const [mediaCounter, setMediaCounter] = useState<number>(0);
 
@@ -40,7 +41,7 @@ export const VideoPlayer: React.FC<Props> = observer(
       } else if (slot.slot.length < mediaCounter) {
         setMediaCounter(filesLen - 1);
         music.pause();
-      } else if (mediaCounter >= filesLen - 1) {
+      } else if (mediaCounter === filesLen - 1) {
         console.log("not enough media");
         // clearing interval for media switching within the video
         setMediaCounter(filesLen - 1);
@@ -49,13 +50,15 @@ export const VideoPlayer: React.FC<Props> = observer(
       } else {
         // video ended
         // set how long the video has or image has played for
-        mediaPresenter.played[mediaCounter] += playedDur;
+        mediaPresenter.addFilePlayed(mediaCounter, playedDur);
         setMediaCounter((mediaCounter) => mediaCounter + 1);
       }
     };
+    console.log(mediaCounter);
 
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
+       { mediaCounter < mediaPresenter.filesLength && 
         <MediaComponent
           file={mediaPresenter.getFile(mediaCounter, styleIndex)}
           onEnded={changeImage}
@@ -63,8 +66,8 @@ export const VideoPlayer: React.FC<Props> = observer(
           mediaDur={mediaPresenter.getDuration(mediaCounter)}
           play={play}
           setPlay={setPlay}
-          playfrom={mediaPresenter.played[mediaCounter]}
-        />
+          playfrom={mediaPresenter.getFilePlayed(mediaCounter)}
+        />}
         {play ? (
           <img
             className={styles.pauseButton}
@@ -87,6 +90,21 @@ export const VideoPlayer: React.FC<Props> = observer(
             alt="play button"
           />
         )}
+
+        {
+          (mediaCounter >= mediaPresenter.filesLength || music.paused )&&
+          (<img
+            onClick={() => {
+              setMediaCounter(0);
+              music.load();
+              music.play();
+              setPlay(true);
+            }}
+            className={styles.replayButton}
+            src={replayButton}
+            alt="replay button"
+          />) 
+        }
       </div>
     );
   }

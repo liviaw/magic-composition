@@ -82,4 +82,16 @@ function shuffle(array, seed) {                // <-- ADDED ARGUMENT
   var points = [40, 100, 1, 5, 25, 10];
 points.sort(function(a, b){return 0.5 - 0.3});
 
-console.log(points);
+// console.log(points);
+
+let arr = [0,1,2,3,4,5]
+// [0,1,2,4,5]
+function switchorder(index, newIndex) {
+  let temp;
+  [temp] = arr.splice(index, 1);
+  arr.splice(newIndex, 0, temp);
+  console.log(arr);
+}
+
+switchorder(2,4);
+// switchorder(2,5);

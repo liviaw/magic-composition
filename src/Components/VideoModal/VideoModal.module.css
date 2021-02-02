@@ -100,14 +100,18 @@
 	width: 50px;
 	height: 50px;
 	cursor: pointer;
-	align-self: left;
+	position: absolute;
+	left: 90px;
+	bottom: 344px;
 }
 
 .pauseButton {
 	width: 50px;
 	height: 50px;
 	cursor: pointer;
-	align-self: left;
+	position: absolute;
+	left: 90px;
+	bottom: 344px;
 }
 
 .shuffleButton {
@@ -117,6 +121,15 @@
 	position:absolute;
 	left: 145px;
 	bottom: 345.5px;
+}
+.replayButton {
+	width: 50px;
+	height: 50px;
+	cursor: pointer;
+	/* align-self: flex-end; */
+	position: absolute;
+	right: 150px;
+	bottom: 347px;
 }
 
 .tooltip {

@@ -29,7 +29,7 @@ export const VideoModal: React.FC<Props> = observer(
     const [currTrack, setCurrTrack] = useState<trackEl>(
       currStyle.tracks[trackIndex]
     );
-    const [currSlot, setCurrSlot] = useState<slotEl>(currTrack.medium);
+    const [currSlot, setCurrSlot] = useState<slotEl>(currTrack.short);
     const [musicLoaded, setMusicLoaded] = useState<boolean>(false);
     const [music, setMusic] = useState<HTMLAudioElement>(
       new Audio(currTrack.musicTrack)

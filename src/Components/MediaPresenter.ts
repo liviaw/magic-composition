@@ -2,7 +2,6 @@ import * as mobx from 'mobx';
 
 const MAXLEN = 10;
 
-
 export class MediaPresenter {
   constructor() {
     mobx.makeObservable(this);
@@ -85,6 +84,9 @@ export class MediaPresenter {
     return this.files[fileIndex];
   }
   getFile(mediaCounter: number, styleIndex: number): File {
+    if (this.customOrder) {
+      return this.files[mediaCounter];
+    }
     return this.files[this.seeds[styleIndex][mediaCounter]];
   }
   getCurrFile():File {
@@ -97,6 +99,15 @@ export class MediaPresenter {
     return this.files.length;
   }
 
+
+  @mobx.action
+  addFilePlayed(fileIndex: number, playedDur: number):void {
+    this.played[fileIndex] += playedDur;
+  }
+
+  getFilePlayed(fileIndex: number): number {
+    return this.played[fileIndex];
+  }
   // http://stackoverflow.com/questions/962802#962890
   shuffleArray(): number[] {
     for (var array = [], i = 0; i < this.files.length; ++i) array[i] = i;
@@ -105,7 +116,7 @@ export class MediaPresenter {
     }
     return [...array].sort(() => Math.random() - 0.5);
   }
-  swicthOrder(index: number, newIndex: any): void {
+  switchOrder(index: number, newIndex: any): void {
     if (typeof newIndex === "string") {
       newIndex = parseInt(newIndex);
     } 
@@ -113,13 +124,29 @@ export class MediaPresenter {
     let durTemp: number;
     let playedTemp: number;
     if (newIndex > -1) {
-      [fileTemp] = this.files.splice(newIndex, 1);
-      [durTemp] = this.durations.splice(newIndex, 1);
-      [playedTemp] = this.played.splice(newIndex, 1);
-      this.files.splice(index, 0, fileTemp);
-      this.durations.splice(index, 0, durTemp);
-      this.played.splice(index, 0, playedTemp);
+      // [fileTemp] = this.files.splice(newIndex, 1);
+      // [durTemp] = this.durations.splice(newIndex, 1);
+      // [playedTemp] = this.played.splice(newIndex, 1);
+      // this.files.splice(index, 0, fileTemp);
+      // this.durations.splice(index, 0, durTemp);
+      // this.played.splice(index, 0, playedTemp);
+
+      let temp: File = this.files[index];
+      this.files[index] = this.files[newIndex];
+      this.files[newIndex] = temp;
+
+      durTemp = this.durations[index];
+      playedTemp = this.played[index];
+      
+      this.durations[index] = this.durations[newIndex];
+      this.durations[newIndex] = durTemp;
+      this.played[index] = this.played[newIndex];
+      this.played[newIndex] = playedTemp;
     }
+
+
+
+
   }
   trimmedName(filename: string): string {
     if (filename.length >= MAXLEN) {

@@ -24,8 +24,9 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, 
   // }
 
   const changeImage = (): void => {
-    onEnded(interval * 1000);
+    onEnded(interval);
   }
+  
   
   const mediaRef: any = useRef(undefined);
   if (MediaPresenter.isImage(file)) {
@@ -51,10 +52,15 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, 
         onProgress={({playedSeconds}) => {
           // console.log(playedSeconds);
           if (playedSeconds >= interval) {
-            // setPlay(false);
+            setPlay(false);
             onEnded(interval)
           }
         }}
+        // onReady={() => {
+        //   if (mediaRef != null && mediaRef.current != null ) {
+        //       mediaRef.current.seekTo(playfrom, "seconds");
+        //   }
+        // }}
         // onPause = {() => {
         //   mediaPresenter.played += interval * 1000;
         // }}
@@ -71,7 +77,7 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, 
             //   mediaRef.current.seekTo(mediaDur - interval, 'seconds');
             // }
             if (mediaRef != null && mediaRef.current != null) {
-              mediaRef.current.seekTo(mediaDur - interval, 'seconds');
+              mediaRef.current.seekTo(playfrom, "seconds");
             }
             // TODO
             // if (mediaRef != null && mediaRef.current != null ) {

@@ -51,7 +51,7 @@ export const MediaPreviewer: React.FC<Props> = observer(
                     onChange={(
                       event: React.ChangeEvent<{ value: unknown }>
                     ) => {
-                      mediaPresenter.swicthOrder(index, event.target.value);
+                      mediaPresenter.switchOrder(index, event.target.value);
                     }}
                   >
                     {Array.from(
