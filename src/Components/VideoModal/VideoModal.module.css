@@ -17,7 +17,7 @@
 	border: solid 1px var(--light-white);
 	height: 500px;
 	width: 90%;
-	background-color: black;
+	background-color:var(--black);
 	display: flex;
 	/* flex-direction: column; */
 	justify-content: center;
@@ -41,7 +41,7 @@
 }
 
 .previousRound {
-	background-color: #f1f1f1;
+	background-color: var(--cream);
 	color: black;
 	border-radius: 50%;
 	text-decoration: none;
@@ -53,7 +53,7 @@
 }
 
 .disabledPreviousRound {
-	background-color: #f1f1f1;
+	background-color: var(--cream);
 	color: black;
 	border-radius: 50%;
 	text-decoration: none;
@@ -65,7 +65,7 @@
 
 .nextRound {
 	background-color: var(--half-canva-blue);
-	color: white;
+	color: var(--white);
 	border-radius: 50%;
 	text-decoration: none;
   	display: inline-block;
@@ -77,7 +77,7 @@
 
 .disabledNextRound {
 	background-color: var(--half-canva-blue);
-	color: white;
+	color: var(--white);
 	border-radius: 50%;
 	text-decoration: none;
   	display: inline-block;
@@ -87,13 +87,13 @@
 }
 
 .previousRound:hover {
-	background-color: #ddd;
+	background-color: var(----lightcream);
 	/* text color */
-  color: black;
+  color: var(--black);
 }
 
 .nextRound:hover {
-	background-color: #ddd;
+	background-color: var(----lightcream);
   color: black;
 }
 .playButton {
