@@ -23,7 +23,7 @@ export const VideoPlayer: React.FC<Props> = observer(
     // default template is calm, short
 
     const [mediaCounter, setMediaCounter] = useState<number>(0);
-    const [filesLength, setFilesLentg] = useState<number>(mediaPresenter.filesLength);
+    const [filesLength] = useState<number>(mediaPresenter.filesLength);
     const [play, setPlay] = useState<boolean>(false);
 
     // incrementing index of media[]
@@ -62,19 +62,19 @@ export const VideoPlayer: React.FC<Props> = observer(
       }
     }
 
-    console.log("videplayer");
+    console.log("videplayer " + mediaPresenter.getDuration(mediaCounter, styleIndex));
 
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
        { mediaCounter < mediaPresenter.filesLength && 
         <MediaComponent
-          file={mediaPresenter.getFile(mediaCounter % filesLength, styleIndex)}
+          file={mediaPresenter.getFile(mediaCounter, styleIndex)}
           onEnded={changeImage}
           interval={slot.slot[mediaCounter]}
-          mediaDur={mediaPresenter.getDuration(mediaCounter)}
+          mediaDur={mediaPresenter.getDuration(mediaCounter, styleIndex)}
           play={play}
           setPlay={setPlay}
-          playfrom={mediaPresenter.getFilePlayed(mediaCounter)}
+          playfrom={mediaPresenter.getFilePlayed(mediaCounter, styleIndex)}
         />}
         {play ? (
           <img

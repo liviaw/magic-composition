@@ -68,24 +68,31 @@ export class MediaPresenter {
   @mobx.action
   setDuration(index: number, duration: number): void {
     this.durations[index] = duration;
+    console.log("media prez")
+    console.log(duration);
+    console.log(this.durations[index]);
   }
 
-  getDuration(index: number): number {
-    return this.durations[index];
+  getDuration(index: number, styleIndex: number): number {
+    if (this.customOrder) {
+      return this.durations[index % this.filesLength];
+    }
+    console.log( this.durations[this.seeds[styleIndex][index]]);
+    return this.durations[this.seeds[styleIndex][index]];
   }
-
+  // only called in import modal, no seeding needed
   getFileName(index: number): string {
     return this.files[index].name;
   }
-  getFileIndex(file: File):number {
-    return(this.files.indexOf(file));
-  }
+  // getFileIndex(file: File):number {
+  //   return(this.files.indexOf(file));
+  // }
   getPreviewFile(fileIndex: number): File {
     return this.files[fileIndex];
   }
   getFile(mediaCounter: number, styleIndex: number): File {
     if (this.customOrder) {
-      return this.files[mediaCounter];
+      return this.files[mediaCounter % this.filesLength];
     }
     return this.files[this.seeds[styleIndex][mediaCounter]];
   }
@@ -99,14 +106,16 @@ export class MediaPresenter {
     return this.files.length;
   }
 
-
   @mobx.action
   addFilePlayed(fileIndex: number, playedDur: number):void {
     this.played[fileIndex] = (this.played[fileIndex] + playedDur) % this.durations[fileIndex];
   }
 
-  getFilePlayed(fileIndex: number): number {
-    return this.played[fileIndex];
+  getFilePlayed(fileIndex: number, styleIndex: number): number {
+    if (this.customOrder) {
+      return this.played[fileIndex % this.filesLength] % this.getDuration(fileIndex, styleIndex);
+    }
+    return this.played[this.seeds[styleIndex][fileIndex]] % this.getDuration(fileIndex, styleIndex);
   }
   // http://stackoverflow.com/questions/962802#962890
   shuffleArray(): number[] {

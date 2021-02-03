@@ -44,10 +44,10 @@ export const templates: musicElement[] = [
 				musicName: "Ocean Sound",
 				short: {
 					start: 0,
-					end: 20,
+					end: 30,
 					length: "short",
-					slot: [6, 4, 4, 6],
-					slotLength: 40,
+					slot: [16, 4, 4, 6],
+					slotLength: 30,
 				},
 				medium: {
 					start: 0,

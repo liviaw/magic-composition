@@ -48,6 +48,10 @@ export const MediaComponent: React.FC<MediaProps> = observer(({
         onDuration={(duration) => {
           //   // set duration state as true so that it will not reset it again
           if (!loaded) {
+            console.log("media component");
+            console.log(duration);
+            let temp = duration;
+            console.log(temp);
             setLoaded(true);
             setMediaReady((m: number) => m + 1);
             mediaPresenter.setDuration(index, duration);
