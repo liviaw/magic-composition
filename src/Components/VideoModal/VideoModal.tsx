@@ -45,13 +45,13 @@ export const VideoModal: React.FC<Props> = ({
   // incrementing index of media[]
   const changeImage = (): void => {
     // if files are not attached or if video is playing, do not change interval
-    if (mediaPresenter.getFiles() === []) {
+    if (mediaPresenter.filesLength === 0) {
       return;
     }
     // if () {
     //   // too many media or too little slots
     // } else 
-    let filesLen = mediaPresenter.getFilesLength();
+    let filesLen = mediaPresenter.filesLength;
     if (music.ended) {
       // should never go here? Because I set up the templates to be short or equal to music lengtj
       setMediaCounter(filesLen- 1);
