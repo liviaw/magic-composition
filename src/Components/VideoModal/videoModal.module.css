@@ -76,13 +76,13 @@
 }
 
 .previousRound:hover {
-  background-color: var(----lightcream);
+  background-color: var(--lightcream);
   /* text color */
   color: var(--black);
 }
 
 .nextRound:hover {
-  background-color: var(----lightcream);
+  background-color: var(--lightcream);
   color: black;
 }
 .playButton {
