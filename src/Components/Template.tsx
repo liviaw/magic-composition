@@ -5,17 +5,19 @@ import jazzy from "../Audio/jazzy.mp3";
 import gentle from "../Audio/gentle.mp3";
 import uplifting from "../Audio/uplifting.mp3";
 
-// duration is the length of each media displayed in video
-// if there are too many photos, then mb dont show all? (for now)
-// length is the length of the final video
-// durations and lengths in seconds
-// slots is the available timings for each video/image file
-// more documentation will be written on this
+/*
+ * Music always start with calm, short, track[0]
+ * if there are too many photos, then not all of them will be shown
+ * durationsin seconds
+ * slots is the available timings for each video/image file
+ * in a situation where a video file is longer than a slot, then the video will be trimmed
+ * when a video file is shorter than a slot, then the video will be looped
+ */
 
 export type slotEl = {
   length: "short" | "medium" | "long";
   slot: number[];
-  slotLength: number;
+  totalDuration: number;
 };
 
 export type templateEl = {
@@ -39,17 +41,17 @@ export const templates: { [name: string]: templateEl } = {
     short: {
       length: "short",
       slot: [14, 14, 12],
-      slotLength: 40,
+      totalDuration: 40,
     },
     medium: {
       length: "medium",
       slot: [15, 15, 19, 8, 7, 14],
-      slotLength: 78,
+      totalDuration: 78,
     },
     long: {
       length: "long",
       slot: [15, 20, 21, 17, 13, 15],
-      slotLength: 100,
+      totalDuration: 100,
     },
   },
   gentle: {
@@ -61,17 +63,17 @@ export const templates: { [name: string]: templateEl } = {
     short: {
       length: "short",
       slot: [7, 5, 5, 7, 6],
-      slotLength: 30,
+      totalDuration: 30,
     },
     medium: {
       length: "medium",
       slot: [8, 10, 8, 5, 6, 7, 5, 5, 6],
-      slotLength: 60,
+      totalDuration: 60,
     },
     long: {
       length: "long",
       slot: [14, 15, 10, 10, 7, 8, 4, 5, 15, 12, 7, 3, 5],
-      slotLength: 115,
+      totalDuration: 115,
     },
   },
   neutral: {
@@ -83,18 +85,18 @@ export const templates: { [name: string]: templateEl } = {
     short: {
       length: "short",
       slot: [7, 5, 5, 3, 6, 5],
-      slotLength: 31,
+      totalDuration: 31,
     },
     medium: {
       length: "medium",
       slot: [7, 3, 7, 5, 5, 3, 6, 7, 5, 5, 6, 4, 4, 3],
-      slotLength: 70,
+      totalDuration: 70,
     },
     // mb add start time and end time of music
     long: {
       length: "long",
       slot: [15, 10, 10, 11, 5, 5, 25, 20],
-      slotLength: 100,
+      totalDuration: 100,
     },
   },
   uplifting: {
@@ -106,17 +108,17 @@ export const templates: { [name: string]: templateEl } = {
     short: {
       length: "short",
       slot: [6, 6, 6, 3, 5],
-      slotLength: 26,
+      totalDuration: 26,
     },
     medium: {
       length: "medium",
       slot: [5, 7, 5, 5, 6, 7, 5, 5, 3, 6, 4, 2, 4, 3],
-      slotLength: 67,
+      totalDuration: 67,
     },
     long: {
       length: "long",
       slot: [10, 7, 7, 8, 8, 6, 6, 5, 7, 5, 5, 3, 6, 2, 4, 5, 4, 5, 4, 9],
-      slotLength: 116,
+      totalDuration: 116,
     },
   },
   epic: {
@@ -128,12 +130,12 @@ export const templates: { [name: string]: templateEl } = {
     short: {
       length: "short",
       slot: [3, 5, 5, 3, 6],
-      slotLength: 22,
+      totalDuration: 22,
     },
     medium: {
       length: "medium",
       slot: [5, 7, 2, 5, 5, 3, 6, 6, 5, 5, 3, 6, 2, 2, 4, 6],
-      slotLength: 72,
+      totalDuration: 72,
     },
     long: {
       length: "long",
@@ -162,7 +164,7 @@ export const templates: { [name: string]: templateEl } = {
         5,
         4,
       ],
-      slotLength: 93,
+      totalDuration: 93,
     },
   },
   jazzy: {
@@ -174,12 +176,12 @@ export const templates: { [name: string]: templateEl } = {
     short: {
       length: "short",
       slot: [3, 7, 5, 5, 3, 6],
-      slotLength: 29,
+      totalDuration: 29,
     },
     medium: {
       length: "medium",
       slot: [5, 3, 4, 2, 5, 5, 3, 6, 7, 5, 5, 3, 6, 2, 2, 4, 7],
-      slotLength: 74,
+      totalDuration: 74,
     },
     long: {
       length: "long",
@@ -210,7 +212,7 @@ export const templates: { [name: string]: templateEl } = {
         5,
         4,
       ],
-      slotLength: 95,
+      totalDuration: 95,
     },
   },
   extreme: {
@@ -222,12 +224,12 @@ export const templates: { [name: string]: templateEl } = {
     short: {
       length: "short",
       slot: [2, 1, 3, 3, 6],
-      slotLength: 15,
+      totalDuration: 15,
     },
     medium: {
       length: "medium",
       slot: [2, 1, 2, 1, 2, 2, 1, 2, 3, 4, 5, 4, 3, 2, 2, 4, 2, 1, 3],
-      slotLength: 45,
+      totalDuration: 45,
     },
     long: {
       length: "long",
@@ -265,7 +267,7 @@ export const templates: { [name: string]: templateEl } = {
         2,
         2,
       ],
-      slotLength: 72,
+      totalDuration: 72,
     },
   },
 };
