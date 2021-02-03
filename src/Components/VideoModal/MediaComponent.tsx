@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useRef } from "react";
 import ReactPlayer from "react-player";
 import { MediaPresenter } from "../MediaPresenter";
 
@@ -42,7 +42,6 @@ export const MediaComponent: React.FC<MediaProps> = ({
             mediaRef.current != null
           ) {
             mediaRef.current.seekTo(mediaDur - interval, "seconds");
-            console.log("seek not null");
           }
         }}
       />
