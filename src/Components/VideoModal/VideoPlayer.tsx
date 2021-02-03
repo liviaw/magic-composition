@@ -27,7 +27,7 @@ export const VideoPlayer: React.FC<Props> = observer(
     const [play, setPlay] = useState<boolean>(false);
 
     // incrementing index of media[]
-    const changeImage = (playedDur: number): void => {
+    const onEnded = (playedDur: number): void => {
       console.log(mediaCounter);
       // // if files are not attached or if video is playing, do not change interval
       if ( filesLength === 0) {
@@ -39,7 +39,7 @@ export const VideoPlayer: React.FC<Props> = observer(
         // should never go here? Because I set up the templates to be short or equal to music lengtj
         setMediaCounter(filesLen - 1);
         console.log("music has ended");
-      } else if (slot.slot.length < mediaCounter) {
+      } else if (slot.slot.length <= mediaCounter) {
         setMediaCounter(filesLen - 1);
         music.pause();
         music.load();
@@ -47,14 +47,17 @@ export const VideoPlayer: React.FC<Props> = observer(
         // video ended
         // set how long the video has or image has played for
         mediaPresenter.addFilePlayed(mediaCounter, playedDur);
-        setMediaCounter((mediaCounter) => mediaCounter + 1);
+        setMediaCounter(mediaCounter + 1);
       }
     };
    
 
      // if the video is the last file, lower the volume of music
      if (music.currentTime >= slot.end - 3) {
-       console.log(slot.end - music.currentTime + " seconds left");
+       console.log(" slot.end is " +slot.end);
+       console.log("music current time " + music.currentTime);
+       console.log( " seconds left")
+       console.log(slot.end - music.currentTime);
       if (music.volume - 0.1 > 0) {
         console.log("before " + music.volume);
         music.volume -= 0.1;
@@ -69,12 +72,14 @@ export const VideoPlayer: React.FC<Props> = observer(
        { mediaCounter < mediaPresenter.filesLength && 
         <MediaComponent
           file={mediaPresenter.getFile(mediaCounter, styleIndex)}
-          onEnded={changeImage}
+          onEnded={onEnded}
           interval={slot.slot[mediaCounter]}
           mediaDur={mediaPresenter.getDuration(mediaCounter, styleIndex)}
           play={play}
           setPlay={setPlay}
           playfrom={mediaPresenter.getFilePlayed(mediaCounter, styleIndex)}
+          //  idt this is the right filename
+          key={mediaPresenter.getFileName(mediaCounter)}
         />}
         {play ? (
           <img

@@ -68,16 +68,12 @@ export class MediaPresenter {
   @mobx.action
   setDuration(index: number, duration: number): void {
     this.durations[index] = duration;
-    console.log("media prez")
-    console.log(duration);
-    console.log(this.durations[index]);
   }
 
   getDuration(index: number, styleIndex: number): number {
     if (this.customOrder) {
       return this.durations[index % this.filesLength];
     }
-    console.log( this.durations[this.seeds[styleIndex][index]]);
     return this.durations[this.seeds[styleIndex][index]];
   }
   // only called in import modal, no seeding needed
@@ -108,6 +104,7 @@ export class MediaPresenter {
 
   @mobx.action
   addFilePlayed(fileIndex: number, playedDur: number):void {
+
     this.played[fileIndex] = (this.played[fileIndex] + playedDur) % this.durations[fileIndex];
   }
 

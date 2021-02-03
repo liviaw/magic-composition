@@ -18,22 +18,31 @@ type MediaProps = {
 };
 export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, mediaDur, play, playfrom, setPlay, }) => {
 
-
-  // const resetPlayer = () => {
-  //   // reset music counter
-  //   // reset file counter
-  // }
   const [mediaPlayed, setMediaPlayed] = useState<number>(0);
-  // const [loop, setLoop] = useState<boolean>(false);
+  const [hasLooped, setHasLooped] = useState<boolean>(false);
   // const [videoVolume, setVideoVolume] = useState<number>(0.6);
   const changeImage = (): void => {
     onEnded(interval);
   }
   // mediaDur is how long your video file is
   // interval is the time inside slot:number[]
+  // if (mediaPlayed >= interval) {
+  //   setPlay(false);
+  //   // onEnded(interval);
+  // }
+
   
   const mediaRef: any = useRef(undefined);
-  console.log("hmmmm :,,,(");
+  console.log("hmmmm ....");
+
+  const handleCompleteInterval = (state: { playedSeconds: number; }): void => {
+    if (mediaPlayed + state.playedSeconds >= interval) {
+      setMediaPlayed(mediaPlayed + state.playedSeconds);
+      setPlay(false);
+      // onEnded(interval);
+      
+    }
+  }
   if (MediaPresenter.isImage(file)) {
     return (
       <ImageWrapper file={file} changeImage={changeImage} duration={interval * 1000} key={file.name} play={play}/>
@@ -46,76 +55,48 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, 
         }}
         url={URL.createObjectURL(file)}
         playing={play}
-        // loop={loop}
-        // idk if this will work, how to test it - how to get a broken video
         onError={() => {
           showError(file.name + " is unable to play");
           onEnded(interval);
         }}
         id={file.name}
-        // Idk what volume to put :( - ask Julia?
-        // I can analyse the volume of the video if i feel fancy - https://www.npmjs.com/package/react-volume-meter
-        // volume={videoVolume}
-
+        className={play? styles.clear  : styles.blur}
+        onStart={ () => {
+          console.log("onstart: " + interval);
+          console.log("onstart: " + playfrom);
+          if (mediaRef != null && mediaRef.current != null) {
+            mediaRef.current.seekTo(playfrom, "seconds");
+          }
+        }}
+        progressInterval={100}
+        onProgress={({playedSeconds})=> {
+          if (mediaPlayed + playedSeconds >= interval) {
+            setMediaPlayed(mediaPlayed + playedSeconds);
+            setPlay(false);
+            onEnded(interval);
+            
+            // console.log("hello canva");
+          }
+        }}
         onEnded={() => {
           console.log("on ended");
           // if slot is longer than the file, loop it
           if (mediaPlayed + mediaDur < interval) {
             console.log("setting seek to 0");
-            setMediaPlayed(mediaPlayed + mediaDur);
+            // the first time goes to this if statement -> only add mediplayed by (mediaDur - playfrom)
+            if (hasLooped) {
+              setMediaPlayed(mediaPlayed + mediaDur);
+            } else {
+              setMediaPlayed(mediaPlayed + (mediaDur - playfrom));
+            }
+            setHasLooped(true);
             if (mediaRef != null && mediaRef.current != null) {
               mediaRef.current.seekTo(0, "seconds");
-              // must change to this
-              // mediaRef.current.seekTo(playfrom, "seconds");
             }
           } else {
-            console.log("changing counter");
             onEnded(mediaPlayed + mediaDur);
           }
-        
         }}
-        className={play? styles.clear  : styles.blur}
-        onProgress={({playedSeconds}) => {
-          let h = mediaPlayed+playedSeconds;
-          console.log(h);
-          console.log(mediaPlayed+playedSeconds);
-          console.log("interval is " + interval);
-          console.log("media dur is " + mediaDur);
-          console.log("played seconds is " + playedSeconds);
-          
-          // will go here if it has looped and
-          // greater than interval
-          if (playedSeconds + mediaPlayed >= interval) {
-            // setLoop(false);
-            setMediaPlayed(mediaPlayed + playedSeconds);
-            setPlay(false);
-            onEnded(interval + playedSeconds + mediaPlayed);
-            console.log("1: on progress " + playedSeconds);
-          }
-
-          if (playedSeconds >= mediaDur) {
-            console.log("3");
-            setMediaPlayed(mediaPlayed + playedSeconds);
-            if (mediaRef != null && mediaRef.current != null) {
-              mediaRef.current.seekTo(0, "seconds");
-              // must change to this
-              // mediaRef.current.seekTo(playfrom, "seconds");
-            }
-          }
-
-         
-        }}
-        onStart={ () => {
-            console.log(interval);
-            // below code is to play from behind - interval
-            // if (mediaDur > interval && mediaRef != null && mediaRef.current != null) {
-            //   mediaRef.current.seekTo(mediaDur - interval, 'seconds');
-            // }
-            if (mediaRef != null && mediaRef.current != null) {
-              mediaRef.current.seekTo(playfrom, "seconds");
-            }
-         }
-        }
       />
 
     );
