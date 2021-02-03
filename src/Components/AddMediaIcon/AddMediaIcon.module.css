@@ -38,6 +38,6 @@
 }
 
 .addfileButton:hover {
-	border: 1px solid grey;
-	background-color: lightgrey;
+	border: 1px solid var(--grey);
+	background-color: var(--lightgrey);
 }
