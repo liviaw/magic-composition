@@ -80,9 +80,6 @@ export class MediaPresenter {
   getFileName(index: number): string {
     return this.files[index].name;
   }
-  // getFileIndex(file: File):number {
-  //   return(this.files.indexOf(file));
-  // }
   getPreviewFile(fileIndex: number): File {
     return this.files[fileIndex];
   }
@@ -96,7 +93,6 @@ export class MediaPresenter {
     return this.files[this.currFileIndex];
   }
 
-  //call it by: mediaPresenter.filesLength
   @mobx.computed
   get filesLength(): number {
     return this.files.length;

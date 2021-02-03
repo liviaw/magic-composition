@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import { ImageWrapper } from "../MediaWrapper/ImageWrapper";
 import ReactPlayer from "react-player";
 import { MediaPresenter } from "../MediaPresenter";
 
@@ -7,19 +6,22 @@ type MediaProps = {
   file: File;
   onEnded: () => void;
   interval: number;
-  mediaDur:number;
+  mediaDur: number;
 };
-export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, mediaDur }) => {
-    const mediaRef: any = useRef(undefined);
-    if (MediaPresenter.isImage(file)) {
-    return (
-      <ImageWrapper file={file} changeImage={onEnded} duration={interval * 1000} key={file.name}/>
-    );
+export const MediaComponent: React.FC<MediaProps> = ({
+  file,
+  onEnded,
+  interval,
+  mediaDur,
+}) => {
+  const mediaRef: any = useRef(undefined);
+  if (MediaPresenter.isImage(file)) {
+    return <img src={URL.createObjectURL(file)} alt={file.name} />;
   } else if (MediaPresenter.isVideo(file)) {
     return (
       <ReactPlayer
         ref={(newRef: any) => {
-            mediaRef.current= newRef;
+          mediaRef.current = newRef;
         }}
         url={URL.createObjectURL(file)}
         width="100%"
@@ -29,26 +31,21 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, 
         id={file.name}
         volume={Math.random() * MediaPresenter.audioSound}
         onEnded={onEnded}
-        // onProgress={({playedSeconds}) => {
-        //   console.log(playedSeconds);
-        //     setCurrProgress((curr: number) => curr + 1)
-        // }}
-        onPlay={ () => {
-            console.log(interval);
-            if (mediaDur > interval) {
-                console.log("HELLO");
-            }
-            if (mediaDur > interval && mediaRef != null && mediaRef.current != null) {
-                mediaRef.current.seekTo(mediaDur - interval, 'seconds');
-                console.log("seek not null");
-            }
-            // if (mediaRef != null && mediaRef.current != null ) {
-            //     mediaRef.current.seekTo(0.4, "fraction");
-            // }
-         }
-        }
+        onPlay={() => {
+          console.log(interval);
+          if (mediaDur > interval) {
+            console.log("HELLO");
+          }
+          if (
+            mediaDur > interval &&
+            mediaRef != null &&
+            mediaRef.current != null
+          ) {
+            mediaRef.current.seekTo(mediaDur - interval, "seconds");
+            console.log("seek not null");
+          }
+        }}
       />
-
     );
   }
   return null;
