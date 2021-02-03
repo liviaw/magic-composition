@@ -1,222 +1,270 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Container, Carousel } from "react-bootstrap";
-import { VideoProgressBar } from "./VideoProgressBar";
-import { templates, templateEl, slotEl } from "../Template";
+import { Button, Modal, Container } from "react-bootstrap";
+// import { VideoProgressBar } from "./VideoProgressBar";
+import { templates } from "../Template";
+import type { musicElement, trackEl, slotEl } from "../Template";
 import styles from "./VideoModal.module.css";
-import { MediaComponent } from "./MediaComponent";
-import RotateLoader from "react-spinners/RotateLoader";
+// import { MediaComponent } from "./MediaComponent";
+// import RotateLoader from "react-spinners/RotateLoader";
 import { MediaPresenter } from "../MediaPresenter";
+import { observer } from "mobx-react";
+// import ReactPlayer from "react-player";
+import { VideoPlayer } from "./VideoPlayer";
+import shuffleButton from "./shuffleButton.png";
+
 
 type Props = {
   setShow: (show: boolean) => void;
   show: boolean;
   mediaPresenter: MediaPresenter;
 };
-export const VideoModal: React.FC<Props> = ({
-  setShow,
-  show,
-  mediaPresenter
-}) => {
-  const [mediaCounter, setMediaCounter] = useState<number>(0);
-  const [shuffledCounter, setShuffledCounter] = useState<number[]>(
-    mediaPresenter.shuffleArray()
-  );
-  // default template is neutral, short
-  const [currTemplate, setCurrTemplate] = useState<templateEl>(
-    templates.neutral
-  );
-  const [music, setMusic] = useState<HTMLAudioElement>(
-    new Audio(currTemplate.musicTrack)
-  );
-  const [musicLoaded, setMusicLoaded] = useState<boolean>(false);
-  const [length, setLength] = useState<slotEl>(currTemplate.medium);
-  const [index, setIndex] = useState(0);
+export const VideoModal: React.FC<Props> = observer(
+  ({ setShow, show, mediaPresenter }) => {
+    const [currStyleIndex, setCurrStyleIndex] = useState<number>(0);
+    const [currStyle, setCurrStyle] = useState<musicElement>(templates[0]);
+    // the index of tracks
+    const [trackIndex, setTrackIndex] = useState<number>(0);
+    // this tells you what music its playing now
+    // and what the slots for the music is
+    const [currTrack, setCurrTrack] = useState<trackEl>(
+      currStyle.tracks[trackIndex]
+    );
+    const [currSlot, setCurrSlot] = useState<slotEl>(currTrack.short);
+    const [musicLoaded, setMusicLoaded] = useState<boolean>(false);
+    const [music, setMusic] = useState<HTMLAudioElement>(
+      new Audio(currTrack.musicTrack)
+    );
 
-  const handleSelect = (selectedIndex: number, e: any) => {
-    setIndex(selectedIndex);
-  };
+    useEffect(() => {
+      mediaPresenter.initTemplates(templates.length);
+    }, [mediaPresenter]);
 
-  useEffect(() => {
-    music.addEventListener("canplaythrough", (event) => {
-      setMusicLoaded(true);
-    });
-  }, []);
+    // useEffect(() => {
+    //   mediaPresenter.initTemplates(templates.length);
+    //   music.addEventListener("canplaythrough", (event) => {
+    //     setMusicLoaded(true);
+    //     console.log("init music");
+    //   });
+    // }, []);
 
-  // incrementing index of media[]
-  const changeImage = (): void => {
-    // if files are not attached or if video is playing, do not change interval
-    if (mediaPresenter.filesLength === 0) {
-      return;
-    }
-    // if () {
-    //   // too many media or too little slots
-    // } else 
-    let filesLen = mediaPresenter.filesLength;
-    if (music.ended) {
-      // should never go here? Because I set up the templates to be short or equal to music lengtj
-      setMediaCounter(filesLen- 1);
-      console.log("music has ended");
-    } else if (length.slot.length < mediaCounter) {
-      setMediaCounter(filesLen  - 1);
-      console.log("too many media or too little slots");
-      music.pause();
-    } else if (mediaCounter >= filesLen  - 1 ) {
-      console.log("not enough media");
-      // if(length.length === "long") {
-      //   setMediaCounter(0);
-      // } else {
-        // clearing interval for media switching within the video
-        setMediaCounter(filesLen - 1);
-        music.pause();
-      // }
-    } else {
-      // video ended
-      setMediaCounter((mediaCounter) => mediaCounter + 1);
-    }
-  };
+    useEffect(() => {
+      setCurrTrack(currStyle.tracks[trackIndex]);
+      music.currentTime=currSlot.start;
+      music.addEventListener("canplaythrough", (event) => {
+        if (music.readyState >= 3){
+          setMusicLoaded(true);
+        }
+      });
+    }, [currStyle, trackIndex, music, music.readyState, currSlot.start]);
 
-  const getTotalDur = (): number => {
-    let totalDuration:number = 0;
-    let files = mediaPresenter.getFiles();
-    for (let i = 0; i < Math.min(mediaPresenter.getFilesLength(),length.slot.length); i++) {
-      if(MediaPresenter.isImage(files[shuffledCounter[i]])) {
-        totalDuration = totalDuration + length.slot[i];
-      } else {
-        totalDuration = totalDuration + Math.min(mediaPresenter.getDuration(shuffledCounter[i]),length.slot[i]);
+    useEffect(() => {
+      setMusic(new Audio(currTrack.musicTrack));
+      // we can make it same as before, don't always go back to medium
+      setCurrSlot(currTrack.short);
+    }, [currTrack]);
+
+    const resetVideo = (): void => {
+      music.load();
+      // music.pause();
+      setMusicLoaded(false);
+    };
+    const previousMusic = () => {
+      if (currStyle.tracks.length === 1) {
+        return;
       }
-    }
-    console.log("total duration is " + totalDuration);
-    return Math.round(totalDuration);
-  }
+      resetVideo();
+      if (trackIndex === 0) {
+        setTrackIndex(currStyle.tracks.length - 1);
+      } else {
+        setTrackIndex(trackIndex - 1);
+      }
+    };
 
-  const resetVideo = (): void => {
-    music.load();
-    music.pause();
-    setMediaCounter(0);
-  }
+    const nextMusic = () => {
+      if (currStyle.tracks.length === 1) {
+        return;
+      }
+      resetVideo();
+      if (trackIndex === currStyle.tracks.length - 1) {
+        setTrackIndex(0);
+      } else {
+        setTrackIndex(trackIndex + 1);
+      }
+    };
 
-  music.play();
-  console.log(music.readyState);
-  console.log("shuffled arrays is");
-  console.log(shuffledCounter);
-
-  return (
-    <Modal centered size="lg" show={show} onHide={() => {setShow(false);resetVideo();}}>
-      <Modal.Header closeButton>
-        <Modal.Title>Here is your Video</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-      <Carousel>
-        {musicLoaded ? (
-          <Container fluid>
-            <div className={styles.renderMediaContainer}>
-              {/* file={shuffleArray(currentFile)} */}
-              <MediaComponent
-                file={mediaPresenter.getFile(shuffledCounter[mediaCounter])}
-                onEnded={changeImage}
-                interval={length.slot[mediaCounter]}
-                mediaDur={mediaPresenter.getDuration(shuffledCounter[mediaCounter])}
-              />
-            </div>
-            
-            <VideoProgressBar
-              totalVideoDuration={getTotalDur()}
-            />
-            <span> Playing Music: {currTemplate.musicName}</span>
-            <br/>
-            <span> style: {currTemplate.title}</span>
-            <br/>
-            <span> tempo: {length.length}</span>
-            <br/>
-
-            {Object.values(templates).map((template) => {
-              return (
-                <Button
-                  key={template.title}
-                  variant="outline-dark"
+    return (
+      <Modal
+        centered
+        size="xl"
+        show={show}
+        onHide={() => {
+          setShow(false);
+          resetVideo();
+        }}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Here is your Video</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Container>
+            <div className={styles.frame}>
+              <div
+                className={
+                  currStyle.tracks.length <= 1
+                  ? styles.disabledPreviousRound
+                  : styles.previousRound
+                }
+                onClick={previousMusic}
+              >
+                &#8249;
+              </div>
+              {musicLoaded ? (
+                // whenever slot or music changes, videPlayer will re-render,
+                // which resets the video
+                <VideoPlayer
+                mediaPresenter={mediaPresenter}
+                slot={currSlot}
+                music={music}
+                styleIndex={currStyleIndex}
+                />
+                ) : (
+                  <p>Creating video...</p>
+                  )}
+              <div
+                className={
+                  currStyle.tracks.length <= 1
+                  ? styles.disabledNextRound
+                  : styles.nextRound
+                }
+                onClick={nextMusic}
+              >
+                &#8250;
+              </div>
+                <img
+                  className={styles.shuffleButton}
                   onClick={() => {
-                    console.log("template "+ template.title + " is clicked!");
                     resetVideo();
-                    setCurrTemplate(template);
-                    setMusic(new Audio(template.musicTrack));
-                    setShuffledCounter(mediaPresenter.shuffleArray());
-                    // how do you make sure it sticks with what user picked b4?
-                    setLength(template.medium);
+                    mediaPresenter.resetSeed(currStyleIndex);
+                    music.pause();
                   }}
-                >
-                  {template.title}
-                </Button>
-              );
-            })}
-          </Container>
-        ) : (
-          // using the canva brand color
-          <RotateLoader color="#00C4CC" />
-        )}
-        <Button
-          key="Short"
-          variant="info"
-          onClick={() => {
-            if (length.length !== "short") {
-              setLength(currTemplate.short);
-              setShuffledCounter(mediaPresenter.shuffleArray());
-              setMediaCounter(0);
-              music.load();
-            }
-          }}
-        >
-          Short
-        </Button>
-        <Button
-          key="Medium"
-          variant="info"
-          onClick={() => {
-            if (length.length !== "medium") {
-              setLength(currTemplate.medium);
-              setShuffledCounter(mediaPresenter.shuffleArray());
-              setMediaCounter(0);
-              music.load();
-            }
-          }}
-        >
-          Medium
-        </Button>
-        <Button
-          key="long"
-          variant="info"
-          onClick={() => {
-            if (length.length !== "long") {
-              setLength(currTemplate.long);
-              setShuffledCounter(mediaPresenter.shuffleArray());
-              setMediaCounter(0);
-              music.load();
-            }
-          }}
-        >
-          Long
-        </Button>
-        </Carousel>
-      </Modal.Body>
+                  src={shuffleButton}
+                  alt="shuffle button"
+                />
+            </div>
+                  
 
-      <Modal.Footer>
-        <Button variant="outline-dark" 
-          onClick={() => {
-            resetVideo();
-            setShow(false);
-          }
-          }>
-          Close
-        </Button>
-        <Button
-          variant="info"
-          onClick={() => {
-            resetVideo();
-            setShow(false);
-          }}
-        >
-          Save Video
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  );
-};
+            <span> Playing Music: {currTrack.musicName}</span>
+            <br />
+            <span> style: {currStyle.style}</span>
+            <br />
+            <span> tempo: {currSlot.length}</span>
+            <br />
+          </Container>
+          <p>Moods: </p>
+          {Object.values(templates).map((template, index) => {
+            return (
+              <Button
+                key={template.style}
+                variant="outline-dark"
+                disabled={currStyle === template ? true : false}
+                className={styles.tooltip}
+                onClick={() => {
+                  if (currStyle !== template) {
+                    resetVideo();
+                    setCurrStyle(template);
+                    setCurrStyleIndex(index);
+                    // how do you make sure it sticks with what user picked b4?
+
+                    // uncomment this to set all tracks back to track #0
+                    // setTrackIndex(0);
+                  }
+                }}
+              >
+                {currStyle === template ? <span className={styles.tooltiptext}>Currently Playing {template.style}</span>:null}
+                {template.style}
+              </Button>
+            );
+          })}
+          <br />
+          <br />
+          <p>Lengths: </p>
+
+          <Button
+            key="Short"
+            variant="info"
+            disabled={currSlot.length === "short" ? true : false}
+            className={styles.tooltip}
+            onClick={() => {
+              if (currSlot.length !== "short") {
+                setCurrSlot(currTrack.short);
+                resetVideo();
+              }
+            }}
+          >
+            {currSlot.length === "short" ? <span className={styles.tooltiptext}>Currently Playing Short</span>:null}
+            {"Short"}
+          </Button>
+
+
+          {currTrack.medium.slot.length <= mediaPresenter.filesLength * 1.5 && (
+            <Button
+              key="Medium"
+              variant="info"
+              disabled={currSlot.length === "medium" ? true : false}
+              className={styles.tooltip}
+              onClick={() => {
+                if (currSlot.length !== "medium") {
+                  setCurrSlot(currTrack.medium);
+                  resetVideo();
+                }
+              }}
+            >
+              {currSlot.length === "medium" ? <span className={styles.tooltiptext}>Currently Playing Medium</span>:null}
+              {"Medium"}
+            </Button>
+          )}
+
+          {currTrack.medium.slot.length <= mediaPresenter.filesLength * 1.5 &&
+          currTrack.long.slot.length <= mediaPresenter.filesLength * 1.5 && (
+            <Button
+              key="Long"
+              variant="info"
+              className={styles.tooltip}
+              disabled={currSlot.length === "long" ? true : false}
+              onClick={() => {
+                if (currSlot.length !== "long") {
+                  setCurrSlot(currTrack.long);
+                  resetVideo();
+                }
+              }}
+            >
+              {currSlot.length === "long" ? <span className={styles.tooltiptext}>Currently Playing Long</span>:null}
+              {"Long"}
+            </Button>
+          ) }
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="outline-dark"
+            onClick={() => {
+              resetVideo();
+              setShow(false);
+            }}
+          >
+            Close
+          </Button>
+          <Button
+            variant="info"
+            onClick={() => {
+              resetVideo();
+              setShow(false);
+            }}
+          >
+            Save Video
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+);
+
