@@ -5,8 +5,8 @@
 .header {
     width: 100vw;
     height: 8vh;
-    background-color:white;
-    border-bottom: 1px solid lightgray;
+    background-color:var(--white);
+    border-bottom: 1px solid var(--lightgray);
     position: relative;
 }
 
