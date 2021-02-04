@@ -11,15 +11,7 @@ type AppProps = {
 };
 const App: React.FC<AppProps> = ({mediaPresenter}) => { 
 
-  // showModal / showApp
   const [show, setShow] = useState<boolean>(false);
-  // const [mediaPresenter] = useState(new MediaPresenter());
-
-
-  // useRef
-  
-  // timer or outputpresenter
-
   return (
     <Container fluid className="App">
       <Header />
