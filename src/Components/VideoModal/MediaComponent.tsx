@@ -24,14 +24,7 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, 
   const changeImage = (): void => {
     onEnded(interval);
   }
-  // mediaDur is how long your video file is
-  // interval is the time inside slot:number[]
-  // if (mediaPlayed >= interval) {
-  //   setPlay(false);
-  //   // onEnded(interval);
-  // }
 
-  
   const mediaRef: any = useRef(undefined);
   console.log("hmmmm ....");
 
@@ -39,7 +32,6 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, 
     if (mediaPlayed + state.playedSeconds >= interval) {
       setMediaPlayed(mediaPlayed + state.playedSeconds);
       setPlay(false);
-      // onEnded(interval);
       
     }
   }
