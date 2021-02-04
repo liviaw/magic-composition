@@ -28,11 +28,13 @@ export class MediaPresenter {
 
   static isImage(file: File) {
     const imageFormat = new RegExp("image/*");
+    console.log("isimage", file);
     return imageFormat.test(file.type);
   }
 
   static isVideo(file: File) {
     const videoFormat = new RegExp("video/*");
+    console.log("isvideo", file);
     return videoFormat.test(file.type);
   }
 
