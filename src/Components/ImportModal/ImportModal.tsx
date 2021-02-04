@@ -1,23 +1,27 @@
 import React, { useState } from "react";
 import { Loading } from '../Loading/Loading';
 import { AddMediaIcon } from '../AddMediaIcon/AddMediaIcon';
-import { DragModal, ImportComponents } from "./MediaPreviewer";
+import { DragModal, MediaPreviewer } from "./MediaPreviewer";
 import styles from "./ImportModal.module.css";
 import { Button, Container } from "react-bootstrap";
 import type { MediaPresenter } from "../MediaPresenter";
+import { observer } from 'mobx-react';
+import { ErrorToast, showError } from "../ErrorToast/ErrorToast";
 
 type Props = {
   setShow: (show: boolean) => void;
   mediaPresenter: MediaPresenter;
 };
 
-export const ImportModal: React.FC<Props> = ({
+export const ImportModal: React.FC<Props> = observer(({
   setShow,
   mediaPresenter,
 }) => {
   const [onDragState, setOnDragState] = useState<boolean>(false);
+  // drop state can be deleted and check files length instead
   const [onDropState, setOnDropState] = useState<boolean>(false);
   const [mediaReady, setMediaReady] = useState<number>(0);
+
   // creating elemenets to be displayed for preview
   const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -31,13 +35,17 @@ export const ImportModal: React.FC<Props> = ({
           if (file == null) {
             return;
           }
-          mediaPresenter.addFile(file);
+          if (!mediaPresenter.addFile(file)) {
+            showError(file.name + "is not an acceptable file format");
+          }
         }
       })
     } else {
       // Use DataTransfer interface to access the file(s)
       Array.from(e.dataTransfer.files).forEach((file: File) => {
-        mediaPresenter.addFile(file);
+        if (!mediaPresenter.addFile(file)) {
+          showError(file.name + "is not an acceptable file format");
+        }
       })
     }
   };
@@ -50,7 +58,6 @@ export const ImportModal: React.FC<Props> = ({
       setOnDragState(true);
     }
   };
-
   return (
     <Container
       fluid
@@ -59,7 +66,8 @@ export const ImportModal: React.FC<Props> = ({
       onDrop={dropHandler}
       onDragOver={dragOverHandler}
     >
-      <Loading mediasLength={mediaPresenter.getFilesLength()} mediaReady={mediaReady} />
+      <Loading mediasLength={mediaPresenter.filesLength} mediaReady={mediaReady} />
+      <ErrorToast />
       {!onDropState && onDragState && (
         <div
           className={styles.dropModal}
@@ -72,7 +80,8 @@ export const ImportModal: React.FC<Props> = ({
         </div>
       )}
       {/* set drag and drop as true, even if user input using icon */}
-      {(onDropState && onDragState)  || (mediaPresenter.getFilesLength()) ? (
+
+      {(onDropState && onDragState)  || (mediaPresenter.filesLength > 0) ? (
         <div
           className={styles.dropModal}
           onDragLeave={(e) => {
@@ -80,18 +89,18 @@ export const ImportModal: React.FC<Props> = ({
             e.preventDefault();
           }}
         >
-          <ImportComponents mediaPresenter={mediaPresenter} setMediaReady={setMediaReady}/>
+          <MediaPreviewer mediaPresenter={mediaPresenter} setMediaReady={setMediaReady}/>
           <Button
             className={styles.createVideoButton}
             onClick={
               () => {
-                if (mediaReady !== 0 && mediaReady === mediaPresenter.getFilesLength() ){
+                if (mediaReady !== 0 && mediaReady === mediaPresenter.filesLength) {
                   setShow(true);
                 }
               }
             }
             variant="secondary"
-            disabled={mediaReady === 0 || mediaReady !== mediaPresenter.getFilesLength() }
+            disabled={mediaReady === 0 || mediaReady !== mediaPresenter.filesLength }
           >
             Create Video 🎬
           </Button>
@@ -108,4 +117,4 @@ export const ImportModal: React.FC<Props> = ({
       )} 
     </Container>
   );
-};
+});

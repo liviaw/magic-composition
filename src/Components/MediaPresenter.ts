@@ -1,35 +1,65 @@
+import * as mobx from "mobx";
+
 const MAXLEN = 10;
 
 export class MediaPresenter {
+  constructor() {
+    mobx.makeObservable(this);
+  }
+  // make need to change to .deep
+  @mobx.observable.deep
   files: File[] = [];
+
+  @mobx.observable.deep
   durations: number[] = [];
+  // for now its a 1D array but can be expanded as [][] to play different parts
+  // this is for videos, which parts of it have been played
+  played: number[] = [];
+
   customOrder: boolean = false;
 
-  static imageFormat = new RegExp("image/*");
-  static videoFormat = new RegExp("video/*");
+  @mobx.observable
+  currFileIndex: number = 0;
 
-  // this is temporary, will remove
-  imageDuration: number = 3000;
-  static audioSound: number = 0.5;
+  seeds: number[][] = [];
+  seedsIndex: number[] = [];
 
-  addFile(newFile: File): void {
-    if (MediaPresenter.isImage(newFile) || MediaPresenter.isVideo(newFile)) {
-      this.files = [...this.files, newFile];
-    } 
-  }
+  static audioSound: number = 3;
 
   static isImage(file: File) {
-    return MediaPresenter.imageFormat.test(file.type);
+    const imageFormat = new RegExp("image/*");
+    console.log("isimage", file);
+    return imageFormat.test(file.type);
   }
 
   static isVideo(file: File) {
-    return MediaPresenter.videoFormat.test(file.type);
+    const videoFormat = new RegExp("video/*");
+    console.log("isvideo", file);
+    return videoFormat.test(file.type);
   }
+
+  @mobx.action
+  setFileIndex(newIndex: number): void {
+    this.currFileIndex = newIndex;
+  }
+
+  @mobx.action
+  addFile(newFile: File): boolean {
+    if (MediaPresenter.isImage(newFile) || MediaPresenter.isVideo(newFile)) {
+      this.files.push(newFile);
+      this.durations.push(0);
+      this.played.push(0);
+      return true;
+    }
+    return false;
+  }
+
+  @mobx.action
   removeFile(index: number): void {
     if (index > -1) {
-      let temp = this.files;
-      temp.splice(index, 1);
-      this.files = [...temp];
+      this.files.splice(index, 1);
+      this.durations.splice(index, 1);
+      this.played.splice(index, 1);
     }
   }
 
@@ -37,50 +67,79 @@ export class MediaPresenter {
     this.customOrder = value;
   }
 
+  @mobx.action
   setDuration(index: number, duration: number): void {
     this.durations[index] = duration;
   }
 
-  getDuration(index: number): number {
-    return this.durations[index];
+  getDuration(index: number, styleIndex: number): number {
+    if (this.customOrder) {
+      return this.durations[index % this.filesLength];
+    }
+    return this.durations[this.seeds[styleIndex][index]];
   }
-
-  getFile(index: number): File {
-    return this.files[index];
-  }
-
+  // only called in import modal, no seeding needed
   getFileName(index: number): string {
     return this.files[index].name;
   }
-  getFileIndex(file: File):number {
-    return(this.files.indexOf(file));
+  getPreviewFile(fileIndex: number): File {
+    return this.files[fileIndex];
   }
-
-  getFiles(): File[] {
-    if (this.files === []) {
-      alert("empty");
+  getFile(mediaCounter: number, styleIndex: number): File {
+    if (this.customOrder) {
+      return this.files[mediaCounter % this.filesLength];
     }
-    return this.files;
+    return this.files[this.seeds[styleIndex][mediaCounter]];
+  }
+  getCurrFile(): File {
+    return this.files[this.currFileIndex];
   }
 
-  getFilesLength(): number {
+  @mobx.computed
+  get filesLength(): number {
     return this.files.length;
+  }
+
+  @mobx.action
+  addFilePlayed(fileIndex: number, playedDur: number): void {
+    this.played[fileIndex] =
+      (this.played[fileIndex] + playedDur) % this.durations[fileIndex];
+  }
+
+  getFilePlayed(fileIndex: number, styleIndex: number): number {
+    if (this.customOrder) {
+      return (
+        this.played[fileIndex % this.filesLength] %
+        this.getDuration(fileIndex, styleIndex)
+      );
+    }
+    return (
+      this.played[this.seeds[styleIndex][fileIndex]] %
+      this.getDuration(fileIndex, styleIndex)
+    );
   }
   // http://stackoverflow.com/questions/962802#962890
   shuffleArray(): number[] {
-    if (this.customOrder) {
-      return new Array(this.files.length);
-    }
     for (var array = [], i = 0; i < this.files.length; ++i) array[i] = i;
+    if (this.customOrder) {
+      return array;
+    }
     return [...array].sort(() => Math.random() - 0.5);
   }
-  swicthOrder(index: number, newIndex: any): void {
+  switchOrder(index: number, newIndex: any): void {
     if (typeof newIndex === "string") {
       newIndex = parseInt(newIndex);
-    } else if (typeof newIndex === "number") {
-      let temp = this.files[index];
-      this.files[index] = this.files[newIndex];
-      this.files[newIndex] = temp;
+    }
+    let fileTemp: File;
+    let durTemp: number;
+    let playedTemp: number;
+    if (newIndex > -1) {
+      [fileTemp] = this.files.splice(index, 1);
+      [durTemp] = this.durations.splice(index, 1);
+      [playedTemp] = this.played.splice(index, 1);
+      this.files.splice(newIndex, 0, fileTemp);
+      this.durations.splice(newIndex, 0, durTemp);
+      this.played.splice(newIndex, 0, playedTemp);
     }
   }
   trimmedName(filename: string): string {
@@ -93,5 +152,46 @@ export class MediaPresenter {
       );
     }
     return filename;
+  }
+
+  // more on seed random generator https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
+  // shuffling using the The Fisher Yates Method
+  // Not ure how to shuffle based of value because its a file, so it shdnt matter
+  shuffle(array: number[], seed: number) {
+    var m = array.length,
+      t,
+      i;
+    // While there are still elements remaining to shuffle
+    while (m) {
+      // Pick a remaining element…
+      i = Math.floor(this.random(seed) * m--);
+
+      // And swap it with the current element.
+      t = array[m];
+      array[m] = array[i];
+      array[i] = t;
+      ++seed;
+    }
+    return array;
+  }
+  random(seed: number) {
+    var x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+  }
+
+  initTemplates(templateSize: number) {
+    for (let j = 0; j < templateSize; j++) {
+      for (var array = [], i = 0; i < this.files.length; ++i) array[i] = i;
+      this.seeds.push(this.shuffle(array, j));
+    }
+  }
+
+  resetSeed(styleIndex: number) {
+    for (var array = [], i = 0; i < this.files.length; ++i) array[i] = i;
+    this.seeds.splice(
+      styleIndex,
+      1,
+      this.shuffle(array, styleIndex + this.seeds.length)
+    );
   }
 }

@@ -3,25 +3,25 @@ import { showError } from "../ErrorToast/ErrorToast";
 import ReactPlayer from "react-player";
 import styles from "./ImportModal.module.css";
 import { MediaPresenter } from "../MediaPresenter";
+import { observer } from 'mobx-react';
 
 type MediaProps = {
   mediaPresenter: MediaPresenter;
   setMediaReady: (func: (numberReady: number) => number) => void;
   index: number;
 };
-export const MediaComponent: React.FC<MediaProps> = ({
+export const MediaComponent: React.FC<MediaProps> = observer(({
   mediaPresenter,
   setMediaReady,
   index,
 }) => {
-  // { [filename: string]: boolean }
   const [loaded, setLoaded] = useState<boolean>(false);
   const importRef: any = useRef(undefined);
-  if (MediaPresenter.isImage(mediaPresenter.getFile(index))) {
+  if (MediaPresenter.isImage(mediaPresenter.getPreviewFile(index))) {
     return (
       <img
         className={styles.renderMedia}
-        src={URL.createObjectURL(mediaPresenter.getFile(index))}
+        src={URL.createObjectURL(mediaPresenter.getPreviewFile(index))}
         onLoad={() => {
           if (!loaded) {
             setMediaReady((m: number) => m + 1);
@@ -37,7 +37,7 @@ export const MediaComponent: React.FC<MediaProps> = ({
         ref={(newRef: any) => {
           importRef.current = newRef;
         }}
-        url={URL.createObjectURL(mediaPresenter.getFile(index))}
+        url={URL.createObjectURL(mediaPresenter.getPreviewFile(index))}
         width="100%"
         height="50%"
         playing={true}
@@ -56,4 +56,4 @@ export const MediaComponent: React.FC<MediaProps> = ({
       />
     );
   }
-};
+});
