@@ -1,0 +1,264 @@
+.clear {
+  object-fit: contain;
+  height: 450px;
+  width: 700px;
+}
+
+.blur {
+  height: 450px;
+  width: 700px;
+  object-fit: contain;
+  -webkit-filter: blur(5px); /* Safari 6.0 - 9.0 */
+  filter: blur(5px);
+  margin: 10px;
+}
+
+.frame {
+  border: solid 1px var(--light-white);
+  height: 500px;
+  width: 90%;
+  background-color: var(--black);
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  padding: 5px 0;
+}
+
+.videoModal {
+  height: 80vh;
+  width: 990px;
+}
+
+.previousRound {
+  background-color: var(--cream);
+  color: black;
+  border-radius: 50%;
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 0 15px;
+  align-self: center;
+  cursor: pointer;
+}
+
+.disabledPreviousRound {
+  background-color: var(--cream);
+  color: black;
+  border-radius: 50%;
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 0 15px;
+  align-self: center;
+}
+
+.nextRound {
+  background-color: var(--half-canva-blue);
+  color: var(--white);
+  border-radius: 50%;
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 0 15px;
+  align-self: center;
+  cursor: pointer;
+}
+
+.disabledNextRound {
+  background-color: var(--half-canva-blue);
+  color: var(--white);
+  border-radius: 50%;
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 0 15px;
+  align-self: center;
+}
+
+.previousRound:hover {
+  background-color: var(--lightcream);
+  /* text color */
+  color: var(--black);
+}
+
+.nextRound:hover {
+  background-color: var(--lightcream);
+  color: black;
+}
+.playButton {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  position: absolute;
+  left: 90px;
+  bottom: 344px;
+}
+
+.pauseButton {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  position: absolute;
+  left: 90px;
+  bottom: 344px;
+}
+
+.shuffleButton {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  position: absolute;
+  left: 145px;
+  bottom: 345.5px;
+}
+.replayButton {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  /* align-self: flex-end; */
+  position: absolute;
+  right: 150px;
+  bottom: 347px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 100px;
+  background-color: var(--black);
+  color: var(--white);
+  text-align: center;
+  border-radius: 6px;
+  padding: 2px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 120%;
+  left: 50%;
+  margin-left: -60px;
+  font-size: 0.6rem;
+  text-transform: capitalize;
+}
+.tooltip .tooltiptext:after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--black) transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+/* medium laptop screen size */
+@media only screen and (max-width: 1200px) {
+  .playButton {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    align-self: left;
+  }
+
+  .pauseButton {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    align-self: left;
+  }
+
+  .clear {
+    object-fit: contain;
+    height: 340px;
+    width: 480px;
+  }
+
+  .blur {
+    height: 340px;
+    width: 480px;
+    object-fit: contain;
+    -webkit-filter: blur(5px); /* Safari 6.0 - 9.0 */
+    filter: blur(5px);
+  }
+  .frame {
+    display: flex;
+    justify-content: center;
+    background-color: var(--black);
+    border: solid 1px var(--light-white);
+    height: 350px;
+    width: 490px;
+    margin: 0 20px;
+  }
+  .videoModal {
+    height: 80vh;
+    width: 950px;
+  }
+}
+
+/* tablet screen size */
+@media only screen and (max-width: 760px) {
+  .clear {
+    object-fit: contain;
+    height: 280px;
+    width: 350px;
+  }
+
+  .blur {
+    height: 280px;
+    width: 350px;
+    object-fit: contain;
+    -webkit-filter: blur(5px); /* Safari 6.0 - 9.0 */
+    filter: blur(5px);
+    margin: 10px;
+  }
+  .frame {
+    display: flex;
+    justify-content: center;
+    background-color: var(--black);
+    border: solid 1px var(--light-white);
+    height: 290px;
+    width: 360px;
+    margin: 10px;
+  }
+  .videoModal {
+    height: 80vh;
+    width: 460px;
+  }
+}
+
+/* mobile screen size */
+@media only screen and (max-width: 425px) {
+  .clear {
+    object-fit: contain;
+    height: 480px;
+    width: 125x;
+  }
+
+  .blur {
+    height: 480px;
+    width: 125px;
+    object-fit: contain;
+    -webkit-filter: blur(5px); /* Safari 6.0 - 9.0 */
+    filter: blur(5px);
+    margin: 10px;
+  }
+  .frame {
+    display: flex;
+    justify-content: center;
+    background-color: var(--black);
+    border: solid 1px var(--light-white);
+    height: 500px;
+    width: 90%;
+    margin: 10px;
+  }
+  .videoModal {
+    height: 80vh;
+    width: 250px;
+  }
+}
