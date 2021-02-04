@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal, Container } from "react-bootstrap";
-// import { VideoProgressBar } from "./VideoProgressBar";
 import { templates } from "../Template";
 import type { musicElement, trackEl, slotEl } from "../Template";
 import styles from "./VideoModal.module.css";
-// import { MediaComponent } from "./MediaComponent";
-// import RotateLoader from "react-spinners/RotateLoader";
 import { MediaPresenter } from "../MediaPresenter";
 import { observer } from "mobx-react";
-// import ReactPlayer from "react-player";
 import { VideoPlayer } from "./VideoPlayer";
 import shuffleButton from "./shuffleButton.png";
 
@@ -38,14 +34,6 @@ export const VideoModal: React.FC<Props> = observer(
     useEffect(() => {
       mediaPresenter.initTemplates(templates.length);
     }, [mediaPresenter]);
-
-    // useEffect(() => {
-    //   mediaPresenter.initTemplates(templates.length);
-    //   music.addEventListener("canplaythrough", (event) => {
-    //     setMusicLoaded(true);
-    //     console.log("init music");
-    //   });
-    // }, []);
 
     useEffect(() => {
       setCurrTrack(currStyle.tracks[trackIndex]);
