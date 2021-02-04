@@ -19,7 +19,6 @@
 	width: 90%;
 	background-color:var(--black);
 	display: flex;
-	/* flex-direction: column; */
 	justify-content: center;
 	align-content: center;
 	padding: 5px 0;
@@ -28,16 +27,6 @@
 .videoModal {
 	height: 80vh;
 	width: 990px;
-}
-
-
-/* not used */
-.frameContainer {
-	width:200px;
-	display:inline-block;
-	overflow: auto;
-	white-space: nowrap;
-	margin:0px auto;
 }
 
 .previousRound {
@@ -87,13 +76,12 @@
 }
 
 .previousRound:hover {
-	background-color: var(----lightcream);
-	/* text color */
+	background-color: var(--lightcream);
   color: var(--black);
 }
 
 .nextRound:hover {
-	background-color: var(----lightcream);
+	background-color: var(--lightcream);
   color: black;
 }
 .playButton {

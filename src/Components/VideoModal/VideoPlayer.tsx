@@ -5,7 +5,6 @@ import { MediaComponent } from "./MediaComponent";
 // import RotateLoader from "react-spinners/RotateLoader";
 import { MediaPresenter } from "../MediaPresenter";
 import { observer } from "mobx-react";
-// import ReactPlayer from "react-player";
 import playButton from "./playButton.png";
 import pauseButton from "./pauseButton.png";
 import replayButton from "./replayButton.png";
@@ -36,13 +35,15 @@ export const VideoPlayer: React.FC<Props> = observer(
       // TODO: if too many media or too little slots, manage it.
       let filesLen = mediaPresenter.filesLength;
       if (music.ended) {
-        // should never go here? Because I set up the templates to be short or equal to music lengtj
         setMediaCounter(filesLen - 1);
+        music.load();
         console.log("music has ended");
       } else if (slot.slot.length <= mediaCounter) {
         setMediaCounter(filesLen - 1);
         music.pause();
         music.load();
+      } else if(filesLen <= mediaCounter) {
+        setMediaCounter(0);
       } else {
         // video ended
         // set how long the video has or image has played for

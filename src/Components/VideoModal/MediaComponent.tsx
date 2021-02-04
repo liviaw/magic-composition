@@ -68,16 +68,17 @@ export const MediaComponent: React.FC<MediaProps> = ({ file, onEnded, interval, 
             mediaRef.current.seekTo(playfrom, "seconds");
           }
         }}
-        progressInterval={100}
-        onProgress={({playedSeconds})=> {
-          if (mediaPlayed + playedSeconds >= interval) {
-            setMediaPlayed(mediaPlayed + playedSeconds);
-            setPlay(false);
-            onEnded(interval);
+        // // interval is 12, and your video 7
+        // progressInterval={100}
+        // onProgress={({playedSeconds})=> {
+        //   if (mediaPlayed + playedSeconds >= interval) {
+        //     setMediaPlayed(mediaPlayed + playedSeconds);
+        //     setPlay(false);
+        //     onEnded(interval);
             
-            // console.log("hello canva");
-          }
-        }}
+        //     // console.log("hello canva");
+        //   }
+        // }}
         onEnded={() => {
           console.log("on ended");
           // if slot is longer than the file, loop it

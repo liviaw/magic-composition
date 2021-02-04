@@ -44,7 +44,7 @@ class Timer {
 // future: add media can be optional 
 // if no add media, then do ot set timeout
 export const ImageWrapper: React.FC<Props> = ({ file, changeImage, duration, play}) => {
-  let [timer, setTimer] = useState<Timer|null>(null);
+  const [timer, setTimer] = useState<Timer|null>(null);
 
   useEffect(() => {
     setTimer(new Timer(changeImage, duration));
