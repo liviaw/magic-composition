@@ -7,7 +7,6 @@ import { MediaPresenter } from "../MediaPresenter";
 import { observer } from "mobx-react";
 import shuffleButton from "./shuffleButton.png";
 
-
 type Props = {
   setShow: (show: boolean) => void;
   show: boolean;
