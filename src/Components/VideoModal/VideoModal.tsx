@@ -5,7 +5,9 @@ import type { musicElement, trackEl, slotEl } from "../Template";
 import styles from "./VideoModal.module.css";
 import { MediaPresenter } from "../MediaPresenter";
 import { observer } from "mobx-react";
+import { VideoPlayer } from "./VideoPlayer";
 import shuffleButton from "./shuffleButton.png";
+
 
 type Props = {
   setShow: (show: boolean) => void;
@@ -107,7 +109,12 @@ export const VideoModal: React.FC<Props> = observer(
               {musicLoaded ? (
                 // whenever slot or music changes, videPlayer will re-render,
                 // which resets the video
-                null
+                <VideoPlayer
+                mediaPresenter={mediaPresenter}
+                slot={currSlot}
+                music={music}
+                styleIndex={currStyleIndex}
+                />
                 ) : (
                   <p>Creating video...</p>
                   )}
@@ -248,4 +255,3 @@ export const VideoModal: React.FC<Props> = observer(
     );
   }
 );
-
