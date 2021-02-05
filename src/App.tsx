@@ -10,7 +10,6 @@ type AppProps = {
   mediaPresenter: MediaPresenter;
 };
 const App: React.FC<AppProps> = ({mediaPresenter}) => { 
-
   const [show, setShow] = useState<boolean>(false);
   return (
     <Container fluid className="App">
