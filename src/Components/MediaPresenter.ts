@@ -195,5 +195,3 @@ export class MediaPresenter {
     );
   }
 }
-
-const mediaPresenter = new MediaPresenter();
