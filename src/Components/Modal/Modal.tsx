@@ -1,54 +1,38 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react";
+import type { MediaPresenter } from "../MediaPresenter";
 import { Button, Container, Col, Row } from "react-bootstrap";
 import { ErrorToast } from "../ErrorToast/ErrorToast";
-import type { MediaPresenter } from "../MediaPresenter";
 import styles from "./Modal.module.css";
 import classnames from "classnames";
 type Props = {
   mediaPresenter: MediaPresenter;
+  modalOpen: boolean;
+  setModalOpen: (value: boolean) => void;
 };
 
-export const Modal: React.FC<Props> = observer(({ mediaPresenter }) => {
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const openModal = (): void => {
-    setModalOpen(true);
-  };
-  const closeModal = (): void => {
-    var modal: HTMLElement | null = document.getElementById("magicModal");
-    if (modal != null) {
-      // modal.style.display = "none";
+export const Modal: React.FC<Props> = observer(
+  ({ mediaPresenter, modalOpen, setModalOpen }) => {
+    const closeModal = (): void => {
       setModalOpen(false);
-    }
-  };
-  const windowCloseModal = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ): void => {
-    var modal: HTMLElement | null = document.getElementById("magicModal");
-    if (event.target === modal && modal != null) {
-      // modal.style.display = "none";
-      setModalOpen(false);
-    }
-  };
-  return (
-    <div>
-      <Button
-        variant="info"
-        onClick={openModal}
-        className={styles.createDesignBtn}
-      >
-        Create a design
-      </Button>
-
+    };
+    const windowModal = (
+      event: React.MouseEvent<HTMLDivElement, MouseEvent>
+    ): void => {
+      event.stopPropagation();
+    };
+    return (
       <div
-        id="magicModal"
-        // className={modalOpen? styles.modalOpen : styles.modalClose }
         className={classnames(styles.modal, { [styles.open]: modalOpen })}
-        onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-          windowCloseModal(event);
-        }}
+        onClick={closeModal}
       >
-        <Container fluid="sm" className={styles.modalContent}>
+        <Container
+          fluid="sm"
+          className={styles.modalContent}
+          onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+            windowModal(event);
+          }}
+        >
           <ErrorToast />
           <span className={styles.close} onClick={closeModal}>
             &times;
@@ -64,6 +48,6 @@ export const Modal: React.FC<Props> = observer(({ mediaPresenter }) => {
           </Row>
         </Container>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);
