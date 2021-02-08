@@ -1,50 +1,42 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat");
 @import url("https://fonts.googleapis.com/css?family=Lily+Script+One");
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
 :root {
   --canva-blue: #00c4cc;
   --half-canva-blue: #00c4cc80;
   --light-white: #646464;
+  --background-white:  #fefefe;
   --medium-white: #fafafa;
   --medium-translucent-white: #fafafab3;
-  --brown: #dbc6b373;
   --shadow-black: #00000033;
   --shadow-gray: #00000030;
   --translucent-white: #ffffffb3;
   --semi-translucent-white: #e1e1e1b3;
-  --navy: #000080;
   --black: #000000;
   --white: #ffffff;
   --grey: #808080;
-  --lightgrey: #d3d3d3;
-}
-.App {
-  /* text-align: center; */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  --lightgrey: #f0efef;
+  --darkgrey: #585858;
+  --translucent-lightgrey: #8080806b;
+  --purple: #8D39FA;
+  --disabled-grey-text: #1e293373;
+  --disabled-grey-background: #F7F8F8;
 }
 
-.canvaHomePage {
-  background-color: var(--light-white);
+.App {
+  text-align: center;
+}
+.CanvaHomePage {
   background-image: url("./Media/canvaHomePage.png");
-  height: 90vh;
-  background-position: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-position: right;
   background-repeat: no-repeat;
-  margin: 0 auto;
   background-size: cover;
 }
 
-.canvaHomePageText {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: xx-large;
-  position: absolute;
-  color: var(--white);
-  font-size: 20px;
-}
 a:link,
 a:visited {
   color: var(--black);
@@ -53,19 +45,16 @@ a:visited {
 }
 
 a:hover {
-  color: var(--navy);
+  color: var(--canva-blue);
   background-color: transparent;
   text-decoration: underline;
 }
 
 body {
   flex-direction: row;
-  font-family: Montserrat;
+  font-family: 'Open Sans', sans-serif;
   font-style: normal;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  text-align: center;
+  font-size: 12px;
   letter-spacing: -0.015em;
   line-height: 1.6;
 }
