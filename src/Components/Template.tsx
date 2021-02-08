@@ -18,10 +18,12 @@ import uplifting from "../Audio/uplifting.mp3";
  * when a video file is shorter than a slot, then the video will be looped
  */
 
+export type durationTypes = "short" | "medium" | "long";
+
 export type slotEl = {
     start: number;
 	end: number;
-	length: "short" | "medium" | "long";
+	length: durationTypes;
 	slot: number[];
 	slotLength: number;
 };
@@ -37,10 +39,6 @@ export type trackEl = {
 };
 
 export type musicElement = { style: string, tracks: trackEl[] };
-
-//style = templates[index].style
-//track = templates[index].tracks[trackIndex]
-
 export const templates: musicElement[] = [
 	{
 		style: "calm",
