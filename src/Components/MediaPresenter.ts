@@ -1,4 +1,4 @@
-import * as mobx from 'mobx';
+import * as mobx from "mobx";
 
 const MAXLEN = 10;
 
@@ -63,23 +63,18 @@ export class MediaPresenter {
   getDuration(fileIndex: number): number {
     return this.durations[fileIndex % this.filesLength];
   }
-  // only called in import modal, no seeding needed
+
   getFileName(fileIndex: number): string {
     return this.files[fileIndex % this.filesLength].name;
   }
+
   getFile(fileIndex: number): File {
     return this.files[fileIndex % this.filesLength];
   }
-  //call it by: mediaPresenter.filesLength
+
   @mobx.computed
   get filesLength(): number {
     return this.files.length;
-  }
-
-  @mobx.action
-  increFilePlayed(fileIndex: number):void {
-    let index = fileIndex % this.filesLength;
-    this.played[index] = (this.played[index] + 1) % this.durations[index];
   }
 
   @mobx.action
@@ -92,7 +87,7 @@ export class MediaPresenter {
   getFilePlayed(fileIndex: number, styleIndex: number): number {
     return this.played[fileIndex % this.filesLength] % this.getDuration(fileIndex % this.filesLength);
   }
-  // http://stackoverflow.com/questions/962802#962890
+
   shuffleArray(): number[] {
     for (var array = [], i = 0; i < this.files.length; ++i) array[i] = i;
     if (this.customOrder) {

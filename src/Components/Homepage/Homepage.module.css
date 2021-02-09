@@ -16,6 +16,7 @@
   width: 158px;
 }
 
+/* screen width sizes based on Canva page's screens changes in these breakpoint  */
 @media (max-width: 1024px) {
   .CanvaHomePage {
     background-image: url("../../Media/laptopHomePage.png");
@@ -35,7 +36,7 @@
   }
 }
 
-/* tablet screen size */
+
 @media (max-width: 768px) {
   .CanvaHomePage {
     background-image: url("../../Media/tabletHomePage.png");
@@ -54,7 +55,7 @@
     width: 153px;
   }
 }
-/* phone screen size */
+
 @media (max-width: 425px) {
   .CanvaHomePage {
     background-image: url("../../Media/phoneHomePage.png");

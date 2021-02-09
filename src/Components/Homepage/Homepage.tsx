@@ -3,16 +3,13 @@ import { Button } from "react-bootstrap";
 import styles from "./Homepage.module.css";
 
 type Props = {
-    openModal: () => void;
-}
+  openModal: () => void;
+};
 
-export const Homepage: React.FC<Props> = ({
-    openModal,
-}) => {
-
-    return (
+export const Homepage: React.FC<Props> = ({ openModal }) => {
+  return (
     <div className={styles.CanvaHomePage}>
-        <Button
+      <Button
         variant="info"
         onClick={openModal}
         className={styles.createDesignBtn}
@@ -20,5 +17,5 @@ export const Homepage: React.FC<Props> = ({
         Create a design
       </Button>
     </div>
-    )
-}
+  );
+};
