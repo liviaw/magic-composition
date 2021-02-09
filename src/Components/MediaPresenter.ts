@@ -194,4 +194,7 @@ export class MediaPresenter {
       this.shuffle(array, styleIndex + this.seeds.length)
     );
   }
+  mediaReady():boolean {
+    return this.filesLength !== 0;
+  }
 }
