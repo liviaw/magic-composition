@@ -37,10 +37,10 @@ export class MediaPresenter {
       this.durations.push(0);
       this.played.push(0);
       return true;
-    } 
+    }
     return false;
   }
-  
+
   @mobx.action
   removeFile(fileIndex: number): void {
     let index = fileIndex % this.filesLength;
@@ -56,14 +56,14 @@ export class MediaPresenter {
   }
 
   @mobx.action
-  setDuration(fileIndex: number, duration: number): void {
-    this.durations[fileIndex % this.filesLength] = duration;
+  setDuration(index: number, duration: number): void {
+    this.durations[index] = duration;
   }
 
   getDuration(fileIndex: number): number {
     return this.durations[fileIndex % this.filesLength];
   }
-
+  
   getFileName(fileIndex: number): string {
     return this.files[fileIndex % this.filesLength].name;
   }
@@ -77,15 +77,11 @@ export class MediaPresenter {
     return this.files.length;
   }
 
-  @mobx.action
-  resetFilePlayed():void {
-    for (let i = 0; i < this.filesLength; i++) {
-      this.played[i] = 0;
-    }
-  }
-
   getFilePlayed(fileIndex: number, styleIndex: number): number {
-    return this.played[fileIndex % this.filesLength] % this.getDuration(fileIndex % this.filesLength);
+    return (
+      this.played[fileIndex % this.filesLength] %
+      this.getDuration(fileIndex % this.filesLength)
+    );
   }
 
   shuffleArray(): number[] {
@@ -98,7 +94,7 @@ export class MediaPresenter {
   switchOrder(index: number, newIndex: any): void {
     if (typeof newIndex === "string") {
       newIndex = parseInt(newIndex);
-    } 
+    }
     let fileTemp: File;
     let durTemp: number;
     let playedTemp: number;
