@@ -9,6 +9,15 @@ import jazzy from "../Audio/jazzy.mp3";
 import gentle from "../Audio/gentle.mp3";
 import uplifting from "../Audio/uplifting.mp3";
 
+/*
+ * Audio always start with calm, short, track[0]
+ * if there are too many photos, then not all of them will be shown
+ * durationsin seconds
+ * slots is the available timings for each video/image file
+ * in a situation where a video file is longer than a slot, then the video will be trimmed
+ * when a video file is shorter than a slot, then the video will be looped
+ */
+
 export type DurationTypes = "short" | "medium" | "long";
 
 export type LengthEl = {
