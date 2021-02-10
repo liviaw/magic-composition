@@ -37,12 +37,15 @@ export class MediaPresenter {
       this.durations.push(0);
       this.played.push(0);
       return true;
-    } 
+    }
     return false;
   }
-  
+
   @mobx.action
   removeFile(fileIndex: number): void {
+    if (this.files.length === 0) {
+      return;
+    }
     let index = fileIndex % this.filesLength;
     if (index > -1) {
       this.files.splice(index, 1);
@@ -78,26 +81,37 @@ export class MediaPresenter {
   }
 
   @mobx.action
-  incrementFilePlayed(fileIndex: number, seconds: number):void {
+  incrementFilePlayed(fileIndex: number, seconds: number): void {
     let index = fileIndex % this.filesLength;
     console.log("in increment " + this.played[index]);
-    console.log(this.durations[index])
+    console.log(this.durations[index]);
     this.played[index] = (this.played[index] + seconds) % this.durations[index];
   }
 
   @mobx.action
-  resetFilePlayed():void {
+  resetFilePlayed(): void {
     for (let i = 0; i < this.filesLength; i++) {
       this.played[i] = 0;
     }
   }
 
   getFilePlayed(fileIndex: number): number {
-    if(fileIndex % this.filesLength === 0 || this.getDuration(fileIndex % this.filesLength) === 0) return 0;
-    if (this.played[fileIndex % this.filesLength] % this.getDuration(fileIndex % this.filesLength)) return 0;
-    return this.played[fileIndex % this.filesLength] % this.getDuration(fileIndex % this.filesLength);
+    if (
+      fileIndex % this.filesLength === 0 ||
+      this.getDuration(fileIndex % this.filesLength) === 0
+    )
+      return 0;
+    if (
+      this.played[fileIndex % this.filesLength] %
+      this.getDuration(fileIndex % this.filesLength)
+    )
+      return 0;
+    return (
+      this.played[fileIndex % this.filesLength] %
+      this.getDuration(fileIndex % this.filesLength)
+    );
   }
-  // http://stackoverflow.com/questions/962802#962890
+
   shuffleArray(): number[] {
     for (var array = [], i = 0; i < this.files.length; ++i) array[i] = i;
     if (this.customOrder) {
@@ -108,7 +122,7 @@ export class MediaPresenter {
   switchOrder(index: number, newIndex: any): void {
     if (typeof newIndex === "string") {
       newIndex = parseInt(newIndex);
-    } 
+    }
     let fileTemp: File;
     let durTemp: number;
     let playedTemp: number;
