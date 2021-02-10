@@ -1,30 +1,35 @@
 import React, { useState } from "react";
 import "./App.css";
-import { ImportModal } from "./Components/ImportModal/ImportModal";
-import { Header } from "./Components/Shared/Header";
-import { Container } from "react-bootstrap";
-import { MediaPresenter } from "./Components/MediaPresenter";
-import { VideoModal } from "./Components/VideoModal/VideoModal";
+import type { MediaPresenter } from "./MediaPresenter";
+import type { OutputPresenter } from "./OutputPresenter";
+import { Modal } from "./Components/Modal/Modal";
+import { Homepage } from "./Components/Homepage/Homepage";
 
-const App: React.FC = () => { 
-  const [show, setShow] = useState<boolean>(false);
-  const [mediaPresenter] = useState(new MediaPresenter());
+type AppProps = {
+  mediaPresenter: MediaPresenter;
+  outputPresenter: OutputPresenter;
+};
 
+const App: React.FC<AppProps> = ({mediaPresenter, outputPresenter}) => { 
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const closeModal = () => {
+    setModalOpen(false);
+    outputPresenter.pauseVideo();
+  }
+
+  const openModal = (event: React.MouseEvent<HTMLDivElement, MouseEvent>)  => {
+    setModalOpen(true);
+    if (mediaPresenter.mediaReady()) {
+      outputPresenter.playVideo();
+    }
+    event.stopPropagation();
+  }
   return (
-    <Container fluid className="App">
-      <Header />
-      <ImportModal
-        setShow={setShow}
-        mediaPresenter={mediaPresenter}
-      />
-      {show ? (
-        <VideoModal
-          setShow={setShow}
-          show={show}
-          mediaPresenter={mediaPresenter}
-        />
-      ) : null}
-    </Container>
+    <div className="App">
+      <Homepage openModal={openModal}/>
+      <Modal mediaPresenter={mediaPresenter} outputPresenter={outputPresenter} modalOpen={modalOpen} closeModal={closeModal}/>
+      {outputPresenter.playingMedia}
+    </div>
   );
 };
 

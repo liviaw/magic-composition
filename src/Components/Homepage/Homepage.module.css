@@ -1,0 +1,130 @@
+.CanvaHomePage {
+  background-image: url("../../Media/canvaHomePage.png");
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-position: top right;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.createDesignBtn {
+  position: absolute;
+  right: 77px;
+  top: 13px;
+  height: 46px;
+  width: 158px;
+}
+
+/* right below createDesignBtn, so height + top */
+.menuCont {
+  width: 30%;
+  height: auto;
+  position: absolute;
+  right: 60px;
+  top: 60px;
+  max-height: 100vh;
+}
+
+.menuContent {
+  width: 27%;
+  height: auto;
+  max-height: 100vh;
+  position: absolute;
+  right: 70px;
+  top: 80px;
+  cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .CanvaHomePage {
+    background-image: url("../../Media/laptopHomePage.png");
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .createDesignBtn {
+    position: absolute;
+    right: 87px;
+    top: 17px;
+    width: 150px;
+    height: 45px;
+  }
+}
+
+/* tablet screen size */
+@media (max-width: 768px) {
+  .CanvaHomePage {
+    background-image: url("../../Media/tabletHomePage.png");
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .createDesignBtn {
+    position: absolute;
+    right: 140px;
+    top: 10px;
+    height: 50px;
+    width: 153px;
+  }
+  .menuCont {
+    width: 55%;
+    height: auto;
+    position: absolute;
+    max-height: 100vh;
+    right: 60px;
+    top: 60px;
+  }
+  
+  .menuContent {
+    width: 50%;
+    height: auto;
+    max-height: 100vh;
+    position: absolute;
+    right: 65px;
+    top: 70px;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 425px) {
+  .CanvaHomePage {
+    background-image: url("../../Media/phoneHomePage.png");
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .createDesignBtn {
+    position: absolute;
+    right: 20px;
+    top: 750px;
+    height: 65px;
+    width: 90px;
+    border-radius: 50%;
+  }
+  .menuCont {
+    width: 85%;
+    height: auto;
+    position: absolute;
+    right: 5%;
+    top: 70vh;
+  }
+  .menuContent {
+    width: 80%;
+    height: auto;
+    max-height: 100vh;
+    position: absolute;
+    right: 5%;
+    top: 71vh;
+    cursor: pointer;
+  }
+}

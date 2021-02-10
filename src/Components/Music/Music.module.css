@@ -1,0 +1,91 @@
+.musicContainer{
+    width: 250px;
+    background-color: white;
+    border-radius: 50px;
+    padding: 10px 0px;
+    
+}
+
+.flexContainer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.disk {
+    width: 40px;
+    height: 40px;
+    left: 0;
+    margin: 0 10px 0 0;
+}
+
+@keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
+  
+.playingDisk{
+    animation: rotation 2s infinite linear;
+}
+
+.leftArrow {
+	transform: rotate(135deg);
+	-webkit-transform: rotate(135deg);
+	border: solid var(--darkgrey);
+	border-width: 0 3px 3px 0;
+	display: inline-block;
+	padding: 5px;
+	cursor: pointer;
+	margin: 0 10px;
+}
+
+.rightArrow {
+	border: solid var(--darkgrey);
+	border-width: 0 3px 3px 0;
+	display: inline-block;
+	padding: 5px;
+	transform: rotate(-45deg);
+	-webkit-transform: rotate(-45deg);
+	cursor: pointer;
+	margin: 0 10px;
+  }
+
+  .tooltip {
+	position: relative;
+  	display: inline-block;
+}
+
+.tooltip .tooltiptext {
+	visibility: hidden;
+	width: 100px;
+	background-color: var(--black);
+	color: var(--white);
+	text-align: center;
+	border-radius: 6px;
+	padding: 2px 0;
+	position: absolute;
+	z-index: 1;
+	bottom: 120%;
+	left: 50%;
+	margin-left: -60px;
+	font-size: 0.6rem;
+	text-transform: capitalize;
+}
+.tooltip .tooltiptext:after {
+	content: "";
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: var(--black) transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext{
+	visibility: visible;
+  }
