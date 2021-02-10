@@ -1,31 +1,26 @@
 import React, { useState } from "react";
 import "./App.css";
-import { ImportModal } from "./Components/ImportModal/ImportModal";
-import { Header } from "./Components/Shared/Header";
-import { Container } from "react-bootstrap";
-import { VideoModal } from "./Components/VideoModal/VideoModal";
 import type { MediaPresenter } from "./Components/MediaPresenter";
-
+import { Modal } from "./Components/Modal/Modal";
+import { Homepage } from "./Components/Homepage/Homepage";
 type AppProps = {
   mediaPresenter: MediaPresenter;
 };
+
 const App: React.FC<AppProps> = ({mediaPresenter}) => { 
-  const [show, setShow] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const closeModal = () => {
+    setModalOpen(false);
+  }
+
+  const openModal = ()  => {
+    setModalOpen(true);
+  }
   return (
-    <Container fluid className="App">
-      <Header />
-      <ImportModal
-        setShow={setShow}
-        mediaPresenter={mediaPresenter}
-      />
-      {show ? (
-        <VideoModal
-          setShow={setShow}
-          show={show}
-          mediaPresenter={mediaPresenter}
-        />
-      ) : null}
-    </Container>
+    <div className="App">
+      <Homepage openModal={openModal}/>
+      <Modal mediaPresenter={mediaPresenter} modalOpen={modalOpen} closeModal={closeModal}/>
+    </div>
   );
 };
 
