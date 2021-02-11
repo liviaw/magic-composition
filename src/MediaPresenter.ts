@@ -2,23 +2,26 @@ import * as mobx from "mobx";
 
 const MAXLEN = 10;
 
+export class MediaStore {
+  file: File;
+  duration: number = 0;
+  played: number = 0;
+  constructor(newFile: File) {
+    this.file = newFile;
+    // duration of each media attached
+    this.duration = 0;
+    // played list shows how long each of the file have been played
+    this.played = 0;
+  }
+}
+
 export class MediaPresenter {
   constructor() {
     mobx.makeObservable(this);
   }
-  // make need to change to .deep
-  @mobx.observable.deep
-  files: File[] = [];
 
   @mobx.observable.deep
-  durations: number[] = [];
-  // for now its a 1D array but can be expanded as [][] to play different parts
-  // this is for videos, which parts of it have been played
-  played: number[] = [];
-
-  customOrder: boolean = false;
-
-  static audioSound: number = 3;
+  media: MediaStore[] = [];
 
   static isImage(file: File): boolean {
     const imageFormat = new RegExp("image/*");
@@ -33,9 +36,7 @@ export class MediaPresenter {
   @mobx.action
   addFile(newFile: File): boolean {
     if (MediaPresenter.isImage(newFile) || MediaPresenter.isVideo(newFile)) {
-      this.files.push(newFile);
-      this.durations.push(0);
-      this.played.push(0);
+      this.media.push(new MediaStore(newFile));
       return true;
     }
     return false;
@@ -43,55 +44,61 @@ export class MediaPresenter {
 
   @mobx.action
   removeFile(fileIndex: number): void {
-    if (this.files.length === 0) {
+    if (this.media.length === 0) {
       return;
     }
     let index = fileIndex % this.filesLength;
     if (index > -1) {
-      this.files.splice(index, 1);
-      this.durations.splice(index, 1);
-      this.played.splice(index, 1);
+      this.media.splice(index, 1);
     }
-  }
-
-  setCustomOrder(value: boolean) {
-    this.customOrder = value;
   }
 
   @mobx.action
   setDuration(fileIndex: number, duration: number): void {
-    this.durations[fileIndex % this.filesLength] = duration;
+    // make sure that accessing files is % filesLength,
+    // so that it loops back to the start of the file if the video is too long
+    const modIndex = fileIndex % this.filesLength;
+    this.media[modIndex].duration = duration;
   }
 
   getDuration(fileIndex: number): number {
-    return this.durations[fileIndex % this.filesLength];
+    // make sure that accessing files is % filesLength,
+    // so that it loops back to the start of the file if the video is too long
+    const modIndex = fileIndex % this.filesLength;
+    return this.media[modIndex].duration;
   }
 
+  // get the name of a file
+  // if index is out of bound, fileindex go to the front of the files
   getFileName(fileIndex: number): string {
-    return this.files[fileIndex % this.filesLength].name;
+    if (this.media.length === 0) {
+      return "";
+    }
+    return this.media[fileIndex % this.filesLength].file.name;
   }
 
   getFile(fileIndex: number): File {
-    return this.files[fileIndex % this.filesLength];
+    return this.media[fileIndex % this.filesLength].file;
   }
 
   @mobx.computed
   get filesLength(): number {
-    return this.files.length;
+    return this.media.length;
   }
 
+  // shows how long each media has played
   @mobx.action
   incrementFilePlayed(fileIndex: number, seconds: number): void {
     let index = fileIndex % this.filesLength;
-    console.log("in increment " + this.played[index]);
-    console.log(this.durations[index]);
-    this.played[index] = (this.played[index] + seconds) % this.durations[index];
+    this.media[index].played =
+      (this.media[index].played + seconds) % this.media[index].duration;
   }
 
+  // reset all played media to 0
   @mobx.action
-  resetFilePlayed(): void {
-    for (let i = 0; i < this.filesLength; i++) {
-      this.played[i] = 0;
+  resetAllPlayedFiles(): void {
+    for (let index = 0; index < this.filesLength; index++) {
+      this.media[index].played = 0;
     }
   }
 
@@ -102,39 +109,36 @@ export class MediaPresenter {
     )
       return 0;
     if (
-      this.played[fileIndex % this.filesLength] %
+      this.media[fileIndex % this.filesLength].played %
       this.getDuration(fileIndex % this.filesLength)
     )
       return 0;
     return (
-      this.played[fileIndex % this.filesLength] %
+      this.media[fileIndex % this.filesLength].played %
       this.getDuration(fileIndex % this.filesLength)
     );
   }
 
+  // http://stackoverflow.com/questions/962802#962890
   shuffleArray(): number[] {
-    for (var array = [], i = 0; i < this.files.length; ++i) array[i] = i;
-    if (this.customOrder) {
-      return array;
-    }
+    for (var array = [], index = 0; index < this.media.length; ++index)
+      array[index] = index;
     return [...array].sort(() => Math.random() - 0.5);
   }
+
+  // switching order by replacing index with newIndex, then shift the array to the right
   switchOrder(index: number, newIndex: any): void {
     if (typeof newIndex === "string") {
       newIndex = parseInt(newIndex);
     }
-    let fileTemp: File;
-    let durTemp: number;
-    let playedTemp: number;
+    let mediaTemp: MediaStore;
     if (newIndex > -1) {
-      [fileTemp] = this.files.splice(index, 1);
-      [durTemp] = this.durations.splice(index, 1);
-      [playedTemp] = this.played.splice(index, 1);
-      this.files.splice(newIndex, 0, fileTemp);
-      this.durations.splice(newIndex, 0, durTemp);
-      this.played.splice(newIndex, 0, playedTemp);
+      [mediaTemp] = this.media.splice(index, 1);
+      this.media.splice(newIndex, 0, mediaTemp);
     }
   }
+
+  // trim file name when it's too long to look good in UI
   trimmedName(filename: string): string {
     if (filename.length >= MAXLEN) {
       let splittedNames = filename.split(".");
@@ -146,7 +150,7 @@ export class MediaPresenter {
     }
     return filename;
   }
-
+  // Check if any file is uploaded
   mediaReady() {
     return this.filesLength !== 0;
   }
