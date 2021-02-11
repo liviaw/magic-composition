@@ -258,8 +258,9 @@ export class OutputPresenter {
   }
   @mobx.computed
   get musicName(): string {
+    const extraString = "...";
     if (this.currTrack.musicName.length >= MAXLEN) {
-      return this.currTrack.musicName.substr(0, MAXLEN - 3) + "...";
+      return this.currTrack.musicName.substr(0, MAXLEN - extraString.length) + extraString;
     }
     return this.currTrack.musicName;
   }
