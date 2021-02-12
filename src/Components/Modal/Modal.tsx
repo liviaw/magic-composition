@@ -16,7 +16,7 @@ type Props = {
 };
 
 export const Modal: React.FC<Props> = observer(
-  ({ mediaPresenter, modalOpen, closeModal, outputPresenter }) => {
+  ({ mediaPresenter, modalOpen, closeModal, outputPresenter}) => {
     const windowModal = (
       event: React.MouseEvent<HTMLDivElement, MouseEvent>
     ): void => {
@@ -42,7 +42,7 @@ export const Modal: React.FC<Props> = observer(
                 <h3>Create a Video</h3>
               </Row>
               <Row className={styles.steps}>
-                <Steps
+              <Steps
                   outputPresenter={outputPresenter}
                   mediaPresenter={mediaPresenter}
                   closePlayerModal={closePlayerModal}
@@ -51,12 +51,7 @@ export const Modal: React.FC<Props> = observer(
               </Row>
             </Col>
             <Col className={styles.modalBody} sm={8}>
-              {mediaPresenter.mediaReady && (
-                <VideoPlayer
-                  outputPresenter={outputPresenter}
-                  mediaPresenter={mediaPresenter}
-                />
-              )}
+            {mediaPresenter.mediaReady && <VideoPlayer outputPresenter={outputPresenter} mediaPresenter={mediaPresenter}/>}
             </Col>
           </Row>
         </Container>
