@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react";
 import type { MediaPresenter } from "../MediaPresenter";
+import type { OutputPresenter } from "../../OutputPresenter";
 import { Container, Col, Row } from "react-bootstrap";
 import { ErrorToast } from "../ErrorToast/ErrorToast";
 import styles from "./Modal.module.css";
@@ -9,6 +10,7 @@ type Props = {
   mediaPresenter: MediaPresenter;
   modalOpen: boolean;
   closeModal: () => void;
+  outputPresenter: OutputPresenter;
 };
 
 export const Modal: React.FC<Props> = observer(
@@ -38,6 +40,13 @@ export const Modal: React.FC<Props> = observer(
                 <h3>Create a Video</h3>
               </Row>
               <Row className={styles.steps}>
+              <Steps
+                  outputPresenter={outputPresenter}
+                  stepNumber={stepNumber}
+                  mediaPresenter={mediaPresenter}
+                  closePlayerModal={closePlayerModal}
+                  openPlayerModal={openPlayerModal}
+                />
               </Row>
             </Col>
             <Col className={styles.modalBody} sm={8}>
