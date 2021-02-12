@@ -87,7 +87,7 @@ export class MediaPresenter {
 
   // Check if any file is uploaded
   @mobx.computed
-  mediaReady() {
+  get mediaReady() {
     return this.filesLength !== 0;
   }
 
