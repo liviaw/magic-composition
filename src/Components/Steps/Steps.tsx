@@ -13,6 +13,11 @@ type Props = {
   closePlayerModal: () => void;
 };
 
+/*
+/* This section contains left panel of modal
+/* Showing steps to user for creating a video
+*/
+
 export const Steps: React.FC<Props> = observer(
   ({ mediaPresenter, outputPresenter, openPlayerModal, closePlayerModal }) => {
     const handleMediaUpload = async (
