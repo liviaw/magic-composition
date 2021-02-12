@@ -28,9 +28,7 @@ export const Steps: React.FC<Props> = observer(
 
     const [stepOneOpen, setStepOneOpen] = useState<boolean>(true);
     const [stepTwoOpen, setStepTwoOpen] = useState<boolean>(false);
-    const AddFile = () => {
-      return <div></div>;
-    };
+
     return (
       <div className={styles.stepsContainer}>
         <div
