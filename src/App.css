@@ -22,6 +22,10 @@
   --purple: #8D39FA;
   --disabled-grey-text: #1e293373;
   --disabled-grey-background: #F7F8F8;
+  /* --large-screen: 1739px;
+  --laptop-screen: 1024px;
+  --tablet-screen: 768px;
+  --phone-screen: 425px; */
 }
 
 .App {

@@ -19,7 +19,7 @@ const App: React.FC<AppProps> = ({mediaPresenter, outputPresenter}) => {
 
   const openModal = (event: React.MouseEvent<HTMLDivElement, MouseEvent>)  => {
     setModalOpen(true);
-    if (mediaPresenter.mediaReady()) {
+    if (mediaPresenter.mediaReady) {
       outputPresenter.playVideo();
     }
     event.stopPropagation();

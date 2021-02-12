@@ -6,14 +6,23 @@ import type { OutputPresenter } from "../../OutputPresenter";
 import { showError } from "../ErrorToast/ErrorToast";
 import {Mood} from "../Mood/Mood";
 
+/*
+ * This folder contains components for 
+ * left panel of the modal
+ * Showing steps to user for creating a video
+*/
+
 type Props = {
-  stepNumber: number;
   mediaPresenter: MediaPresenter;
   outputPresenter: OutputPresenter;
+  openPlayerModal: () => void;
+  closePlayerModal: () => void;
 };
 
 export const Steps: React.FC<Props> = observer(
-  ({ stepNumber, mediaPresenter, outputPresenter }) => {
+  ({ mediaPresenter, outputPresenter, openPlayerModal, closePlayerModal }) => {
+    const [stepOneOpen, setStepOneOpen] = useState<boolean>(true);
+    const [stepTwoOpen, setStepTwoOpen] = useState<boolean>(false);
     const handleMediaUpload = async (
       event: React.ChangeEvent<HTMLInputElement>
     ) => {
@@ -26,31 +35,35 @@ export const Steps: React.FC<Props> = observer(
       });
     };
 
-    const [stepOneOpen, setStepOneOpen] = useState<boolean>(true);
-    const [stepTwoOpen, setStepTwoOpen] = useState<boolean>(true);
-    const AddFile = () => {
-      return <div></div>;
-    };
+    const onStepClick = () => {
+      if (mediaPresenter.mediaReady) {
+        if(!stepOneOpen) {
+          setStepOneOpen(true);
+        }
+        closePlayerModal();
+      } 
+    }
+
     return (
       <div className={styles.stepsContainer}>
         <div
           className={styles.steppingContainer}
-          onClick={() => {
-            setStepOneOpen(!stepOneOpen);
-          }}
+          onClick={onStepClick}
         >
           <span className={styles.stepNumber}>1</span>
 
           <p className={styles.stepText}>Add your files</p>
-          <span>
+          <span onClick={()=> {
+            setStepOneOpen(!stepOneOpen);
+          }}>
             <i className={stepOneOpen ? styles.downArrow : styles.upArrow}></i>
           </span>
         </div>
 
         {stepOneOpen && (
-          <div className={styles.uploadBtnCont}>
+          <button className={styles.uploadBtnCont}>
             <label htmlFor="fileUpload">
-              <div className={mediaPresenter.mediaReady() ? styles.clickedUploadBtn : styles.uploadBtn }>Upload media</div>
+              <div className={mediaPresenter.mediaReady ? styles.clickedUploadBtn : styles.uploadBtn }>Upload media</div>
             </label>
             <input
               hidden
@@ -60,36 +73,45 @@ export const Steps: React.FC<Props> = observer(
               accept="video/* image/*"
               onChange={handleMediaUpload}
             />
-          </div>
+          </button>
         )}
-          {
-            mediaPresenter.mediaReady() &&
-        <div className={styles.uploadBtnCont}>
-        <span className={styles.uploadBtn}><p>Continue</p></span>
-        </div>
+          { stepOneOpen &&
+            mediaPresenter.mediaReady &&
+        <button className={styles.continueBtn}
+            onClick={()=> {
+              if(!stepTwoOpen) {
+                setStepTwoOpen(true);
+                setStepOneOpen(false);
+                openPlayerModal();
+              }
+            }}
+          >Continue</button>
           }
         <div
           className={
-            mediaPresenter.mediaReady()
+            mediaPresenter.mediaReady
               ? styles.steppingContainer
               : styles.disbContainer
           }
           onClick={() => {
-            if (mediaPresenter.mediaReady()) {
-                setStepTwoOpen(!stepTwoOpen);
+            if (mediaPresenter.mediaReady) {
+              if(!stepTwoOpen) {
+                setStepTwoOpen(true);
+              }
+                openPlayerModal();
             }
         }}
         >
           <div
             className={
-              mediaPresenter.mediaReady()
+              mediaPresenter.mediaReady
                 ? undefined
                 : styles.disbSteppingContainer
             }
           >
             <span
               className={
-                mediaPresenter.mediaReady()
+                mediaPresenter.mediaReady
                   ? styles.stepNumber
                   : styles.disbStepNumber
               }
@@ -98,7 +120,7 @@ export const Steps: React.FC<Props> = observer(
             </span>
             <p
               className={
-                mediaPresenter.mediaReady()
+                mediaPresenter.mediaReady
                   ? styles.stepText
                   : styles.disbStepText
               }
@@ -108,18 +130,19 @@ export const Steps: React.FC<Props> = observer(
             <span>
               <i
                 className={
-                  mediaPresenter.mediaReady()
+                  mediaPresenter.mediaReady
                     ? stepTwoOpen ? styles.downArrow : styles.upArrow
                     : styles.disabledUpArrow
                 }
+                onClick={() => {setStepTwoOpen(!stepTwoOpen)}}
               ></i>
             </span>
           </div>
         </div>
-            {
-                mediaPresenter.mediaReady() && stepTwoOpen &&
-                (<Mood outputPresenter={outputPresenter} mediaPresenter={mediaPresenter}/>)
-            }
+          {
+            mediaPresenter.mediaReady && stepTwoOpen &&
+            (<Mood outputPresenter={outputPresenter} mediaPresenter={mediaPresenter}/>)
+          }
       </div>
     );
   }

@@ -1,4 +1,10 @@
 import { useRef, useEffect } from 'react'
+
+/*
+ * useInterval taken from
+ * https://usehooks-typescript.com/react-hook/use-interval
+*/
+
 function useInterval(callback: () => void, delay: number | null) {
   const savedCallback = useRef<() => void | null>()
   // Remember the latest callback.

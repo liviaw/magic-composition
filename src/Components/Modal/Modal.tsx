@@ -9,6 +9,7 @@ import { VideoPlayer } from "../VideoPlayer/VideoPlayer";
 import { Steps } from "../Steps/Steps";
 import styles from "./Modal.module.css";
 import classnames from "classnames";
+import { Previewer } from "../Previewer/Previewer";
 
 type Props = {
   mediaPresenter: MediaPresenter;
@@ -18,12 +19,21 @@ type Props = {
 };
 
 export const Modal: React.FC<Props> = observer(
-  ({ mediaPresenter, outputPresenter, modalOpen, closeModal}) => {
-    const [stepNumber, setStepNumber] = useState<number>(1);
+  ({ mediaPresenter, outputPresenter, modalOpen, closeModal }) => {
+    const [openPlayer, setOpenPlayer] = useState<boolean>(false);
     const windowModal = (
       event: React.MouseEvent<HTMLDivElement, MouseEvent>
     ): void => {
       event.stopPropagation();
+    };
+
+    const openPlayerModal = () => {
+      setOpenPlayer(true);
+    };
+
+    const closePlayerModal = () => {
+      outputPresenter.pauseVideo();
+      setOpenPlayer(false);
     };
     return (
       <div
@@ -47,14 +57,25 @@ export const Modal: React.FC<Props> = observer(
               <Row className={styles.steps}>
                 <Steps
                   outputPresenter={outputPresenter}
-                  stepNumber={stepNumber}
                   mediaPresenter={mediaPresenter}
+                  closePlayerModal={closePlayerModal}
+                  openPlayerModal={openPlayerModal}
                 />
               </Row>
             </Col>
             <Col className={styles.modalBody} sm={8}>
-              {mediaPresenter.mediaReady() ? (
-                <VideoPlayer outputPresenter={outputPresenter} mediaPresenter={mediaPresenter} />
+              {mediaPresenter.mediaReady ? (
+                openPlayer ? (
+                  <VideoPlayer
+                    outputPresenter={outputPresenter}
+                    mediaPresenter={mediaPresenter}
+                  />
+                ) : (
+                  <Previewer
+                    outputPresenter={outputPresenter}
+                    mediaPresenter={mediaPresenter}
+                  />
+                )
               ) : (
                 <Dropbox mediaPresenter={mediaPresenter} />
               )}

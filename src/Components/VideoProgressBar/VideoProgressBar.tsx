@@ -32,8 +32,8 @@ export const VideoProgressBar: React.FC<Props> = observer(({
     // TODO, add a replay button
     return(
         <div>
-            <ProgressBar className={styles.progress} now={outputPresenter.currOverallPlayedSeconds / outputPresenter.totalVideoDuration * 100}/>
-            <span>{formattedTime(outputPresenter.currOverallPlayedSeconds) + " / "+ formattedTime(outputPresenter.totalVideoDuration)}</span>
+            <ProgressBar className={styles.progress} now={outputPresenter.overallPlayedSeconds / outputPresenter.totalVideoDuration * 100}/>
+            <span>{formattedTime(outputPresenter.overallPlayedSeconds) + " / "+ formattedTime(outputPresenter.totalVideoDuration)}</span>
             <br/>
         </div>
     )

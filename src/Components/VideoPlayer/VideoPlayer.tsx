@@ -10,6 +10,11 @@ import pauseButton from "./pauseButton.svg";
 import { VideoProgressBar } from "../VideoProgressBar/VideoProgressBar";
 import { Music } from "../Music/Music";
 
+/*
+ * VideoPlayer.tsx consist of the components to generate a playing video
+ *  This include: progress bar, timer, play/pause buttons, the files playing/pausing
+ */
+
 type Props = {
     mediaPresenter: MediaPresenter;
     outputPresenter: OutputPresenter;
@@ -19,32 +24,33 @@ export const VideoPlayer: React.FC<Props> = observer(({
     mediaPresenter,
     outputPresenter,
 }) => {
-    const [delay, setDelay] = useState<number>(100);
+    const [initialDelay, setInitialDelay] = useState<number>(100);
     const [hover, setHover] = useState<boolean>(false);
+
     useEffect(() => {
         outputPresenter.seekPlayMusic();
       }, []);
     useInterval(
         () => {           
             //seek each media
-            mediaPresenter.incrementFilePlayed(outputPresenter.currPlayingMedia, delay / 1000);
+            mediaPresenter.incrementFilePlayed(outputPresenter.currPlayingMedia, initialDelay / 1000);
             let music = outputPresenter.currMusic;
             let currentMediaCounter = outputPresenter.currPlayingMedia;
             if (music.ended) {
-                mediaPresenter.resetFilePlayed();
+                mediaPresenter.resetAllPlayedFiles();
             } else if (outputPresenter.currSlotLength <= currentMediaCounter) {
                 outputPresenter.pauseVideo();
-                mediaPresenter.resetFilePlayed();
+                mediaPresenter.resetAllPlayedFiles();
             } else {
-                outputPresenter.increPlayedSeconds(delay / 1000);
+                outputPresenter.incrementPlayedSeconds(initialDelay / 1000);
             }
         },
-        outputPresenter.isPlaying ? delay : null,
+        outputPresenter.isPlaying ? initialDelay : null,
     )
     return (
         <div className={styles.finalVideoContainer}>
             {outputPresenter.currMusicLoaded &&
-            (<MediaComponent file={mediaPresenter.getFile(outputPresenter.currPlayingMedia)} outputPresenter={outputPresenter} playfrom={mediaPresenter.getFilePlayed(outputPresenter.currPlayingMedia)}/>)
+            (<MediaComponent play={outputPresenter.isPlaying} file={mediaPresenter.getFile(outputPresenter.currPlayingMedia)} playfrom={mediaPresenter.getFilePlayed(outputPresenter.currPlayingMedia)}/>)
             }
             <VideoProgressBar outputPresenter={outputPresenter}/>
             { outputPresenter.isPlaying ?

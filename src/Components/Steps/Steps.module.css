@@ -1,32 +1,31 @@
 .stepsContainer {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .steppingContainer {
   display: flex;
   flex-direction: row;
   cursor: pointer;
-  /* align-items: flex-start; */
-  /* justify-content: flex-start; */
 }
 .disbContainer {
-    position: relative;
-    margin: 10px -10px;
-    height: 45px; 
+  position: relative;
+  margin: 10px -10px;
+  height: 45px;
 }
 
-.disbSteppingContainer{
-    position: absolute;
-    height: 50px;
-    left: 0;
-    background-color: var(--disabled-grey-background);
-    display: flex;
-    width: 200%;
-    border-radius: 5px;
+.disbSteppingContainer {
+  position: absolute;
+  height: 50px;
+  left: 0;
+  background-color: var(--disabled-grey-background);
+  display: flex;
+  width: 200%;
+  border-radius: 5px;
   font-weight: 500;
   padding: 10px 0;
 }
+
 .stepNumber {
   background-color: var(--purple);
   width: 25px;
@@ -37,74 +36,79 @@
   border-radius: 50%;
   display: inline-block;
 }
+
 .stepText {
   color: var(--black);
   display: inline-block;
 }
-.disbStepNumber {
-    width: 25px;
-    height: 25px;
-    margin-right: 7px;
-    text-align: center;
-    color:var(--disabled-grey-text);;
-    border: solid 1px var(--disabled-grey-text);
-    border-radius: 50%;
-    display: inline-block;
-    margin: 0 8px;
 
-  }
-  .disbStepText {
-    color: var(--disabled-grey-text);
-    display: inline-block;
-  }
+.disbStepNumber {
+  width: 25px;
+  height: 25px;
+  margin-right: 7px;
+  text-align: center;
+  color: var(--disabled-grey-text);
+  border: solid 1px var(--disabled-grey-text);
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 8px;
+}
+
+.disbStepText {
+  color: var(--disabled-grey-text);
+  display: inline-block;
+}
 
 .uploadBtnCont {
   position: relative;
-  margin-bottom: 15px;
-  height: 45px;   
+  margin-bottom: 35px;
+  /* height: 45px; */
   left: -20px;
+  border: 0;
+  background-color: white;
 }
 
 .uploadBtn {
-    position: absolute;
-    height: 45px;
-    left: 0;
-    background-color: var(--purple);
-    display: flex;
-  justify-content: center;
-  flex-direction: column;
-    width: 310px;
-    border-radius: 5px;
-  font-weight: 500;
-  color:var(--white);
-  cursor: pointer;
-/* 
-  position: relative;
+  position: absolute;
   height: 45px;
+  left: 0;
   background-color: var(--purple);
   display: flex;
-justify-content: center;
-flex-direction: column;
-  width: 120%;
-  border-radius: 5px;
-font-weight: 500;
-color:var(--white);
-cursor: pointer; */
-  }
-
-.clickedUploadBtn{
-    position: absolute;
-    height: 45px;
-    left: 0;
-    background-color: var(--lightgrey);
-    display: flex;
   justify-content: center;
   flex-direction: column;
-    width: 310px;
-    border-radius: 5px;
+  width: 310px;
+  border-radius: 5px;
+  font-weight: 500;
+  color: var(--white);
+  cursor: pointer;
+}
+
+.clickedUploadBtn {
+  position: absolute;
+  height: 45px;
+  left: 0;
+  background-color: var(--lightgrey);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 310px;
+  border-radius: 5px;
   font-weight: 500;
   color: var(--black);
   cursor: pointer;
+}
+
+.continueBtn {
+  position: relative;
+  height: 45px;
+  background-color: var(--purple);
+  width: 310px;
+  border: 0;
+  border-radius: 5px;
+  font-weight: 500;
+  color: var(--white);
+  margin-bottom: 10px;
+  left: -20px;
 }
 
 .downArrow {
@@ -121,8 +125,8 @@ cursor: pointer; */
 }
 
 .upArrow {
-    border: solid black;
-    border-width: 0 2px 2px 0;
+  border: solid black;
+  border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 0.25rem;
   transform: rotate(-135deg);
@@ -134,13 +138,13 @@ cursor: pointer; */
 }
 
 .disabledUpArrow {
-    border: solid var(--disabled-grey-text);
-    border-width: 0 2px 2px 0;
-    display: inline-block;
-    padding: 0.25rem;
-    transform: rotate(-135deg);
-    -webkit-transform: rotate(-135deg);
-    position: absolute;
-    right: 25px;
-    margin-top: 5px;
+  border: solid var(--disabled-grey-text);
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 0.25rem;
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+  position: absolute;
+  right: 25px;
+  margin-top: 5px;
 }

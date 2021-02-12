@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { observer } from "mobx-react";
 import type { MediaPresenter } from "../../MediaPresenter";
 import disk from "../../Media/disk.svg";
@@ -19,6 +19,7 @@ export const Music: React.FC<Props> = observer(({ mediaPresenter, outputPresente
   const nextTrack = () => {
     outputPresenter.nextCurrTrack(mediaPresenter.filesLength);
   };
+
   return (
     <div className={styles.flexContainer}>
       <div className={styles.tooltip}>

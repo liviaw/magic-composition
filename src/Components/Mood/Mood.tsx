@@ -2,8 +2,13 @@ import React from "react";
 import { observer } from "mobx-react";
 import styles from "./Mood.module.css";
 import type { MediaPresenter } from "../../MediaPresenter";
-import { templates } from "../Template";
+import { templates } from "../../Template";
 import type { OutputPresenter } from "../../OutputPresenter";
+
+/*
+ * Mood.tsx contains all mood options a user can pick
+ * following the media imported by the user
+*/
 
 type Props = {
   mediaPresenter: MediaPresenter;
@@ -22,7 +27,7 @@ export const Mood: React.FC<Props> = observer(
               duration
             );
             return (
-              <div
+              <button
                 className={
                   present
                     ? outputPresenter.templateLength === duration
@@ -38,7 +43,7 @@ export const Mood: React.FC<Props> = observer(
                 }}
               >
                 <span>{duration}</span>
-              </div>
+              </button>
             );
           })}
         </div>
@@ -47,7 +52,7 @@ export const Mood: React.FC<Props> = observer(
           {Object.values(templates).map((template) => {
             if (outputPresenter.templateMood !== template.style) {
               return (
-                <div
+                <button
                   className={styles.optionBtn}
                   key={template.style}
                   onClick={() => {
@@ -58,19 +63,19 @@ export const Mood: React.FC<Props> = observer(
                   }}
                 >
                   {template.style}
-                </div>
+                </button>
               );
             } else {
               return (
-                <div key={template.style} className={styles.clickedOptionBtn}>
+                <button key={template.style} className={styles.clickedOptionBtn}>
                   {template.style}
-                </div>
+                </button>
               );
             }
           })}
         </div>
-        <div className={styles.useBtn}>Use in a design</div>
-        <div className={styles.shareBtn}>Share</div>
+        <button className={styles.useBtn} onClick={outputPresenter.resetVideo}>Use in a design</button>
+        <button className={styles.shareBtn} onClick={outputPresenter.resetVideo}>Share</button>
       </div>
     );
   }
