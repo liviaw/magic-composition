@@ -14,6 +14,8 @@ type Props = {
 
 export const Steps: React.FC<Props> = observer(
   ({ mediaPresenter, outputPresenter, openPlayerModal, closePlayerModal }) => {
+    const [stepOneOpen, setStepOneOpen] = useState<boolean>(true);
+    const [stepTwoOpen, setStepTwoOpen] = useState<boolean>(false);
     const handleMediaUpload = async (
       event: React.ChangeEvent<HTMLInputElement>
     ) => {
@@ -26,21 +28,20 @@ export const Steps: React.FC<Props> = observer(
       });
     };
 
-    const [stepOneOpen, setStepOneOpen] = useState<boolean>(true);
-    const [stepTwoOpen, setStepTwoOpen] = useState<boolean>(false);
+    const onStepClick = () => {
+      if (mediaPresenter.mediaReady) {
+        if(!stepOneOpen) {
+          setStepOneOpen(true);
+        }
+        closePlayerModal();
+      } 
+    }
 
     return (
       <div className={styles.stepsContainer}>
         <div
           className={styles.steppingContainer}
-          onClick={() => {
-            if (mediaPresenter.mediaReady) {
-              if(!stepOneOpen) {
-                setStepOneOpen(true);
-              }
-              closePlayerModal();
-            }         
-          }}
+          onClick={onStepClick}
         >
           <span className={styles.stepNumber}>1</span>
 
