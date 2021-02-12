@@ -12,6 +12,10 @@ type Props = {
     playfrom: number;
   };
 
+/*
+* Components under videoPlayer to preview videos in a timely manner
+*/
+
 export const MediaComponent: React.FC<Props> = observer(({
     play,
     file,
