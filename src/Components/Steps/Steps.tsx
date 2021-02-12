@@ -4,6 +4,7 @@ import styles from "./Steps.module.css";
 import type { MediaPresenter } from "../../MediaPresenter";
 import type { OutputPresenter } from "../../OutputPresenter";
 import { showError } from "../ErrorToast/ErrorToast";
+import {Mood} from "../Mood/Mood";
 
 type Props = {
   mediaPresenter: MediaPresenter;
