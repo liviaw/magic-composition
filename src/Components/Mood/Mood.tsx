@@ -10,6 +10,11 @@ type Props = {
   outputPresenter: OutputPresenter;
 };
 
+/*
+/* Mood.tsx contains all mood options a user can pick
+/* following the media imported by the user
+*/
+
 export const Mood: React.FC<Props> = observer(
   ({ mediaPresenter, outputPresenter }) => {
     return (
