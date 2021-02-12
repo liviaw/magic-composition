@@ -41,7 +41,6 @@ export const MediaComponent: React.FC<Props> = observer(({
           showError(file.name + ": media unable to play");
         }}
         onStart={ () => {
-          console.log("onstart: " + playfrom);
           if (mediaRef != null && mediaRef.current != null) {
             mediaRef.current.seekTo(playfrom, "seconds");
           }
