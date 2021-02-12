@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import styles from "./Homepage.module.css";
 
 type Props = {
-  openModal: () => void;
+  openModal: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
 
 export const Homepage: React.FC<Props> = ({ openModal }) => {
