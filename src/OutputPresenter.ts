@@ -1,13 +1,9 @@
 import * as mobx from "mobx";
-import { templates } from "./Components/Template";
-import type {
-  Mood,
-  TrackEl,
-  LengthEl,
-  DurationTypes,
-} from "./Components/Template";
+import { templates } from "./Template";
+import type { Mood, TrackEl, LengthEl, DurationTypes } from "./Template";
 
 const MAXLEN = 25;
+const TURNDOWNVOLUME = 4;
 
 export class OutputPresenter {
   constructor() {
@@ -39,11 +35,16 @@ export class OutputPresenter {
   @mobx.observable
   currLength: LengthEl = this.currMood.tracks[0][this.lengthIndex];
 
+  // music loads in this file instead of HTMLAudio element
+  // because we are adjusting the music and there is no need to show
+  // any controls
   @mobx.observable
   musicLoaded: boolean = false;
 
   @mobx.observable
   music: HTMLAudioElement = new Audio(this.currTrack.musicTrack);
+
+  defaultMusicVolume: number = 0.7;
 
   @mobx.computed
   get isPlaying(): boolean {
@@ -58,12 +59,12 @@ export class OutputPresenter {
   @mobx.action
   playVideo(): void {
     if (this.playedSeconds >= this.currLength.totalDuration) {
-      console.log("resetting video");
       this.resetVideo();
     }
     this.music.play();
     this.play = true;
   }
+
   @mobx.action
   pauseVideo(): void {
     this.music.pause();
@@ -81,7 +82,7 @@ export class OutputPresenter {
   }
 
   @mobx.action
-  increPlayedSeconds(seconds: number) {
+  incrementPlayedSeconds(seconds: number) {
     this.playedSeconds += seconds;
     this.overallPlayedSeconds += seconds;
     this.adjustSound();
@@ -93,7 +94,7 @@ export class OutputPresenter {
 
   @mobx.action
   adjustSound() {
-    if (this.music.currentTime >= this.currLength.end - 4) {
+    if (this.music.currentTime >= this.currLength.end - TURNDOWNVOLUME) {
       if (this.music.volume - 0.2 >= 0) {
         this.music.volume -= 0.2;
       }
@@ -116,11 +117,6 @@ export class OutputPresenter {
   @mobx.computed
   get totalVideoDuration(): number {
     return this.currLength.totalDuration;
-  }
-
-  @mobx.computed
-  get currOverallPlayedSeconds(): number {
-    return this.overallPlayedSeconds;
   }
 
   @mobx.action
@@ -193,16 +189,16 @@ export class OutputPresenter {
     }
   }
 
-  canShowDuration(filesLength: number, duration: string): boolean {
-    if (duration === "short") return true;
+  canShowDuration(filesLength: number, length: string): boolean {
+    if (length === "short") return true;
     if (
-      duration === "medium" &&
+      length === "medium" &&
       this.currTrack.medium.slot.length <= filesLength * 3
     ) {
       return true;
     }
     if (
-      duration === "long" &&
+      length === "long" &&
       this.currTrack.medium.slot.length <= filesLength * 3 &&
       this.currTrack.long.slot.length <= filesLength * 3
     ) {
@@ -219,6 +215,7 @@ export class OutputPresenter {
   resetVideo(): void {
     this.music.load();
     this.setMusicLoaded(false);
+    this.music.removeEventListener("canplaythrough", this.handleLoaded);
     this.playedSeconds = 0;
     this.playingMedia = 0;
     this.overallPlayedSeconds = 0;
@@ -237,14 +234,16 @@ export class OutputPresenter {
   }
 
   @mobx.action
+  handleLoaded(): void {
+    if (this.music.readyState >= 3) {
+      this.setMusicLoaded(true);
+      this.music.volume = 0.7;
+    }
+  }
+  @mobx.action
   seekPlayMusic(): void {
     this.music.currentTime = this.currLength.start;
-    this.music.addEventListener("canplaythrough", (event) => {
-      if (this.music.readyState >= 3) {
-        this.setMusicLoaded(true);
-        this.music.volume = 0.7;
-      }
-    });
+    this.music.addEventListener("canplaythrough", this.handleLoaded);
   }
 
   @mobx.computed
@@ -256,14 +255,16 @@ export class OutputPresenter {
   get currMusicLoaded(): boolean {
     return this.musicLoaded;
   }
+
   @mobx.computed
   get musicName(): string {
     const extraString = "...";
     if (this.currTrack.musicName.length >= MAXLEN) {
-      return this.currTrack.musicName.substr(0, MAXLEN - extraString.length) + extraString;
+      return (
+        this.currTrack.musicName.substr(0, MAXLEN - extraString.length) +
+        extraString
+      );
     }
     return this.currTrack.musicName;
   }
 }
-
-export const outputPresenter = new OutputPresenter();
