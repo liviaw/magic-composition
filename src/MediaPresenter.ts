@@ -4,14 +4,12 @@ const MAXLEN = 10;
 
 export class MediaStore {
   file: File;
+  // duration of each media attached
   duration: number = 0;
+  // played list shows how long each of the file have been played
   played: number = 0;
   constructor(newFile: File) {
     this.file = newFile;
-    // duration of each media attached
-    this.duration = 0;
-    // played list shows how long each of the file have been played
-    this.played = 0;
   }
 }
 
@@ -31,6 +29,13 @@ export class MediaPresenter {
   static isVideo(file: File): boolean {
     const videoFormat = new RegExp("video/*");
     return videoFormat.test(file.type);
+  }
+
+  getMedia(fileIndex: number): MediaStore {
+    // make sure that accessing files is % filesLength,
+    // so that it loops back to the start of the file if the video is too long
+    const modIndex = fileIndex % this.filesLength;
+    return this.media[modIndex];
   }
 
   @mobx.action
@@ -55,17 +60,11 @@ export class MediaPresenter {
 
   @mobx.action
   setDuration(fileIndex: number, duration: number): void {
-    // make sure that accessing files is % filesLength,
-    // so that it loops back to the start of the file if the video is too long
-    const modIndex = fileIndex % this.filesLength;
-    this.media[modIndex].duration = duration;
+    this.getMedia(fileIndex).duration = duration;
   }
 
   getDuration(fileIndex: number): number {
-    // make sure that accessing files is % filesLength,
-    // so that it loops back to the start of the file if the video is too long
-    const modIndex = fileIndex % this.filesLength;
-    return this.media[modIndex].duration;
+    return this.getMedia(fileIndex).duration;
   }
 
   // get the name of a file
@@ -74,11 +73,11 @@ export class MediaPresenter {
     if (this.media.length === 0) {
       return "";
     }
-    return this.media[fileIndex % this.filesLength].file.name;
+    return this.getMedia(fileIndex).file.name;
   }
 
   getFile(fileIndex: number): File {
-    return this.media[fileIndex % this.filesLength].file;
+    return this.getMedia(fileIndex).file;
   }
 
   @mobx.computed
@@ -86,40 +85,41 @@ export class MediaPresenter {
     return this.media.length;
   }
 
+  // Check if any file is uploaded
+  @mobx.computed
+  mediaReady() {
+    return this.filesLength !== 0;
+  }
+
   // shows how long each media has played
+  // mod by duration, to loop back to the beginning of media
   @mobx.action
   incrementFilePlayed(fileIndex: number, seconds: number): void {
-    let index = fileIndex % this.filesLength;
-    this.media[index].played =
-      (this.media[index].played + seconds) % this.media[index].duration;
+    let { duration, played } = this.getMedia(fileIndex);
+    played = (played + seconds) % duration;
   }
 
   // reset all played media to 0
   @mobx.action
   resetAllPlayedFiles(): void {
-    for (let index = 0; index < this.filesLength; index++) {
-      this.media[index].played = 0;
+    for (let fileIndex = 0; fileIndex < this.filesLength; fileIndex++) {
+      this.getMedia(fileIndex).played = 0;
     }
   }
 
   getFilePlayed(fileIndex: number): number {
-    if (
-      fileIndex % this.filesLength === 0 ||
-      this.getDuration(fileIndex % this.filesLength) === 0
-    )
+    // making sure that we don't meet the case of 0 % 0 which is NaN
+    let { duration, played } = this.getMedia(fileIndex);
+    let computedIndex = fileIndex % this.filesLength;
+    if (!computedIndex || !this.getDuration(computedIndex)) {
       return 0;
-    if (
-      this.media[fileIndex % this.filesLength].played %
-      this.getDuration(fileIndex % this.filesLength)
-    )
+    } else if (!(played % this.getDuration(computedIndex))) {
       return 0;
-    return (
-      this.media[fileIndex % this.filesLength].played %
-      this.getDuration(fileIndex % this.filesLength)
-    );
+    } else {
+      return played % this.getDuration(computedIndex);
+    }
   }
 
-  // http://stackoverflow.com/questions/962802#962890
   shuffleArray(): number[] {
     for (var array = [], index = 0; index < this.media.length; ++index)
       array[index] = index;
@@ -149,9 +149,5 @@ export class MediaPresenter {
       );
     }
     return filename;
-  }
-  // Check if any file is uploaded
-  mediaReady() {
-    return this.filesLength !== 0;
   }
 }
