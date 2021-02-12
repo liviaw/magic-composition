@@ -6,7 +6,6 @@ import type { OutputPresenter } from "../../OutputPresenter";
 import { showError } from "../ErrorToast/ErrorToast";
 
 type Props = {
-  stepNumber: number;
   mediaPresenter: MediaPresenter;
   outputPresenter: OutputPresenter;
   openPlayerModal: () => void;
@@ -14,7 +13,7 @@ type Props = {
 };
 
 export const Steps: React.FC<Props> = observer(
-  ({ stepNumber, mediaPresenter, outputPresenter, openPlayerModal, closePlayerModal }) => {
+  ({ mediaPresenter, outputPresenter, openPlayerModal, closePlayerModal }) => {
     const handleMediaUpload = async (
       event: React.ChangeEvent<HTMLInputElement>
     ) => {

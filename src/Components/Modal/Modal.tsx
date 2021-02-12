@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-import type { MediaPresenter } from "../MediaPresenter";
+import type { MediaPresenter } from "../../MediaPresenter";
 import type { OutputPresenter } from "../../OutputPresenter";
 import { Container, Col, Row } from "react-bootstrap";
 import { ErrorToast } from "../ErrorToast/ErrorToast";
@@ -14,7 +14,7 @@ type Props = {
 };
 
 export const Modal: React.FC<Props> = observer(
-  ({ mediaPresenter, modalOpen, closeModal}) => {
+  ({ mediaPresenter, modalOpen, closeModal, outputPresenter}) => {
     const windowModal = (
       event: React.MouseEvent<HTMLDivElement, MouseEvent>
     ): void => {
@@ -42,7 +42,6 @@ export const Modal: React.FC<Props> = observer(
               <Row className={styles.steps}>
               <Steps
                   outputPresenter={outputPresenter}
-                  stepNumber={stepNumber}
                   mediaPresenter={mediaPresenter}
                   closePlayerModal={closePlayerModal}
                   openPlayerModal={openPlayerModal}
