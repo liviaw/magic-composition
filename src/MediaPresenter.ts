@@ -102,21 +102,21 @@ export class MediaPresenter {
   // reset all played media to 0
   @mobx.action
   resetAllPlayedFiles(): void {
-    for (let fileIndex = 0; fileIndex < this.filesLength; fileIndex++) {
-      this.getMedia(fileIndex).played = 0;
+    for (let index = 0; index < this.filesLength; index++) {
+      this.media[index].played = 0;
     }
   }
 
   getFilePlayed(fileIndex: number): number {
     // making sure that we don't meet the case of 0 % 0 which is NaN
-    let { duration, played } = this.getMedia(fileIndex);
-    let computedIndex = fileIndex % this.filesLength;
-    if (!computedIndex || !this.getDuration(computedIndex)) {
+    const { duration, played } = this.getMedia(fileIndex);
+    const computedIndex = fileIndex % this.filesLength;
+    if (!computedIndex || !duration) {
       return 0;
-    } else if (!(played % this.getDuration(computedIndex))) {
+    } else if (!(played % duration)) {
       return 0;
     } else {
-      return played % this.getDuration(computedIndex);
+      return played % duration;
     }
   }
 
