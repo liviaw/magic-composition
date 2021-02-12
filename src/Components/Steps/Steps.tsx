@@ -4,6 +4,7 @@ import styles from "./Steps.module.css";
 import type { MediaPresenter } from "../../MediaPresenter";
 import type { OutputPresenter } from "../../OutputPresenter";
 import { showError } from "../ErrorToast/ErrorToast";
+import {Mood} from "../Mood/Mood";
 
 type Props = {
   mediaPresenter: MediaPresenter;
@@ -11,6 +12,11 @@ type Props = {
   openPlayerModal: () => void;
   closePlayerModal: () => void;
 };
+
+/*
+/* This section contains left panel of modal
+/* Showing steps to user for creating a video
+*/
 
 export const Steps: React.FC<Props> = observer(
   ({ mediaPresenter, outputPresenter, openPlayerModal, closePlayerModal }) => {
@@ -134,7 +140,7 @@ export const Steps: React.FC<Props> = observer(
         </div>
             {
                 mediaPresenter.mediaReady && stepTwoOpen &&
-                (<p>buttons buttons here</p>)
+                (<Mood outputPresenter={outputPresenter} mediaPresenter={mediaPresenter}/>)
             }
       </div>
     );
