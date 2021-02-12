@@ -134,7 +134,7 @@ export const Steps: React.FC<Props> = observer(
         </div>
             {
                 mediaPresenter.mediaReady && stepTwoOpen &&
-                (<p>buttons buttons here</p>)
+                (<Mood outputPresenter={outputPresenter} mediaPresenter={mediaPresenter}/>)
             }
       </div>
     );
