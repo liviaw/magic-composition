@@ -1,13 +1,17 @@
-# Project Objective
+# ✨ Magic Video Auto-Composition ✨
 
-## Background
-Even with Canva’s simple tools, video-making can be a laborious process. Choosing the right template, trimming videos to fit to audio etc. all add steps and decisions that a user has to go through. Current video templates provide a basic framework, but there is no easy way to try out your own content inside different templates without going through the entire editing process.
+## Project Objective
+
+### Background
+Even with Canva’s simple tools, video-making can be a laborious process. Choosing the right template, trimming videos to fit to audio and many more. All add steps and decisions that a user has to go through. Current video templates provide a basic framework, but there is no easy way to try out your own content inside different templates without going through the entire editing process.
 There remains a gap between uploading filmed content and downloading a finalised video which presents an opportunity to be solved - a ‘content-first’ approach to video creation
 
+see [here](https://canvadev.atlassian.net/wiki/spaces/INTPROG/pages/1363935799/Magic+video+auto-composition+Video+Experience+Video+-+FE) for inital project plan on Confluence
 
-see [here](https://canvadev.atlassian.net/wiki/spaces/INTPROG/pages/1363935799/Magic+video+auto-composition+Video+Experience+Video+-+FE) for confluence documentation
+### Content-First Approach 🎬
+Add your available images on your phone, 10-year hard drive and WOLA - a video generated for you!
 
-## Features:
+### Functionality:
 - US1: Users must be able to select and upload media content in the form of images and videos 
 - US2: Users must also be able to add more media into the application
 - US3: Users must be able to to remove media from the application
@@ -21,7 +25,7 @@ see [here](https://canvadev.atlassian.net/wiki/spaces/INTPROG/pages/1363935799/M
 - US11: User must be able to set and edit the order of the files
 
 
-# Building & Running
+# Building & Running ⛏
 ## Prerequisites
 Yarn installed on your system. If your system does not already have yarn, you can follow the instructions found [here](https://classic.yarnpkg.com/en/docs/install/#mac-stable)
 
@@ -32,25 +36,82 @@ Yarn installed on your system. If your system does not already have yarn, you ca
 At this point, the project should be running at `http://localhost:3000/` in the browser
 
 ## Running Tests
+Unit tests are written in tests/ folder
 
 `yarn test` launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ## Demo Page
-Optionally, here is a built web app for you to view: [here]()
+Optionally, here is a built web app to view: [here](http://ec2-54-79-73-249.ap-southeast-2.compute.amazonaws.com:3000/)
+
+It's not very responsive for mobile/tablet view, but will work on it after testing is finished!
+
+# Tech Stack
+
+## Languages and Framework
+<img src="./readmeMedia/mobx-logo.png" width="50" alt="mobx logo">
+<img src="./readmeMedia/typescript-logo.png" width="20" alt="typescript logo">
+<img src="./readmeMedia/react-logo.png" width="50" alt="React logo">
+
+This project is written in TypeScript, bootstrapped with React.
+
+Some states are using React states, however to comply and match with Canva Codebase, we mainly use Mobx for state management.
+
+## Libraries Used / Methods
+### Components
+- Most Components are written in HTMLElements with stylings
+- Modal and Progress Bar are bootstrapped with [React-Bootstrap](https://react-bootstrap.github.io/components/progress/)
+
+### React Player
+- Display video files using [React Player](https://www.npmjs.com/package/react-player)
+
+### Drag and Drop: 
+- For drag and drop files to dropbox, we used Typescript dragging and dropping events
+- For adjusting file index in previewer we used [React-Dnd](https://react-dnd.github.io/)
+
+### Icons
+- Most Icons are stored in svg for resizing purposes
+- trash / delete Icon is from [Material UI](https://material-ui.com/components/icons/)
+
+### Timer
+- You may notice that the videoplayer component requires many state changes, we are using [useInterval](https://usehooks-typescript.com/react-hook/use-interval) to check the states needed to be changed every 100 microsecond
+
+### Layout
+- We use flexbox and `<Container>`, `<Row>`, `<Col>` from [React-Bootstrap](https://react-bootstrap.github.io/layout/grid/)
+
 
 # Code Structure
-## Libraries Used
 
-## diagram
+## Diagram
+<img src="./readmeMedia/diagram.png" width="450" alt="architecture diagram">
 
-## Storing Templates
-`codes here`
+Now that's a strain on the eyes, so [here](https://www.figma.com/file/xKqDWp1XPyIGOWBVv41qoF/Untitled?node-id=0%3A1)'s the figma file for you to explore.
 
-## video presenters
-`codes here`
+## Storing Templates/Moods of videos
+`Template.ts` contain a list of Mood objects storing mood name, duration, music and the timing of each video generated.
 
-## media presenter
-`codes here`
+## Output Presenter
+`OutputPresenter.ts` takes data from `Template.ts` to generate output for video generated.
 
-## Drag and Drops
+Additionally, `OutputPresenter.ts` uses Mobx for state management and contains methods to change the state of video showing / playing such as pause/play video or change music.
+
+An instance of OutputPresenter is created in index.tsx, and passed in as props to components that require its information. This is to ensure only one instance of an OutputPresenter is created and used.
+
+## Media Presenter
+`MediaPresenter.ts` contains an list of `MediaStore` which stores the files imported and its associated properties such as durations, file names, played duration stored at.
+
+### Media Store
+```
+class MediaStore {
+  file: File;
+  duration: number = 0;
+  played: number = 0;
+}
+```
+
+Additionally, `MediaPresenter.ts` uses Mobx for state management and contains methods to modify file information or `MediaStore[]`
+
+An instance of MediaPresenter is created in index.tsx, and passed in as props to components that require its information. This is to ensure only one instance of an MediaPresenter is created and used.
+
+## Styling
+Each component is styled with a css module under componentName.module.css. A generic styling for the project is under `App.css` and `index.css`.
