@@ -49,9 +49,9 @@ It's not very responsive for mobile/tablet view, but will work on it after testi
 # Tech Stack
 
 ## Languages and Framework
-<img src="./readmeMedia/mobx-logo.png" width="50" alt="mobx logo">
-<img src="./readmeMedia/typescript-logo.png" width="20" alt="typescript logo">
-<img src="./readmeMedia/react-logo.png" width="50" alt="React logo">
+<img src="./readmeMedia/mobx-logo.png" width="100" alt="mobx logo">
+<img src="./readmeMedia/typescript-logo.png" width="100" alt="typescript logo">
+<img src="./readmeMedia/react-logo.png" width="100" alt="React logo">
 
 This project is written in TypeScript, bootstrapped with React.
 
@@ -83,7 +83,7 @@ Some states are using React states, however to comply and match with Canva Codeb
 # Code Structure
 
 ## Diagram
-<img src="./readmeMedia/diagram.png" width="450" alt="architecture diagram">
+<img src="./readmeMedia/diagram.png" width="650" alt="architecture diagram">
 
 Now that's a strain on the eyes, so [here](https://www.figma.com/file/xKqDWp1XPyIGOWBVv41qoF/Untitled?node-id=0%3A1)'s the figma file for you to explore.
 
