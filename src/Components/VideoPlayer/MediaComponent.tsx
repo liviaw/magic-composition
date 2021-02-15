@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import { observer } from "mobx-react";
 import { MediaPresenter } from "../../MediaPresenter";
 import styles from "./VideoPlayer.module.css";
 import ReactPlayer from "react-player";
@@ -31,16 +30,18 @@ export const MediaComponent: React.FC<Props> = ({ play, file, playfrom }) => {
 
   if (MediaPresenter.isImage(file)) {
     return (
-      <img
-        className={play ? styles.imageClear : styles.imageBlur}
-        src={fileURL}
-        alt={file.name}
-      />
+      <div className={styles.fadeIn}>
+        <img
+          className={play ? styles.clear : styles.blur}
+          src={fileURL}
+          alt={file.name}
+        />
+      </div>
     );
   } else {
     return (
       <ReactPlayer
-        className={play ? styles.videoClear : styles.videoBlur}
+        className={play ? styles.clear : styles.blur}
         ref={mediaRef}
         volume={0.2}
         url={fileURL}

@@ -22,7 +22,7 @@
   margin: 12px 0;
 }
 
-.imageClear {
+.clear {
   height: 400px;
   width: 600px;
   object-fit: cover;
@@ -32,7 +32,7 @@
   margin: 12px 0;
 }
 
-.imageBlur {
+.blur {
   height: 400px;
   width: 600px;
   -webkit-filter: blur(5px);
@@ -42,28 +42,6 @@
   border-radius: 10px;
   border: 1px solid var(--purple);
   margin: 12px 0;
-}
-
-.videoClear {
-  object-fit: cover;
-  position: relative;
-  height: 400px;
-  width: 600px;
-  border-radius: 10px;
-  border: 1px solid var(--purple);
-  margin: 10px 0;
-}
-
-.videoBlur {
-  height: 400px;
-  width: 600px;
-  -webkit-filter: blur(5px);
-  filter: blur(5px);
-  object-fit: cover;
-  position: relative;
-  border-radius: 10px;
-  border: 1px solid var(--purple);
-  margin: 10px 0;
 }
 
 .playBtn {
@@ -86,4 +64,58 @@
 .pauseBtn:hover {
   display: block;
   cursor: pointer;
+}
+
+.fadeIn {
+  animation: fadeIn ease 3s;
+  -webkit-animation: fadeIn ease 3s;
+  -moz-animation: fadeIn ease 3s;
+  -o-animation: fadeIn ease 3s;
+  -ms-animation: fadeIn ease 3s;
+}
+
+/* Taken from https://www.codegrepper.com/code-examples/typescript/how+to+make+image+fade+in+fade+out+in+css */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

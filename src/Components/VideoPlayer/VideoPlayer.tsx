@@ -9,7 +9,7 @@ import playButton from "./playButton.svg";
 import pauseButton from "./pauseButton.svg";
 import { VideoProgressBar } from "../VideoProgressBar/VideoProgressBar";
 import { Music } from "../Music/Music";
-import { Container, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 /*
  * VideoPlayer.tsx consist of the components to generate a playing video
@@ -19,15 +19,16 @@ import { Container, Row } from "react-bootstrap";
 type Props = {
   mediaPresenter: MediaPresenter;
   outputPresenter: OutputPresenter;
+  openSharePage: boolean;
 };
 
 export const VideoPlayer: React.FC<Props> = observer(
-  ({ mediaPresenter, outputPresenter }) => {
+  ({ mediaPresenter, outputPresenter, openSharePage }) => {
     const [initialDelay] = useState<number>(100);
 
     useEffect(() => {
       outputPresenter.seekPlayMusic();
-    }, []);
+    }, [outputPresenter]);
     useInterval(
       () => {
         //seek each media
@@ -76,10 +77,12 @@ export const VideoPlayer: React.FC<Props> = observer(
             alt="play button"
           />
         )}
-        <Music
-          mediaPresenter={mediaPresenter}
-          outputPresenter={outputPresenter}
-        />
+        {!openSharePage && (
+          <Music
+            mediaPresenter={mediaPresenter}
+            outputPresenter={outputPresenter}
+          />
+        )}
       </Container>
     );
   }

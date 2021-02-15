@@ -187,4 +187,75 @@ describe("media presenter", () => {
       expect(presenter.media[0].played).toEqual(0);
     });
   });
+  
+    describe("getFilePlayed", () => {
+      it("should initialise file played to 0", () => {
+        presenter.addFile(videoFile);
+        expect(presenter.getFilePlayed(0)).toEqual(0);
+      });
+
+      it("should not increment file played if file has 0 duration", () => {
+        presenter.addFile(videoFile);
+        const played = 5;
+        presenter.incrementFilePlayed(0, played);
+        expect(presenter.getFilePlayed(0)).toEqual(0);
+      });
+  
+      it("increments file played when file has a duration", () => {
+        presenter.addFile(videoFile);
+        const duration = 10;
+        const played = 5;
+        presenter.setDuration(0, duration);
+        presenter.incrementFilePlayed(0, played);
+        expect(presenter.getFilePlayed(0)).toEqual(presenter.media[0].played);
+        expect(presenter.getFilePlayed(0)).toEqual(played);
+      });
+    });
+
+  describe("resetAllPlayedFiles", () => {
+    it("should reset all played to 0", () => {
+      presenter.addFile(videoFile);
+      presenter.setDuration(0, 20);
+      const played = 5;
+      presenter.incrementFilePlayed(0, played);
+      expect(presenter.getFilePlayed(0)).toEqual(5);
+      presenter.resetAllPlayedFiles();
+      expect(presenter.getFilePlayed(0)).toEqual(0);
+    });
+  });
+
+  describe("shuffleArray", () => {
+    it("should not change the array order if there is only one file added", () => {
+      presenter.addFile(videoFile);
+      const previousArray = presenter.media;
+      presenter.shuffleArray();
+      expect(previousArray).toEqual(presenter.media);
+    });
+  });
+
+  describe("switchOrder", () => {
+    it("should switch index with new index", () => {
+      presenter.addFile(videoFile);
+      presenter.addFile(imageFile);
+      expect(presenter.media[0].file).toEqual(videoFile);
+      expect(presenter.media[1].file).toEqual(imageFile);
+      presenter.switchOrder(0,1);
+      expect(presenter.media[1].file).toEqual(videoFile);
+      expect(presenter.media[0].file).toEqual(imageFile);
+    });
+  });
+
+  describe("trimmedName", () => {
+    it("should not trim name is it is shorter than 40", () => {
+      presenter.addFile(videoFile);
+      expect(MediaPresenter.trimmedName(videoFile.name)).toEqual("blank");
+    });
+
+    it("should trim name is it is longer than 40", () => {
+      const fileName = "halo this is a very";
+      const extraFileName = fileName + " very very long file name";
+      expect(MediaPresenter.trimmedName(extraFileName)).toContain(fileName);
+      expect(MediaPresenter.trimmedName(extraFileName)).toContain("...");
+    });
+  });
 });

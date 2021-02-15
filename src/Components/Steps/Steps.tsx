@@ -17,10 +17,11 @@ type Props = {
   outputPresenter: OutputPresenter;
   openPlayerModal: () => void;
   closePlayerModal: () => void;
+  openSharedPage: () => void;
 };
 
 export const Steps: React.FC<Props> = observer(
-  ({ mediaPresenter, outputPresenter, openPlayerModal, closePlayerModal }) => {
+  ({ mediaPresenter, outputPresenter, openPlayerModal, closePlayerModal, openSharedPage }) => {
     const [stepOneOpen, setStepOneOpen] = useState<boolean>(true);
     const [stepTwoOpen, setStepTwoOpen] = useState<boolean>(false);
     const handleMediaUpload = async (
@@ -41,11 +42,10 @@ export const Steps: React.FC<Props> = observer(
 
     const onStepClick = () => {
       if (mediaPresenter.mediaReady) {
-        if (!stepOneOpen) {
           setStepOneOpen(true);
+          setStepTwoOpen(false);
         }
         closePlayerModal();
-      }
     };
 
     return (
@@ -90,12 +90,10 @@ export const Steps: React.FC<Props> = observer(
           <button
             className={styles.continueButton}
             onClick={() => {
-              if (!stepTwoOpen) {
                 setStepTwoOpen(true);
                 setStepOneOpen(false);
                 openPlayerModal();
                 outputPresenter.resetVideo();
-              }
             }}
           >
             Continue
@@ -109,9 +107,8 @@ export const Steps: React.FC<Props> = observer(
           }
           onClick={() => {
             if (mediaPresenter.mediaReady) {
-              if (!stepTwoOpen) {
-                setStepTwoOpen(true);
-              }
+              setStepTwoOpen(true);
+              setStepOneOpen(false);
               openPlayerModal();
             }
           }}
@@ -161,6 +158,7 @@ export const Steps: React.FC<Props> = observer(
           <Mood
             outputPresenter={outputPresenter}
             mediaPresenter={mediaPresenter}
+            openSharedPage={openSharedPage}
           />
         )}
       </div>

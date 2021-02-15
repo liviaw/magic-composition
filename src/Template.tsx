@@ -184,7 +184,7 @@ export const templates: Mood[] = [
         // mb add start time and end time of music
         long: {
           start: 0,
-          end: 100,
+          end: 107,
           length: "long",
           slot: [7, 8, 11, 6, 11, 5, 5, 7, 6, 7, 8, 7, 8, 5, 6],
           totalDuration: 107,
