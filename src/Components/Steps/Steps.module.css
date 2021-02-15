@@ -1,0 +1,152 @@
+.stepsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.steppingContainer {
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+}
+.disabledContainer {
+  position: relative;
+  margin: 10px -10px;
+  height: 45px;
+}
+
+.disabledSteppingContainer {
+  position: absolute;
+  height: 50px;
+  left: 0;
+  background-color: var(--grey-button);
+  display: flex;
+  width: 200%;
+  border-radius: 5px;
+  font-weight: 500;
+  padding: 10px 0;
+}
+
+.stepNumber {
+  background-color: var(--purple);
+  width: 25px;
+  height: 25px;
+  margin-right: 7px;
+  text-align: center;
+  color: var(--white);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.stepText {
+  color: var(--black);
+  display: inline-block;
+  font-weight: 400;
+}
+
+.disabledStepNumber {
+  width: 25px;
+  height: 25px;
+  margin-right: 7px;
+  text-align: center;
+  color: var(--disabled-grey-text);
+  border: solid 1px var(--disabled-grey-text);
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 8px;
+}
+
+.disabledStepText {
+  color: var(--disabled-grey-text);
+  display: inline-block;
+  font-weight: 400;
+}
+
+.uploadButtonContainer {
+  position: relative;
+  margin-bottom: 35px;
+  /* height: 45px; */
+  left: -20px;
+  border: 0;
+  background-color: white;
+}
+
+.uploadButton {
+  position: absolute;
+  height: 45px;
+  left: 0;
+  background-color: var(--purple);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 310px;
+  border-radius: 5px;
+  font-weight: 500;
+  color: var(--white);
+  cursor: pointer;
+}
+
+.clickedUploadButton {
+  position: absolute;
+  height: 45px;
+  left: 0;
+  background-color: var(--grey-button);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 310px;
+  border-radius: 5px;
+  font-weight: 500;
+  color: var(--black);
+  cursor: pointer;
+}
+
+.continueButton {
+  position: relative;
+  height: 45px;
+  background-color: var(--purple);
+  width: 310px;
+  border: 0;
+  border-radius: 5px;
+  font-weight: 500;
+  color: var(--white);
+  margin-bottom: 10px;
+  left: -20px;
+}
+
+.downArrow {
+  border: solid var(--arrows);
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 0.25rem;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  position: absolute;
+  right: 25px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.upArrow {
+  border: solid var(--arrows);
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 0.25rem;
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+  position: absolute;
+  right: 25px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.disabledUpArrow {
+  border: solid var(--disabled-grey-text);
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 0.25rem;
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+  position: absolute;
+  right: 25px;
+  margin-top: 5px;
+}
