@@ -34,7 +34,7 @@ export const Homepage: React.FC<Props> = ({
         Create a design
       </Button>
      { dropdown && 
-     (<img src={menu} className={styles.menuCont} alt="menu"/>) &&
+     (<img src={menu} className={styles.menuContainer} alt="menu"/>) &&
       (<img src={menuContent} onClick={showModal} className={styles.menuContent} alt="menu content"/>)}
     </div>
     )
