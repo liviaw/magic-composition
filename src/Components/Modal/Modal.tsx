@@ -1,23 +1,38 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-import type { MediaPresenter } from "../MediaPresenter";
+import type { MediaPresenter } from "../../MediaPresenter";
+import type { OutputPresenter } from "../../OutputPresenter";
 import { Container, Col, Row } from "react-bootstrap";
 import { ErrorToast } from "../ErrorToast/ErrorToast";
 import styles from "./Modal.module.css";
 import classnames from "classnames";
+import { Steps } from "../Steps/Steps";
+
 type Props = {
   mediaPresenter: MediaPresenter;
+  outputPresenter: OutputPresenter;
   modalOpen: boolean;
   closeModal: () => void;
 };
 
 export const Modal: React.FC<Props> = observer(
-  ({ mediaPresenter, modalOpen, closeModal}) => {
+  ({ mediaPresenter, modalOpen, closeModal, outputPresenter }) => {
+    const [openPlayer, setOpenPlayer] = useState<boolean>(false);
     const windowModal = (
       event: React.MouseEvent<HTMLDivElement, MouseEvent>
     ): void => {
       event.stopPropagation();
     };
+
+    const openPlayerModal = () => {
+      setOpenPlayer(true);
+    };
+
+    const closePlayerModal = () => {
+      outputPresenter.pauseVideo();
+      setOpenPlayer(false);
+    };
+
     return (
       <div
         className={classnames(styles.modal, { [styles.open]: modalOpen })}
@@ -38,10 +53,15 @@ export const Modal: React.FC<Props> = observer(
                 <h3>Create a Video</h3>
               </Row>
               <Row className={styles.steps}>
+                <Steps
+                  outputPresenter={outputPresenter}
+                  mediaPresenter={mediaPresenter}
+                  closePlayerModal={closePlayerModal}
+                  openPlayerModal={openPlayerModal}
+                />
               </Row>
             </Col>
-            <Col className={styles.modalBody} sm={8}>
-            </Col>
+            <Col className={styles.modalBody} sm={8}></Col>
           </Row>
         </Container>
       </div>
