@@ -1,3 +1,4 @@
 .progress {
-    width: 500px;
+    /* same as the width of video player */
+    width: 600px;
 }
