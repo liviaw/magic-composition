@@ -15,7 +15,6 @@ type MediaProps = {
   file: File;
   index: number;
   mediaPresenter: MediaPresenter;
-  moveCard: (dragIndex: number, hoverIndex: number) => void;
 };
 
 const style = {
@@ -32,7 +31,7 @@ interface DragItem {
 }
 
 export const MediaComponent: React.FC<MediaProps> = observer(
-  ({ id, file, index, mediaPresenter, moveCard }) => {
+  ({ id, file, index, mediaPresenter }) => {
     const [loaded, setLoaded] = useState<boolean>(false);
     const [videoDuration, setVideoDuration] = useState<number>(0);
     const finishLoading = (duration: number) => {
@@ -62,19 +61,18 @@ export const MediaComponent: React.FC<MediaProps> = observer(
         const dragIndex = item.index;
         const hoverIndex = index;
 
-        // Don't replace items with themselves
+        // Avoid replacing items with themselves
         if (dragIndex === hoverIndex) {
           return;
         }
 
-        // Determine rectangle on screen
         const hoverBoundingRect = ref.current?.getBoundingClientRect();
 
         // Get vertical middle
         const hoverMiddleY =
           (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
-        // Determine mouse position
+        // get the mouse position
         const clientOffset = monitor.getClientOffset();
 
         // Get pixels to the top
@@ -97,13 +95,9 @@ export const MediaComponent: React.FC<MediaProps> = observer(
 
         // Time to actually perform the action
         // mediaPresenter.switchOrder(dragIndex, hoverIndex);
-        moveCard(dragIndex, hoverIndex);
-        // mediaPresenter.switchOrder(dragIndex, hoverIndex)
+        // moveCard(dragIndex, hoverIndex);
+        mediaPresenter.switchOrder(dragIndex, hoverIndex)
 
-        // Note: we're mutating the monitor item here!
-        // Generally it's better to avoid mutations,
-        // but it's good here for the sake of performance
-        // to avoid expensive index searches.
         item.index = hoverIndex;
       },
     });

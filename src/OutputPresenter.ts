@@ -3,7 +3,7 @@ import { templates } from "./Template";
 import type { Mood, TrackEl, LengthEl, DurationTypes } from "./Template";
 
 const MAXLEN = 25;
-const TURNDOWNVOLUME = 4;
+const VOLUMEPOINT = 5;
 
 export class OutputPresenter {
   constructor() {
@@ -44,7 +44,7 @@ export class OutputPresenter {
   @mobx.observable
   music: HTMLAudioElement = new Audio(this.currTrack.musicTrack);
 
-  defaultMusicVolume: number = 0.7;
+  defaultMusicVolume: number = 0.6;
 
   @mobx.computed
   get isPlaying(): boolean {
@@ -56,16 +56,16 @@ export class OutputPresenter {
     return this.currMood.tracks.length;
   }
 
-  @mobx.action
+  @mobx.action.bound
   playVideo(): void {
-    if (this.playedSeconds >= this.currLength.totalDuration) {
+    if (this.overallPlayedSeconds >= this.currLength.totalDuration) {
       this.resetVideo();
     }
     this.music.play();
     this.play = true;
   }
 
-  @mobx.action
+  @mobx.action.bound
   pauseVideo(): void {
     this.music.pause();
     this.play = false;
@@ -82,25 +82,30 @@ export class OutputPresenter {
   }
 
   @mobx.action
-  incrementPlayedSeconds(seconds: number) {
+  incrementPlayedSeconds(seconds: number): void {
     this.playedSeconds += seconds;
     this.overallPlayedSeconds += seconds;
     this.adjustSound();
+    if(this.overallPlayedSeconds >= this.totalVideoDuration){
+      this.pauseVideo();
+      return;
+    }
     if (this.playedSeconds >= this.currLength.slot[this.playingMedia]) {
       this.playingMedia += 1;
       this.playedSeconds = 0;
     }
+
   }
 
   @mobx.action
-  adjustSound() {
-    if (this.music.currentTime >= this.currLength.end - TURNDOWNVOLUME) {
-      if (this.music.volume - 0.2 >= 0) {
-        this.music.volume -= 0.2;
+  adjustSound(): void {
+    if (this.music.currentTime > this.currLength.end - VOLUMEPOINT) {
+      if (this.music.volume - 0.01 >= 0) {
+        this.music.volume -= 0.01;
       }
-    } else if (this.music.currentTime - 4 <= this.currLength.start) {
-      if (this.music.volume + 0.1 <= 1) {
-        this.music.volume += 0.1;
+    } else if (this.music.currentTime <= this.currLength.start + VOLUMEPOINT) {
+      if (this.music.volume + 0.01 <= 1) {
+        this.music.volume += 0.01;
       }
     }
   }
@@ -240,7 +245,7 @@ export class OutputPresenter {
   handleLoaded(): void {
     if (this.music.readyState >= 3) {
       this.setMusicLoaded(true);
-      this.music.volume = 0.7;
+      this.music.volume = this.defaultMusicVolume;
     }
   }
 

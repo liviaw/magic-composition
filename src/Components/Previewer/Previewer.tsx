@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { observer } from "mobx-react";
 import styles from "./Previewer.module.css";
 import type { MediaPresenter, MediaStore } from "../../MediaPresenter";
@@ -13,12 +13,6 @@ type Props = {
 };
 
 export const Previewer: React.FC<Props> = observer(({ mediaPresenter }) => {
-  const moveCard = useCallback(
-    (dragIndex: number, hoverIndex: number) => {
-      mediaPresenter.switchOrder(dragIndex, hoverIndex);
-    },
-    [mediaPresenter.media]
-  );
   return (
     <Container className={styles.previewerContainer}>
       <DndProvider backend={HTML5Backend}>
@@ -29,7 +23,6 @@ export const Previewer: React.FC<Props> = observer(({ mediaPresenter }) => {
               file={media.file}
               index={index}
               mediaPresenter={mediaPresenter}
-              moveCard={moveCard}
               key={media.file.name}
             />
           );

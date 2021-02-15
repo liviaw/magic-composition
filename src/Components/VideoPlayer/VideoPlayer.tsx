@@ -9,7 +9,7 @@ import playButton from "./playButton.svg";
 import pauseButton from "./pauseButton.svg";
 import { VideoProgressBar } from "../VideoProgressBar/VideoProgressBar";
 import { Music } from "../Music/Music";
-import { Container, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 /*
  * VideoPlayer.tsx consist of the components to generate a playing video
@@ -27,7 +27,7 @@ export const VideoPlayer: React.FC<Props> = observer(
 
     useEffect(() => {
       outputPresenter.seekPlayMusic();
-    }, []);
+    }, [outputPresenter]);
     useInterval(
       () => {
         //seek each media
