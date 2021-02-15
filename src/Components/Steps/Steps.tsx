@@ -17,10 +17,11 @@ type Props = {
   outputPresenter: OutputPresenter;
   openPlayerModal: () => void;
   closePlayerModal: () => void;
+  openSharedPage: () => void;
 };
 
 export const Steps: React.FC<Props> = observer(
-  ({ mediaPresenter, outputPresenter, openPlayerModal, closePlayerModal }) => {
+  ({ mediaPresenter, outputPresenter, openPlayerModal, closePlayerModal, openSharedPage }) => {
     const [stepOneOpen, setStepOneOpen] = useState<boolean>(true);
     const [stepTwoOpen, setStepTwoOpen] = useState<boolean>(false);
     const handleMediaUpload = async (
@@ -157,6 +158,7 @@ export const Steps: React.FC<Props> = observer(
           <Mood
             outputPresenter={outputPresenter}
             mediaPresenter={mediaPresenter}
+            openSharedPage={openSharedPage}
           />
         )}
       </div>
