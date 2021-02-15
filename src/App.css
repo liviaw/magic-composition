@@ -1,17 +1,8 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat");
 @import url("https://fonts.googleapis.com/css?family=Lily+Script+One");
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 
 :root {
-  --canva-blue: #00c4cc;
-  --half-canva-blue: #00c4cc80;
-  --light-white: #646464;
-  --background-white:  #fefefe;
-  --medium-white: #fafafa;
-  --medium-translucent-white: #fafafab3;
-  --shadow-black: #00000033;
-  --shadow-gray: #00000030;
-  --translucent-white: #ffffffb3;
   --semi-translucent-white: #e1e1e1b3;
   --black: #000000;
   --white: #ffffff;
@@ -19,9 +10,12 @@
   --lightgrey: #f0efef;
   --darkgrey: #585858;
   --translucent-lightgrey: #8080806b;
-  --purple: #8D39FA;
+  --purple: #8d39fa;
   --disabled-grey-text: #1e293373;
-  --disabled-grey-background: #F7F8F8;
+  --grey-button: #40576d12;
+  --hamburger-grey: #dadada;
+  --arrows: #11171d99;
+  --shuffle-grey: #d4d9ddf8;
 }
 
 .App {
@@ -52,7 +46,7 @@ a:hover {
 
 body {
   flex-direction: row;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-style: normal;
   font-size: 12px;
   letter-spacing: -0.015em;
