@@ -3,13 +3,21 @@ import { ToastContainer, toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 
+// red-colored Toast
 export const showError: (msg: string) => React.ReactText = (msg: string) =>
   toast.error(`❌${msg}`, {
     position: "top-center",
     autoClose: 5000,
   });
 
-export const ErrorToast: React.FC = () => (
+  // White-colored toast
+export const showToast: (msg: string) => React.ReactText = (msg: string) =>
+  toast(`💙${msg}`, {
+    position: "top-center",
+    autoClose: 5000,
+  });
+
+export const Toast: React.FC = () => (
   <ToastContainer
     position="top-center"
     autoClose={5000}
