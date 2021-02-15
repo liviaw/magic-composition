@@ -212,6 +212,7 @@ export class OutputPresenter {
     return this.currLength.length;
   }
 
+  @mobx.action
   resetVideo(): void {
     this.music.load();
     this.setMusicLoaded(false);
@@ -233,14 +234,16 @@ export class OutputPresenter {
     this.musicLoaded = !this.musicLoaded;
   }
 
-  @mobx.action
+  // adding event listener handler that binds on the this.music
+  // hence, .bound is needed
+  @mobx.action.bound
   handleLoaded(): void {
     if (this.music.readyState >= 3) {
       this.setMusicLoaded(true);
       this.music.volume = 0.7;
     }
   }
-  @mobx.action
+
   seekPlayMusic(): void {
     this.music.currentTime = this.currLength.start;
     this.music.addEventListener("canplaythrough", this.handleLoaded);
