@@ -42,16 +42,16 @@ Unit tests are written in tests/ folder
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ## Demo Page
-Optionally, here is a built web app to view: [here](http://ec2-54-79-73-249.ap-southeast-2.compute.amazonaws.com:3000/)
+[A demo is worth a thousand words](http://ec2-54-79-73-249.ap-southeast-2.compute.amazonaws.com:3000/)
 
 It's not very responsive for mobile/tablet view, but will work on it after testing is finished!
 
 # Tech Stack
 
 ## Languages and Framework
+<img src="./readmeMedia/react-logo.png" width="100" alt="React logo">
 <img src="./readmeMedia/mobx-logo.png" width="100" alt="mobx logo">
 <img src="./readmeMedia/typescript-logo.png" width="100" alt="typescript logo">
-<img src="./readmeMedia/react-logo.png" width="100" alt="React logo">
 
 This project is written in TypeScript, bootstrapped with React.
 
@@ -71,7 +71,7 @@ Some states are using React states, however to comply and match with Canva Codeb
 
 ### Icons
 - Most Icons are stored in svg for resizing purposes
-- trash / delete Icon is from [Material UI](https://material-ui.com/components/icons/)
+- trash / delete Icon is from [Material UI](https://material-ui.com/components/icons/) Icon
 
 ### Timer
 - You may notice that the videoplayer component requires many state changes, we are using [useInterval](https://usehooks-typescript.com/react-hook/use-interval) to check the states needed to be changed every 100 microsecond
@@ -114,4 +114,4 @@ Additionally, `MediaPresenter.ts` uses Mobx for state management and contains me
 An instance of MediaPresenter is created in index.tsx, and passed in as props to components that require its information. This is to ensure only one instance of an MediaPresenter is created and used.
 
 ## Styling
-Each component is styled with a css module under componentName.module.css. A generic styling for the project is under `App.css` and `index.css`.
+Each component is styled with a css module under `componentName.module.css`. A generic styling for the project is under `App.css` and `index.css`.
