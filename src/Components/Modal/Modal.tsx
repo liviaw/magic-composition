@@ -10,6 +10,8 @@ import { Steps } from "../Steps/Steps";
 import styles from "./Modal.module.css";
 import classnames from "classnames";
 import { Previewer } from "../Previewer/Previewer";
+import { SharedPage } from "../SharedPage/SharedPage";
+import back from "./backArrow.svg";
 
 type Props = {
   mediaPresenter: MediaPresenter;
@@ -26,6 +28,7 @@ type Props = {
 export const Modal: React.FC<Props> = observer(
   ({ mediaPresenter, outputPresenter, modalOpen, closeModal }) => {
     const [openPlayer, setOpenPlayer] = useState<boolean>(false);
+    const [openSharePage, setOpenSharePage] = useState<boolean>(false);
     const windowModal = (
       event: React.MouseEvent<HTMLDivElement, MouseEvent>
     ): void => {
@@ -39,6 +42,15 @@ export const Modal: React.FC<Props> = observer(
     const closePlayerModal = () => {
       outputPresenter.pauseVideo();
       setOpenPlayer(false);
+    };
+
+    const openSharedPage = () => {
+      outputPresenter.pauseVideo();
+      setOpenSharePage(true);
+    };
+
+    const closeSharedPage = () => {
+      setOpenSharePage(false);
     };
     return (
       <div
@@ -57,16 +69,33 @@ export const Modal: React.FC<Props> = observer(
           <Row className={styles.leftModal}>
             <Col sm={4}>
               <Row className={styles.modalHeader}>
-                <h2>Create a Video</h2>
+                {openSharePage ? (
+                  <h2>
+                    <img
+                      src={back}
+                      onClick={closeSharedPage}
+                      alt="return to edit video"
+                    />{" "}
+                    Share
+                  </h2>
+                ) : (
+                  <h2>Create a Video</h2>
+                )}
               </Row>
-              <Row className={styles.steps}>
-                <Steps
-                  outputPresenter={outputPresenter}
-                  mediaPresenter={mediaPresenter}
-                  closePlayerModal={closePlayerModal}
-                  openPlayerModal={openPlayerModal}
-                />
-              </Row>
+              {openSharePage ? (
+                <SharedPage />
+              ) : (
+                <Row className={styles.steps}>
+                  {/* // TODO, I'm aware that Steps is quite bloated and will refctor in the future */}
+                  <Steps
+                    outputPresenter={outputPresenter}
+                    mediaPresenter={mediaPresenter}
+                    closePlayerModal={closePlayerModal}
+                    openPlayerModal={openPlayerModal}
+                    openSharedPage={openSharedPage}
+                  />
+                </Row>
+              )}
             </Col>
             <Col className={styles.modalBody} sm={8}>
               {mediaPresenter.mediaReady ? (
@@ -74,6 +103,7 @@ export const Modal: React.FC<Props> = observer(
                   <VideoPlayer
                     outputPresenter={outputPresenter}
                     mediaPresenter={mediaPresenter}
+                    openSharePage={openSharePage}
                   />
                 ) : (
                   <Previewer mediaPresenter={mediaPresenter} />

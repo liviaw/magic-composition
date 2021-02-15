@@ -14,10 +14,11 @@ import { showToast } from "../Toast/Toast";
 type Props = {
   mediaPresenter: MediaPresenter;
   outputPresenter: OutputPresenter;
+  openSharedPage: () => void;
 };
 
 export const Mood: React.FC<Props> = observer(
-  ({ mediaPresenter, outputPresenter }) => {
+  ({ mediaPresenter, outputPresenter, openSharedPage }) => {
     return (
       <div className={styles.flexContainer}>
         <p className={styles.optionHeading}>Length</p>
@@ -87,9 +88,9 @@ export const Mood: React.FC<Props> = observer(
         >
           Use in a design
         </button>
-        <a href="https://www.canva.com">
-          <button className={styles.shareButton}>Share</button>
-        </a>
+        <button className={styles.shareButton} onClick={openSharedPage}>
+          Share
+        </button>
       </div>
     );
   }
