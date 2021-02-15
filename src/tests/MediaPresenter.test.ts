@@ -1,175 +1,261 @@
-import * as mobx from "mobx";
+import { MediaPresenter } from "../MediaPresenter";
+describe("media presenter", () => {
+  let presenter: MediaPresenter;
+  const imageFile = new File(["(⌐□_□)"], "blank.png", { type: "image/png" });
+  const videoFile = new File(["(⌐□_□)"], "blank.mp4", { type: "video/mp4" });
+  const textFile = new File(["(⌐□_□)"], "blank.pdf", {
+    type: "application/pdf",
+  });
+  beforeEach(() => {
+    presenter = new MediaPresenter();
+  });
 
-const MAXLEN = 40;
+  describe("getMedia", () => {
+    it("should return meidaStore element given an index", () => {
+      presenter.addFile(videoFile);
+      expect(presenter.media[0].file).toEqual(videoFile);
+    });
 
-export class MediaStore {
-  file: File;
-  // duration of each media attached
-  duration: number = 0;
-  // played list shows how long each of the file have been played
-  played: number = 0;
-  constructor(newFile: File) {
-    this.file = newFile;
-  }
-}
+    it("should return the correct media given an overflowed index", () => {
+      presenter.addFile(imageFile);
+      expect(presenter.filesLength).toEqual(1);
+      expect(presenter.getMedia(9)).toEqual(presenter.getMedia(0));
+    });
+  });
 
-export class MediaPresenter {
-  constructor() {
-    mobx.makeObservable(this);
-  }
+  describe("fileExists", () => {
+    it("should return true if a file has been added", () => {
+      presenter.addFile(videoFile);
+      expect(presenter.fileExists(videoFile.name)).toEqual(true);
+    });
 
-  @mobx.observable
-  media: MediaStore[] = [];
+    it("should return false if a file has not been added", () => {
+      expect(presenter.filesLength).toEqual(0);
+      expect(presenter.fileExists(videoFile.name)).toEqual(false);
+    });
+  });
 
-  @mobx.observable
-  readyMedia: number = 0;
+  describe("addFile", () => {
+    it("should append a file element to the files list", () => {
+      expect(presenter.filesLength).toEqual(0);
+      presenter.addFile(imageFile);
+      expect(presenter.filesLength).toEqual(1);
+      expect(presenter.media[0].file).toEqual(imageFile);
+    });
 
-  static isImage(file: File): boolean {
-    const imageFormat = new RegExp("image/*");
-    return imageFormat.test(file.type);
-  }
+    it("should return false if file is not an image or a video", () => {
+      let returnVal = presenter.addFile(imageFile);
+      expect(returnVal).toBe(true);
+      returnVal = presenter.addFile(imageFile);
+      expect(returnVal).toBe(false);
+    });
 
-  static isVideo(file: File): boolean {
-    const videoFormat = new RegExp("video/*");
-    return videoFormat.test(file.type);
-  }
+    it("should return false if file a file is added twice", () => {
+      const returnVal = presenter.addFile(textFile);
+      expect(returnVal).toBe(false);
+    });
 
-  // Assuming this is always called only when filesLength is not 0
-  getMedia(fileIndex: number): MediaStore {
-    // make sure that accessing files is % filesLength,
-    // so that it loops back to the start of the file if the video is too long
-    const modIndex = fileIndex % this.filesLength;
-    return this.media[modIndex];
-  }
+    it("should not append a file element if file is not an image or a video", () => {
+      expect(presenter.filesLength).toEqual(0);
+      presenter.addFile(textFile);
+      expect(presenter.filesLength).toEqual(0);
+    });
+    it("should return true if a video file is added", () => {
+      const returnVal = presenter.addFile(videoFile);
+      expect(returnVal).toBe(true);
+    });
+    it("should return true if an image file is added", () => {
+      const returnVal = presenter.addFile(imageFile);
+      expect(returnVal).toBe(true);
+    });
+  });
 
-  fileExists(filename: string): boolean {
-    return !!this.media.find((x) => x.file.name === filename);
-  }
+  describe("removeFile", () => {
+    it("should remove a file element from the files list", () => {
+      presenter.addFile(imageFile);
+      expect(presenter.filesLength).toEqual(1);
+      presenter.removeFile(0);
+      expect(presenter.filesLength).toEqual(0);
+    });
 
-  @mobx.action
-  addFile(newFile: File): boolean {
-    if (MediaPresenter.isImage(newFile) || MediaPresenter.isVideo(newFile)) {
-      if (!this.fileExists(newFile.name)) {
-        this.media.push(new MediaStore(newFile));
-        return true;
-      }
-    }
-    return false;
-  }
+    it("should not remove a file when files list is empty", () => {
+      expect(presenter.filesLength).toEqual(0);
+      presenter.removeFile(0);
+      expect(presenter.filesLength).toEqual(0);
+    });
 
-  @mobx.action
-  removeFile(fileIndex: number): void {
-    if (this.media.length === 0) {
-      return;
-    }
-    let index = fileIndex % this.filesLength;
-    if (index > -1) {
-      this.media.splice(index, 1);
-    }
-  }
+    it("should remove the correct file given an overflowed index", () => {
+      presenter.addFile(imageFile);
+      expect(presenter.filesLength).toEqual(1);
+      presenter.removeFile(9);
+      expect(presenter.filesLength).toEqual(0);
+    });
+  });
 
-  // get the name of a file
-  // if index is out of bound, fileindex go to the front of the files
-  getFileName(fileIndex: number): string {
-    if (this.media.length === 0) {
-      return "";
-    }
-    return this.getMedia(fileIndex).file.name;
-  }
+  describe("getFileName", () => {
+    it("should return a string when a file exists", () => {
+      presenter.addFile(imageFile);
+      expect(presenter.filesLength).toEqual(1);
+      expect(presenter.media[0].file.name).toEqual(imageFile.name);
+    });
+    it("should return an empty string when a file does not exists", () => {
+      expect(presenter.filesLength).toEqual(0);
+      const name = presenter.getFileName(0);
+      expect(name).toEqual("");
+    });
+  });
 
-  getFile(fileIndex: number): File {
-    return this.getMedia(fileIndex).file;
-  }
+  describe("getFile", () => {
+    it("should return a file when a file exists", () => {
+      presenter.addFile(imageFile);
+      expect(presenter.filesLength).toEqual(1);
+      const returnFile = presenter.getFile(0);
+      expect(returnFile).toEqual(imageFile);
+    });
 
-  @mobx.computed
-  get filesLength(): number {
-    return this.media.length;
-  }
+    it("should return the correct file when provided overflowed index", () => {
+      presenter.addFile(imageFile);
+      expect(presenter.filesLength).toEqual(1);
+      const returnFile = presenter.getFile(9);
+      expect(returnFile).toEqual(imageFile);
+    });
+  });
 
-  @mobx.action
-  setDuration(fileIndex: number, duration: number): void {
-    this.getMedia(fileIndex).duration = duration;
-  }
+  describe("duration information", () => {
+    it("duration of each file should be initialised to 0", () => {
+      presenter.addFile(videoFile);
+      expect(presenter.getDuration(0)).toEqual(0);
+    });
 
-  getDuration(fileIndex: number): number {
-    return this.getMedia(fileIndex).duration;
-  }
+    it("duration of an image file should be 0", () => {
+      presenter.addFile(imageFile);
+      expect(presenter.getDuration(0)).toEqual(0);
+    });
 
-  // Check if any file is uploaded
-  @mobx.computed
-  get mediaReady() {
-    return this.filesLength !== 0;
-  }
+    it("should set duration for an existing file given index", () => {
+      presenter.addFile(imageFile);
+      const duration = 10;
+      presenter.setDuration(0, duration);
+      expect(presenter.getDuration(0)).toEqual(duration);
+    });
 
-  @mobx.action
-  incrementReadyMedia(): void {
-    this.readyMedia += 1;
-  }
+    it("should set duration for an existing fileoverflowed index", () => {
+      presenter.addFile(imageFile);
+      const duration = 10;
+      presenter.setDuration(9, duration);
+      expect(presenter.getDuration(9)).toEqual(duration);
+    });
+  });
 
-  // shows how long each media has played
-  // mod by duration, to loop back to the beginning of media
-  @mobx.action
-  incrementFilePlayed(fileIndex: number, seconds: number): void {
-    let { duration, played } = this.getMedia(fileIndex);
+  describe("incrementReadyMedia", () => {
+    it("increments readyMedia by 1", () => {
+      expect(presenter.readyMedia).toEqual(0);
+      presenter.incrementReadyMedia();
+      expect(presenter.readyMedia).toEqual(1);
+    });
+  });
 
-    // duration 0 should do nothing, it will give NaN
-    // For in case imageFile or empty video is indexed, it should do nothing
-    if (duration === 0) {
-      return;
-    }
-    this.getMedia(fileIndex).played = (played + seconds) % duration;
-  }
+  describe("incrementFilePlayed", () => {
+    it("should increment file played", () => {
+      presenter.addFile(videoFile);
+      const newDuration = 15;
+      presenter.setDuration(0, newDuration);
+      expect(presenter.getDuration(0)).toEqual(newDuration);
+      const addedValue = 2;
+      presenter.incrementFilePlayed(0, addedValue);
+      let { duration, played } = presenter.getMedia(0);
+      expect(played).toEqual(addedValue);
+      expect(presenter.media[0].played).toEqual(addedValue);
+    });
 
-  getFilePlayed(fileIndex: number): number {
-    // making sure that we don't meet the case of 0 % 0 which is NaN
-    let { played } = this.getMedia(fileIndex);
-    let computedIndex = fileIndex % this.filesLength;
-    if (!this.getDuration(computedIndex)) {
-      return 0;
-    } else if (!(played % this.getDuration(computedIndex))) {
-      return 0;
-    } else {
-      return played % this.getDuration(computedIndex);
-    }
-  }
+    it("should increment to proper amount if file played is overflowed", () => {
+      presenter.addFile(videoFile);
+      const newDuration = 8;
+      presenter.setDuration(0, newDuration);
+      expect(presenter.getDuration(0)).toEqual(newDuration);
+      presenter.incrementFilePlayed(0, 5);
+      presenter.incrementFilePlayed(0, 5);
+      let { duration, played } = presenter.getMedia(0);
+      expect(played).toEqual((5 + 5) % newDuration);
+      expect(presenter.media[0].played).toEqual((5 + 5) % newDuration);
+    });
 
-  // reset all played media to 0
-  @mobx.action
-  resetAllPlayedFiles(): void {
-    for (let fileIndex = 0; fileIndex < this.filesLength; fileIndex++) {
-      this.getMedia(fileIndex).played = 0;
-    }
-  }
+    it("should not increment file played if file has 0 duration", () => {
+      presenter.addFile(videoFile);
+      expect(presenter.media[0].duration).toEqual(0);
+      presenter.incrementFilePlayed(0, 15);
+      expect(presenter.media[0].played).toEqual(0);
+    });
+  });
+  
+    describe("getFilePlayed", () => {
+      it("should initialise file played to 0", () => {
+        presenter.addFile(videoFile);
+        expect(presenter.getFilePlayed(0)).toEqual(0);
+      });
 
-  @mobx.action.bound
-  shuffleArray(): void {
-    this.media.sort(() => Math.random() - 0.5);
-  }
+      it("should not increment file played if file has 0 duration", () => {
+        presenter.addFile(videoFile);
+        const played = 5;
+        presenter.incrementFilePlayed(0, played);
+        expect(presenter.getFilePlayed(0)).toEqual(0);
+      });
+  
+      it("increments file played when file has a duration", () => {
+        presenter.addFile(videoFile);
+        const duration = 10;
+        const played = 5;
+        presenter.setDuration(0, duration);
+        presenter.incrementFilePlayed(0, played);
+        expect(presenter.getFilePlayed(0)).toEqual(presenter.media[0].played);
+        expect(presenter.getFilePlayed(0)).toEqual(played);
+      });
+    });
 
-  // switching order by replacing index with newIndex, then shift the array to the left
-  @mobx.action.bound
-  switchOrder(index: number, newIndex: any): void {
-    if (typeof newIndex === "string") {
-      newIndex = parseInt(newIndex);
-    }
-    let mediaTemp: MediaStore;
-    if (newIndex > -1 && newIndex < this.media.length) {
-      [mediaTemp] = this.media.splice(index, 1);
-      this.media.splice(newIndex, 0, mediaTemp);
-    }
-  }
+  describe("resetAllPlayedFiles", () => {
+    it("should reset all played to 0", () => {
+      presenter.addFile(videoFile);
+      presenter.setDuration(0, 20);
+      const played = 5;
+      presenter.incrementFilePlayed(0, played);
+      expect(presenter.getFilePlayed(0)).toEqual(5);
+      presenter.resetAllPlayedFiles();
+      expect(presenter.getFilePlayed(0)).toEqual(0);
+    });
+  });
 
-  // trim file name when it's too long to look good in UI
-  static trimmedName(fullFilename: string): string {
-    let splittedNames = fullFilename.split(".");
-    if (fullFilename.length >= MAXLEN) {
-      return fullFilename.substr(0, MAXLEN / 2) + "...";
-    }
-    return splittedNames[0];
-  }
+  describe("shuffleArray", () => {
+    it("should not change the array order if there is only one file added", () => {
+      presenter.addFile(videoFile);
+      const previousArray = presenter.media;
+      presenter.shuffleArray();
+      expect(previousArray).toEqual(presenter.media);
+    });
+  });
 
-  static fileType(fullFilename: string): string {
-    let splittedNames = fullFilename.split("/");
-    return splittedNames[splittedNames.length - 1].toUpperCase();
-  }
-}
+  describe("switchOrder", () => {
+    it("should switch index with new index", () => {
+      presenter.addFile(videoFile);
+      presenter.addFile(imageFile);
+      expect(presenter.media[0].file).toEqual(videoFile);
+      expect(presenter.media[1].file).toEqual(imageFile);
+      presenter.switchOrder(0,1);
+      expect(presenter.media[1].file).toEqual(videoFile);
+      expect(presenter.media[0].file).toEqual(imageFile);
+    });
+  });
+
+  describe("trimmedName", () => {
+    it("should not trim name is it is shorter than 40", () => {
+      presenter.addFile(videoFile);
+      expect(MediaPresenter.trimmedName(videoFile.name)).toEqual("blank");
+    });
+
+    it("should trim name is it is longer than 40", () => {
+      const fileName = "halo this is a very";
+      const extraFileName = fileName + " very very long file name";
+      expect(MediaPresenter.trimmedName(extraFileName)).toContain(fileName);
+      expect(MediaPresenter.trimmedName(extraFileName)).toContain("...");
+    });
+  });
+});
