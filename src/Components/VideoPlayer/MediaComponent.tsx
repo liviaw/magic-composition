@@ -15,49 +15,49 @@ type Props = {
   playfrom: number;
 };
 
-export const MediaComponent: React.FC<Props> = observer(
-  ({ play, file, playfrom }) => {
-    const mediaRef: any = useRef(undefined);
-    const [fileURL, setfileURL] = useState<string | undefined>(undefined);
+export const MediaComponent: React.FC<Props> = ({ play, file, playfrom }) => {
+  const mediaRef: any = useRef(undefined);
+  const [fileURL, setfileURL] = useState<string | undefined>(undefined);
 
-    useEffect(() => {
-      const newFileURL = URL.createObjectURL(file);
-      setfileURL(newFileURL);
-      return () => {
-        if (newFileURL != null) {
-          URL.revokeObjectURL(newFileURL);
-        }
+  useEffect(() => {
+    const newFileURL = URL.createObjectURL(file);
+    setfileURL(newFileURL);
+    return () => {
+      if (newFileURL != null) {
+        URL.revokeObjectURL(newFileURL);
       }
-    },[file]);
+    };
+  }, [file, play]);
 
-    if (MediaPresenter.isImage(file)) {
-      return (
-        <img
-          className={play ? styles.clear : styles.blur}
-          src={fileURL}
-          alt={file.name}
-        />
-      );
-    } else {
-      return (
-        <ReactPlayer
-          className={play ? styles.clear : styles.blur}
-          ref={mediaRef}
-          volume={0.1}
-          url={fileURL}
-          playing={play}
-          loop={true}
-          onError={() => {
-            showError(file.name + ": media unable to play");
-          }}
-          onStart={() => {
-            if (mediaRef != null && mediaRef.current != null) {
-              mediaRef.current.seekTo(playfrom, "seconds");
-            }
-          }}
-          id={file.name}
-        />
-      );
-    }
+  if (MediaPresenter.isImage(file)) {
+    return (
+      <img
+        className={play ? styles.imageClear : styles.imageBlur}
+        src={fileURL}
+        alt={file.name}
+      />
+    );
+  } else {
+    return (
+      <ReactPlayer
+        className={play ? styles.videoClear : styles.videoBlur}
+        ref={mediaRef}
+        volume={0.2}
+        url={fileURL}
+        playing={play}
+        loop={true}
+        width="600px"
+        height="400px"
+        onError={() => {
+          showError(file.name + ": media unable to play");
+        }}
+        onStart={() => {
+          if (mediaRef != null && mediaRef.current != null) {
+            mediaRef.current.seekTo(playfrom, "seconds");
+          }
+        }}
+        id={file.name}
+      />
+    );
   }
-);
+};

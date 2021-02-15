@@ -9,6 +9,7 @@ import playButton from "./playButton.svg";
 import pauseButton from "./pauseButton.svg";
 import { VideoProgressBar } from "../VideoProgressBar/VideoProgressBar";
 import { Music } from "../Music/Music";
+import { Container, Row } from "react-bootstrap";
 
 /*
  * VideoPlayer.tsx consist of the components to generate a playing video
@@ -16,49 +17,70 @@ import { Music } from "../Music/Music";
  */
 
 type Props = {
-    mediaPresenter: MediaPresenter;
-    outputPresenter: OutputPresenter;
+  mediaPresenter: MediaPresenter;
+  outputPresenter: OutputPresenter;
 };
 
-export const VideoPlayer: React.FC<Props> = observer(({
-    mediaPresenter,
-    outputPresenter,
-}) => {
-    const [initialDelay, setInitialDelay] = useState<number>(100);
-    const [hover, setHover] = useState<boolean>(false);
+export const VideoPlayer: React.FC<Props> = observer(
+  ({ mediaPresenter, outputPresenter }) => {
+    const [initialDelay] = useState<number>(100);
 
     useEffect(() => {
-        outputPresenter.seekPlayMusic();
-      }, []);
+      outputPresenter.seekPlayMusic();
+    }, []);
     useInterval(
-        () => {           
-            //seek each media
-            mediaPresenter.incrementFilePlayed(outputPresenter.currPlayingMedia, initialDelay / 1000);
-            let music = outputPresenter.currMusic;
-            let currentMediaCounter = outputPresenter.currPlayingMedia;
-            if (music.ended) {
-                mediaPresenter.resetAllPlayedFiles();
-            } else if (outputPresenter.currSlotLength <= currentMediaCounter) {
-                outputPresenter.pauseVideo();
-                mediaPresenter.resetAllPlayedFiles();
-            } else {
-                outputPresenter.incrementPlayedSeconds(initialDelay / 1000);
-            }
-        },
-        outputPresenter.isPlaying ? initialDelay : null,
-    )
-    return (
-        <div className={styles.finalVideoContainer}>
-            {outputPresenter.currMusicLoaded &&
-            (<MediaComponent play={outputPresenter.isPlaying} file={mediaPresenter.getFile(outputPresenter.currPlayingMedia)} playfrom={mediaPresenter.getFilePlayed(outputPresenter.currPlayingMedia)}/>)
-            }
-            <VideoProgressBar outputPresenter={outputPresenter}/>
-            { outputPresenter.isPlaying ?
-                (<img src={pauseButton} onClick={() => outputPresenter.pauseVideo()} className={styles.pauseBtn} alt="pause button"/>) : 
-                (<img src={playButton} onClick={() => outputPresenter.playVideo()} className={styles.playBtn} alt="play button"/>)
-            }
-            <Music mediaPresenter={mediaPresenter} outputPresenter={outputPresenter}/>
-
-      </div>
+      () => {
+        //seek each media
+        mediaPresenter.incrementFilePlayed(
+          outputPresenter.currPlayingMedia,
+          initialDelay / 1000
+        );
+        let music = outputPresenter.currMusic;
+        let currentMediaCounter = outputPresenter.currPlayingMedia;
+        if (music.ended) {
+          mediaPresenter.resetAllPlayedFiles();
+        } else if (outputPresenter.currSlotLength <= currentMediaCounter) {
+          outputPresenter.pauseVideo();
+          mediaPresenter.resetAllPlayedFiles();
+        } else {
+          outputPresenter.incrementPlayedSeconds(initialDelay / 1000);
+        }
+      },
+      outputPresenter.isPlaying ? initialDelay : null
     );
-});
+
+    return (
+      <Container className={styles.finalVideoContainer}>
+        {outputPresenter.currMusicLoaded && (
+          <MediaComponent
+            play={outputPresenter.isPlaying}
+            file={mediaPresenter.getFile(outputPresenter.currPlayingMedia)}
+            playfrom={mediaPresenter.getFilePlayed(
+              outputPresenter.currPlayingMedia
+            )}
+          />
+        )}
+        <VideoProgressBar outputPresenter={outputPresenter} />
+        {outputPresenter.isPlaying ? (
+          <img
+            src={pauseButton}
+            onClick={() => outputPresenter.pauseVideo()}
+            className={styles.pauseBtn}
+            alt="pause button"
+          />
+        ) : (
+          <img
+            src={playButton}
+            onClick={() => outputPresenter.playVideo()}
+            className={styles.playBtn}
+            alt="play button"
+          />
+        )}
+        <Music
+          mediaPresenter={mediaPresenter}
+          outputPresenter={outputPresenter}
+        />
+      </Container>
+    );
+  }
+);

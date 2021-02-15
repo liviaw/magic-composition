@@ -94,6 +94,7 @@ export const Steps: React.FC<Props> = observer(
                 setStepTwoOpen(true);
                 setStepOneOpen(false);
                 openPlayerModal();
+                outputPresenter.resetVideo();
               }
             }}
           >

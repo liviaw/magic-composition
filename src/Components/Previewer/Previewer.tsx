@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, { useCallback } from "react";
 import { observer } from "mobx-react";
 import styles from "./Previewer.module.css";
 import type { MediaPresenter, MediaStore } from "../../MediaPresenter";
@@ -23,7 +23,6 @@ export const Previewer: React.FC<Props> = observer(({ mediaPresenter }) => {
     <Container className={styles.previewerContainer}>
       <DndProvider backend={HTML5Backend}>
         {mediaPresenter.media.map((media: MediaStore, index: number) => {
-          // console.log(index);
           return (
             <MediaComponent
               id={index}
@@ -35,13 +34,13 @@ export const Previewer: React.FC<Props> = observer(({ mediaPresenter }) => {
             />
           );
         })}
-          </DndProvider>
-        <button
-          className={styles.shuffleBtn}
-          onClick={mediaPresenter.shuffleArray}
-        >
-          <img src={shuffle} alt="shuffle" /> Shuffle order
-        </button>
+      </DndProvider>
+      <button
+        className={styles.shuffleBtn}
+        onClick={mediaPresenter.shuffleArray}
+      >
+        <img src={shuffle} alt="shuffle" /> Shuffle order
+      </button>
     </Container>
   );
 });
