@@ -10,25 +10,26 @@ type AppProps = {
   outputPresenter: OutputPresenter;
 };
 
-const App: React.FC<AppProps> = ({mediaPresenter, outputPresenter}) => { 
+const App: React.FC<AppProps> = ({ mediaPresenter, outputPresenter }) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const closeModal = () => {
     setModalOpen(false);
     outputPresenter.pauseVideo();
-  }
+  };
 
-  const openModal = (event: React.MouseEvent<HTMLDivElement, MouseEvent>)  => {
+  const openModal = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setModalOpen(true);
-    if (mediaPresenter.mediaReady) {
-      outputPresenter.playVideo();
-    }
     event.stopPropagation();
-  }
+  };
   return (
     <div className="App">
-      <Homepage openModal={openModal}/>
-      <Modal mediaPresenter={mediaPresenter} outputPresenter={outputPresenter} modalOpen={modalOpen} closeModal={closeModal}/>
-      {outputPresenter.playingMedia}
+      <Homepage openModal={openModal} />
+      <Modal
+        mediaPresenter={mediaPresenter}
+        outputPresenter={outputPresenter}
+        modalOpen={modalOpen}
+        closeModal={closeModal}
+      />
     </div>
   );
 };
