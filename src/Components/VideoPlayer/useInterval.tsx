@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react'
 
-/*
+/**
  * useInterval taken from
  * https://usehooks-typescript.com/react-hook/use-interval
 */

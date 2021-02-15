@@ -11,7 +11,7 @@ import { VideoProgressBar } from "../VideoProgressBar/VideoProgressBar";
 import { Music } from "../Music/Music";
 import { Container } from "react-bootstrap";
 
-/*
+/**
  * VideoPlayer.tsx consist of the components to generate a playing video
  *  This include: progress bar, timer, play/pause buttons, the files playing/pausing
  */

@@ -28,6 +28,16 @@ export const MediaComponent: React.FC<Props> = ({ play, file, playfrom }) => {
     };
   }, [file, play]);
 
+  const onStart = () => {
+    if (mediaRef != null && mediaRef.current != null) {
+      mediaRef.current.seekTo(playfrom, "seconds");
+    }
+  };
+
+  const onError = () => {
+    showError(file.name + ": media unable to play");
+  };
+
   if (MediaPresenter.isImage(file)) {
     return (
       <div className={styles.fadeIn}>
@@ -49,15 +59,8 @@ export const MediaComponent: React.FC<Props> = ({ play, file, playfrom }) => {
         loop={true}
         width="600px"
         height="400px"
-        onError={() => {
-          showError(file.name + ": media unable to play");
-        }}
-        onStart={() => {
-          if (mediaRef != null && mediaRef.current != null) {
-            mediaRef.current.seekTo(playfrom, "seconds");
-          }
-        }}
-        id={file.name}
+        onError={onError}
+        onStart={onStart}
       />
     );
   }
