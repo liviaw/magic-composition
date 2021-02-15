@@ -1,0 +1,120 @@
+.renderMedia {
+    object-fit: cover;
+    position: relative;
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    border: 1px solid var(--purple);
+    margin: 12px 0;
+}
+
+.renderContainer {
+    border-radius: 10px;
+    background-color: var(--lightgrey);
+}
+
+.renderVideo {
+    object-fit: cover;
+    position: relative;
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    border: 1px solid var(--purple);
+    margin: 10px 0;
+}
+
+.previewerContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+}
+
+.bottomLine{
+    border-bottom: 1px solid var(--translucent-lightgrey);
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.leftAlign {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+}
+
+.duration {
+    color: var(--grey);
+    font-weight: 200;
+}
+
+.hamburger {
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.downArrow {
+    border: solid var(--arrows);
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 5px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    position: absolute;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+  
+  .upArrow {
+    border: solid  var(--arrows);
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 5px;
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+    position: absolute;
+    margin-top: 25px;
+    cursor: pointer;
+  }
+  
+  .deleteIconButton {
+    margin-top: 10px;
+  }
+
+  .shuffleBtn {
+      position: fixed;
+      bottom: 145px;
+      width: 650px;
+      height: 45px;
+      border: 0;
+      border-radius: 5px;
+      background-color: var(--shuffle-grey);
+  }
+
+  @media (max-height: 890px) {
+    .shuffleBtn {
+        position: fixed;
+        top: 90vh;
+        width: 650px;
+        height: 45px;
+        border: 0;
+        border-radius: 5px;
+        background-color: var(--shuffle-grey);
+    }
+  }
+
+  /* height of an Iphone X - Large Phone */
+  @media (max-height: 812px) {
+    .shuffleBtn {
+        position: fixed;
+        bottom: 20px;
+        width: 90vw;
+        height: 45px;
+        border: 0;
+        border-radius: 5px;
+        background-color: var(--shuffle-grey);
+    }
+  }
