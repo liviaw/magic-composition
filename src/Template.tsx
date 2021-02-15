@@ -1,13 +1,13 @@
-import ocean from "../Audio/Calm/ocean.mp3";
-import dreaming from "../Audio/Calm/helios-dreaming.mp3";
-import child from "../Audio/Calm/ryan-farish -child.mp3";
-import neutral from "../Audio/Neutral/summer.mp3";
-import adrenalize from "../Audio/Extreme/root-basket-adrenalize.mp3";
-import fantastic from "../Audio/Extreme/big-bang-fantastic-baby.mp3";
-import signs from "../Audio/Neutral/divide-by-nine-signs.mp3";
-import jazzy from "../Audio/jazzy.mp3";
-import gentle from "../Audio/gentle.mp3";
-import uplifting from "../Audio/uplifting.mp3";
+import ocean from "./Audio/Calm/ocean.mp3";
+import dreaming from "./Audio/Calm/helios-dreaming.mp3";
+import child from "./Audio/Calm/ryan-farish -child.mp3";
+import neutral from "./Audio/Neutral/summer.mp3";
+import adrenalize from "./Audio/Extreme/root-basket-adrenalize.mp3";
+import fantastic from "./Audio/Extreme/big-bang-fantastic-baby.mp3";
+import signs from "./Audio/Neutral/divide-by-nine-signs.mp3";
+import jazzy from "./Audio/jazzy.mp3";
+import gentle from "./Audio/gentle.mp3";
+import uplifting from "./Audio/uplifting.mp3";
 
 /*
  * Audio always start with calm, short, track[0]
