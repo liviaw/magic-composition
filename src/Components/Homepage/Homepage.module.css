@@ -8,16 +8,16 @@
   background-size: cover;
 }
 
-.createDesignBtn {
+.createDesignButton {
   position: absolute;
-  right: 77px;
+  right: 74px;
   top: 13px;
   height: 46px;
-  width: 158px;
+  width: 160px;
 }
 
 /* right below createDesignBtn, so height + top */
-.menuCont {
+.menuContainer {
   width: 30%;
   height: auto;
   position: absolute;
@@ -36,6 +36,7 @@
   cursor: pointer;
 }
 
+/* screen width sizes based on Canva page's screens changes in these breakpoint  */
 @media (max-width: 1024px) {
   .CanvaHomePage {
     background-image: url("../../Media/laptopHomePage.png");
@@ -46,9 +47,9 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
-  .createDesignBtn {
+  .createDesignButton {
     position: absolute;
-    right: 87px;
+    right: 86px;
     top: 17px;
     width: 150px;
     height: 45px;
@@ -66,14 +67,14 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
-  .createDesignBtn {
+  .createDesignButton {
     position: absolute;
     right: 140px;
     top: 10px;
     height: 50px;
     width: 153px;
   }
-  .menuCont {
+  .menuContainer {
     width: 55%;
     height: auto;
     position: absolute;
@@ -103,7 +104,7 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
-  .createDesignBtn {
+  .createDesignButton {
     position: absolute;
     right: 20px;
     top: 750px;
@@ -111,7 +112,7 @@
     width: 90px;
     border-radius: 50%;
   }
-  .menuCont {
+  .menuContainer {
     width: 85%;
     height: auto;
     position: absolute;

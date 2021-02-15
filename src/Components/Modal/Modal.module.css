@@ -1,17 +1,17 @@
 .modal {
-  position: fixed;
+  position: fixed; 
   display: none;
-  z-index: 1;
-  padding-top: 100px;
+  z-index: 1; 
+  padding-top: 125px; 
   padding-left: 0;
   left: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
   background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
-}
+  background-color: rgba(0, 0, 0, 0.4); 
+} 
 
 .modal.open {
   display: block;
@@ -76,8 +76,7 @@
 }
 
 .modalHeader {
-  padding: 35px 35px 25px;
-  /* background-color: var(--white); */
+  padding: 30px 35px 0;
 }
 
 .leftModal {
@@ -92,6 +91,8 @@
 .modalBody {
   height: 700px;
   background-color: var(--lightgrey);
+  overflow-y: auto;
+  padding-bottom: 50px;
 }
 
 @media (max-width: 1739px) {
