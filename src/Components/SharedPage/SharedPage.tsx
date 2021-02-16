@@ -46,7 +46,6 @@ export const SharedPage: React.FC = () => {
             />
           </button>
           <p className={styles.tinyText}>Tweet!</p>
-
           <button className={styles.round}>
             <GetAppIcon
               onClick={() => delay("Canva", "https://www.canva.com")}
