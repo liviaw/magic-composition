@@ -26,6 +26,14 @@ export const VideoPlayer: React.FC<Props> = observer(
   ({ mediaPresenter, outputPresenter, openSharePage }) => {
     const [initialDelay] = useState<number>(100);
 
+    const playVideo = () => {
+      if (outputPresenter.overallPlayedSeconds >= outputPresenter.currLength.totalDuration) {
+        outputPresenter.resetVideo();
+        mediaPresenter.resetAllPlayedFiles();
+      }
+      outputPresenter.playVideo();
+    }
+
     useEffect(() => {
       outputPresenter.seekPlayMusic();
     }, [outputPresenter]);
@@ -65,14 +73,14 @@ export const VideoPlayer: React.FC<Props> = observer(
         {outputPresenter.isPlaying ? (
           <img
             src={pauseButton}
-            onClick={() => outputPresenter.pauseVideo()}
+            onClick={outputPresenter.pauseVideo}
             className={styles.pauseBtn}
             alt="pause button"
           />
         ) : (
           <img
             src={playButton}
-            onClick={() => outputPresenter.playVideo()}
+            onClick={playVideo}
             className={styles.playBtn}
             alt="play button"
           />

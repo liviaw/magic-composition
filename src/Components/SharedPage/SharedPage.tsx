@@ -1,5 +1,5 @@
 import React from "react";
-import back from "./backArrow.svg";
+import { Container, Col, Row } from "react-bootstrap";
 
 /**
  * Share section. This will direct you to the chosen social medias
@@ -7,10 +7,11 @@ import back from "./backArrow.svg";
 
 
 export const SharedPage: React.FC = () => {
-  return <div> 
+  return <Container> 
+      <button ></button>
       <p>
           share page
           </p>
       <a href="https://www.canva.com">canva home page</a>
-      </div>;
+      </Container>;
 };

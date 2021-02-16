@@ -20,7 +20,7 @@ type Props = {
 export const Mood: React.FC<Props> = observer(
   ({ mediaPresenter, outputPresenter, openSharedPage }) => {
     return (
-      <div className={styles.flexContainer}>
+      <div className={styles.moodContainer}>
         <p className={styles.optionHeading}>Length</p>
         <div className={styles.optionContainer}>
           {["short", "medium", "long"].map((duration) => {
@@ -41,6 +41,7 @@ export const Mood: React.FC<Props> = observer(
                 onClick={() => {
                   if (present && outputPresenter.templateLength !== duration) {
                     outputPresenter.setCurrLength(duration);
+                    mediaPresenter.resetAllPlayedFiles();
                   }
                 }}
               >
@@ -58,6 +59,7 @@ export const Mood: React.FC<Props> = observer(
                   className={styles.optionButton}
                   key={template.style}
                   onClick={() => {
+                    mediaPresenter.resetAllPlayedFiles();
                     outputPresenter.setCurrMood(
                       template,
                       mediaPresenter.filesLength
@@ -83,6 +85,7 @@ export const Mood: React.FC<Props> = observer(
           className={styles.useButton}
           onClick={() => {
             outputPresenter.resetVideo();
+            mediaPresenter.resetAllPlayedFiles();
             showToast("Preparing your design...");
           }}
         >

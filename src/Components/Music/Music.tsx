@@ -15,10 +15,12 @@ export const Music: React.FC<Props> = observer(
   ({ mediaPresenter, outputPresenter }) => {
     const prevTrack = () => {
       outputPresenter.prevCurrTrack(mediaPresenter.filesLength);
+      mediaPresenter.resetAllPlayedFiles();
     };
 
     const nextTrack = () => {
       outputPresenter.nextCurrTrack(mediaPresenter.filesLength);
+      mediaPresenter.resetAllPlayedFiles();
     };
 
     return (

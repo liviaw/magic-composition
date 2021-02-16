@@ -10,7 +10,7 @@ import { showError } from "../Toast/Toast";
 
 type Props = {
   play: boolean;
-  file: File;
+  file: File | undefined;
   playfrom: number;
 };
 
@@ -27,6 +27,10 @@ export const MediaComponent: React.FC<Props> = ({ play, file, playfrom }) => {
       }
     };
   }, [file, play]);
+
+  if (!file) {
+    return null;
+  }
 
   if (MediaPresenter.isImage(file)) {
     return (

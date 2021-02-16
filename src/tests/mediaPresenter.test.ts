@@ -163,7 +163,7 @@ describe("media presenter", () => {
       expect(presenter.getDuration(0)).toEqual(newDuration);
       const addedValue = 2;
       presenter.incrementFilePlayed(0, addedValue);
-      let { duration, played } = presenter.getMedia(0);
+      let { duration, played } = presenter.getMedia(0)!;
       expect(played).toEqual(addedValue);
       expect(presenter.media[0].played).toEqual(addedValue);
     });
@@ -175,7 +175,7 @@ describe("media presenter", () => {
       expect(presenter.getDuration(0)).toEqual(newDuration);
       presenter.incrementFilePlayed(0, 5);
       presenter.incrementFilePlayed(0, 5);
-      let { duration, played } = presenter.getMedia(0);
+      let { duration, played } = presenter.getMedia(0)!;
       expect(played).toEqual((5 + 5) % newDuration);
       expect(presenter.media[0].played).toEqual((5 + 5) % newDuration);
     });
