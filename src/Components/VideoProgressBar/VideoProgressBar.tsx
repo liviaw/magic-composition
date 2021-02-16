@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react";
 import type { OutputPresenter } from "../../OutputPresenter";
-// import { ProgressBar } from "react-bootstrap";
 import Slider from "react-input-slider";
-// import styles from "./VideoProgressBar.module.css";
 
 type Props = {
   outputPresenter: OutputPresenter;
@@ -30,10 +28,8 @@ export const VideoProgressBar: React.FC<Props> = observer(
       return ret;
     };
 
-    // Optional TODO, add a replay button
     return (
       <div>
-        {/* <ProgressBar className={styles.progress} now={outputPresenter.overallPlayedSeconds / outputPresenter.totalVideoDuration * 100}/> */}
         <Slider
           axis="x"
           x={
