@@ -55,7 +55,7 @@ describe("output presenter", () => {
       presenter.music.currentTime = 100;
       presenter.currLength.end = 0;
       presenter.adjustSound();
-      expect(presenter.music.volume ).toEqual(0.49);
+      expect(presenter.music.volume).toEqual(0.49);
     });
 
     it("should increase the volume by 0.01 given currentTime is less than or equal (startofmusic + VOLUMEPOINT)", () => {
@@ -63,16 +63,16 @@ describe("output presenter", () => {
       presenter.music.currentTime = 0;
       presenter.currLength.start = 100;
       presenter.adjustSound();
-      expect(presenter.music.volume ).toEqual(0.51);
+      expect(presenter.music.volume).toEqual(0.51);
     });
-    
+
     it("should not change the volume in between the video", () => {
       presenter.music.volume = 0.5;
       presenter.music.currentTime = 250;
       presenter.currLength.start = 0;
       presenter.currLength.end = 500;
       presenter.adjustSound();
-      expect(presenter.music.volume ).toEqual(0.5);
+      expect(presenter.music.volume).toEqual(0.5);
     });
   });
 
@@ -86,7 +86,8 @@ describe("output presenter", () => {
 
   describe("musicName", () => {
     it("should append music name with ... if it is too long to display", () => {
-      presenter.currTrack.musicName = "this is a very very long music track name"
+      presenter.currTrack.musicName =
+        "this is a very very long music track name";
       expect(presenter.musicName).toContain("...");
     });
   });
