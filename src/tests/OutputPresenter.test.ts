@@ -7,6 +7,7 @@ describe("output presenter", () => {
   window.HTMLMediaElement.prototype.play = jest.fn();
   window.HTMLMediaElement.prototype.pause = jest.fn();
   window.HTMLMediaElement.prototype.load = jest.fn();
+  const adjustSound = jest.fn();
   beforeEach(() => {
     presenter = new OutputPresenter();
   });
@@ -22,6 +23,7 @@ describe("output presenter", () => {
     });
 
     it("should set play as true", () => {
+      presenter.play = false;
       presenter.playVideo();
       expect(presenter.play).toBe(true);
     });
@@ -29,9 +31,15 @@ describe("output presenter", () => {
 
   describe("pauseVideo", () => {
     it("should set play as false", () => {
+      presenter.play = true;
       presenter.pauseVideo();
       expect(presenter.play).toBe(false);
     });
+
+    it("should pause music", () => {
+      presenter.pauseVideo();
+      expect(presenter.music.pause).toHaveBeenCalled();
+    })
   });
 
   describe("setPlayingMedia", () => {
@@ -41,11 +49,33 @@ describe("output presenter", () => {
     });
   });
 
-  describe("incrementPlayingMedia", () => {
-    it("should increase the value of playingMedia by 1", () => {
+  describe("incrementPlayedSeconds", () => {
+    it("should increase the value of playedMedia by 1 if playedseconds is longer than given slot", () => {
       expect(presenter.playingMedia).toEqual(0);
-      presenter.incrementPlayingMedia();
+      presenter.playedSeconds = 100;
+      presenter.currLength.slot[0] = 5;
+      presenter.incrementPlayedSeconds(0.1);
       expect(presenter.playingMedia).toEqual(1);
+    });
+
+    it("should increase the value of playedSeconds by 1 by the passed in seconds", () => {
+      expect(presenter.playedSeconds).toEqual(0);
+      presenter.playedSeconds = 0;
+      presenter.currLength.slot[0] = 100;
+      presenter.incrementPlayedSeconds(0.1);
+      expect(presenter.playedSeconds).toEqual(0.1);
+    });
+
+    it("should increase the value of overallPlayedSeconds by 1 by the passed in seconds", () => {
+      expect(presenter.overallPlayedSeconds).toEqual(0);
+      presenter.incrementPlayedSeconds(0.1);
+      expect(presenter.overallPlayedSeconds).toEqual(0.1);
+    });
+
+    it("should pause if overall played second is greater than total video duration", () => {
+      presenter.overallPlayedSeconds = 1000;
+      presenter.setCurrTrack(0, 2);
+      expect(presenter.music.pause).toHaveBeenCalled();
     });
   });
 
