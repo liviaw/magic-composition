@@ -34,10 +34,17 @@ export class MediaPresenter {
     return videoFormat.test(file.type);
   }
 
+  private hasMedia(fileIndex: number): boolean {
+    return !!this.getMedia(fileIndex);
+  }
+
   // Assuming this is always called only when filesLength is not 0
-  getMedia(fileIndex: number): MediaStore {
+  getMedia(fileIndex: number): MediaStore | undefined {
     // make sure that accessing files is % filesLength,
     // so that it loops back to the start of the file if the video is too long
+    if (fileIndex < 0 || this.filesLength < 0) {
+      return undefined;
+    }
     const modIndex = fileIndex % this.filesLength;
     return this.media[modIndex];
   }
@@ -71,14 +78,11 @@ export class MediaPresenter {
   // get the name of a file
   // if index is out of bound, fileindex go to the front of the files
   getFileName(fileIndex: number): string {
-    if (this.media.length === 0) {
-      return "";
-    }
-    return this.getMedia(fileIndex).file.name;
+    return this.getMedia(fileIndex)?.file.name || "";
   }
 
-  getFile(fileIndex: number): File {
-    return this.getMedia(fileIndex).file;
+  getFile(fileIndex: number): File | undefined {
+    return this.getMedia(fileIndex)?.file;
   }
 
   @mobx.computed
@@ -88,11 +92,13 @@ export class MediaPresenter {
 
   @mobx.action
   setDuration(fileIndex: number, duration: number): void {
-    this.getMedia(fileIndex).duration = duration;
+    if (this.hasMedia(fileIndex)) {
+      this.getMedia(fileIndex)!.duration = duration;
+    }
   }
 
   getDuration(fileIndex: number): number {
-    return this.getMedia(fileIndex).duration;
+    return this.getMedia(fileIndex)?.duration || 0;
   }
 
   // Check if any file is uploaded
@@ -110,26 +116,29 @@ export class MediaPresenter {
   // mod by duration, to loop back to the beginning of media
   @mobx.action
   incrementFilePlayed(fileIndex: number, seconds: number): void {
-    let { duration, played } = this.getMedia(fileIndex);
+    if (!this.hasMedia(fileIndex)) {
+      return;
+    }
+    let { duration, played } = this.getMedia(fileIndex)!;
 
     // duration 0 should do nothing, it will give NaN
     // For in case imageFile or empty video is indexed, it should do nothing
     if (duration === 0) {
       return;
     }
-    this.getMedia(fileIndex).played = (played + seconds) % duration;
+    this.getMedia(fileIndex)!.played = (played + seconds) % duration;
   }
 
   getFilePlayed(fileIndex: number): number {
-    // making sure that we don't meet the case of 0 % 0 which is NaN
-    let { played } = this.getMedia(fileIndex);
-    let computedIndex = fileIndex % this.filesLength;
-    if (!this.getDuration(computedIndex)) {
+    if (!this.hasMedia(fileIndex)) {
       return 0;
-    } else if (!(played % this.getDuration(computedIndex))) {
+    }
+    const { duration, played } = this.getMedia(fileIndex)!;
+    // making sure that we don't meet the case of 0 % 0 which is NaN
+    if (duration === 0) {
       return 0;
     } else {
-      return played % this.getDuration(computedIndex);
+      return played % duration;
     }
   }
 
@@ -137,7 +146,7 @@ export class MediaPresenter {
   @mobx.action
   resetAllPlayedFiles(): void {
     for (let fileIndex = 0; fileIndex < this.filesLength; fileIndex++) {
-      this.getMedia(fileIndex).played = 0;
+      this.getMedia(fileIndex)!.played = 0;
     }
   }
 

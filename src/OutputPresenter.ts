@@ -58,9 +58,6 @@ export class OutputPresenter {
 
   @mobx.action.bound
   playVideo(): void {
-    if (this.overallPlayedSeconds >= this.currLength.totalDuration) {
-      this.resetVideo();
-    }
     this.music.play();
     this.play = true;
   }
@@ -69,6 +66,29 @@ export class OutputPresenter {
   pauseVideo(): void {
     this.music.pause();
     this.play = false;
+  }
+
+  @mobx.action
+  seekVideo(newValue: number): void {
+    let videoTime: number = 0;
+    let fileIndex: number = 0;
+    let playedSeconds: number = 0;
+    for (let index = 0; index < this.currLength.slot.length; index++) {
+      videoTime += this.currLength.slot[index];
+      if (videoTime >= newValue) {
+        fileIndex = index;
+        playedSeconds = videoTime - newValue;
+        break;
+      }
+    }
+    this.overallPlayedSeconds = newValue;
+    this.music.pause();
+    this.music.currentTime = this.currLength.start + newValue;
+    this.music.volume = this.defaultMusicVolume;
+    this.playingMedia = fileIndex;
+    this.playedSeconds = playedSeconds;
+    this.play = false;
+
   }
 
   @mobx.action
@@ -109,6 +129,7 @@ export class OutputPresenter {
       }
     }
   }
+  
   @mobx.action
   incrementPlayingMedia(): void {
     this.playingMedia++;
