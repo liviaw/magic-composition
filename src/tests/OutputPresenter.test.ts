@@ -83,4 +83,11 @@ describe("output presenter", () => {
       expect(presenter.playingMedia).toEqual(1);
     });
   });
+
+  describe("musicName", () => {
+    it("should append music name with ... if it is too long to display", () => {
+      presenter.currTrack.musicName = "this is a very very long music track name"
+      expect(presenter.musicName).toContain("...");
+    });
+  });
 });
