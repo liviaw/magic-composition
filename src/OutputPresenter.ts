@@ -159,6 +159,25 @@ export class OutputPresenter {
   setTrackIndex(newIndex: number): void {
     this.trackIndex = newIndex;
   }
+
+  canShowDuration(filesLength: number, length: string): boolean {
+    if (length === "short") return true;
+    if (
+      length === "medium" &&
+      this.currTrack.medium.slot.length <= filesLength * 3
+    ) {
+      return true;
+    }
+    if (
+      length === "long" &&
+      this.currTrack.medium.slot.length <= filesLength * 3 &&
+      this.currTrack.long.slot.length <= filesLength * 3
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   // lets say current is long, user changes mood, and the current moodTemplate do not support long
   getSuitableLength(filesLength: number): string {
     if (this.canShowDuration(filesLength, this.lengthIndex)) {
@@ -213,24 +232,6 @@ export class OutputPresenter {
     } else {
       alert(newLength + " is not short, medium or long");
     }
-  }
-
-  canShowDuration(filesLength: number, length: string): boolean {
-    if (length === "short") return true;
-    if (
-      length === "medium" &&
-      this.currTrack.medium.slot.length <= filesLength * 3
-    ) {
-      return true;
-    }
-    if (
-      length === "long" &&
-      this.currTrack.medium.slot.length <= filesLength * 3 &&
-      this.currTrack.long.slot.length <= filesLength * 3
-    ) {
-      return true;
-    }
-    return false;
   }
 
   @mobx.computed
