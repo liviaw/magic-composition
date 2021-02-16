@@ -2,9 +2,7 @@ import { OutputPresenter } from "../OutputPresenter";
 import { templates } from "../Template";
 describe("output presenter", () => {
   let presenter: OutputPresenter;
-  // const musicFile = new File(["(⌐□_□)"], "blank.mp3", { type: "music/mp3" });
   let mood = templates[0];
-  const musicFile: HTMLAudioElement = new Audio(mood.tracks[0].musicTrack);
 
   window.HTMLMediaElement.prototype.play = jest.fn();
   window.HTMLMediaElement.prototype.pause = jest.fn();
