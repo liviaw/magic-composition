@@ -9,7 +9,7 @@ There remains a gap between uploading filmed content and downloading a finalised
 see [here](https://canvadev.atlassian.net/wiki/spaces/INTPROG/pages/1363935799/Magic+video+auto-composition+Video+Experience+Video+-+FE) for inital project plan on Confluence
 
 ### Content-First Approach 🎬
-Add your available images on your phone, 10-year hard drive and WOLA - a video generated for you!
+Add your available images on your phone or your 10-year hard drive and WOLA - a video generated for you!
 
 ### Functionality:
 - US1: Users must be able to select and upload media content in the form of images and videos 
@@ -36,7 +36,7 @@ Yarn installed on your system. If your system does not already have yarn, you ca
 At this point, the project should be running at `http://localhost:3000/` in the browser
 
 ## Running Tests
-Unit tests are written in tests/ folder
+Unit tests are written in `tests/` folder
 
 `yarn test` launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
@@ -60,7 +60,9 @@ Some states are using React states, however to comply and match with Canva Codeb
 ## Libraries Used / Methods
 ### Components
 - Most Components are written in HTMLElements with stylings
-- Modal and Progress Bar are bootstrapped with [React-Bootstrap](https://react-bootstrap.github.io/components/progress/)
+
+### Progress Bar
+- Using `<Slider/>` from [react-input-slider](https://github.com/swiftcarrot/react-input-slider), we get the value of the thumb to get the current progress of the video and allow seeking
 
 ### React Player
 - Display video files using [React Player](https://www.npmjs.com/package/react-player)

@@ -95,6 +95,17 @@
   padding-bottom: 50px;
 }
 
+.backArrow {
+  height: 40px;
+  width: 35px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.backArrow:hover {
+  color: var(--purple);
+}
+
 @media (max-width: 1739px) {
   .modalContent {
     position: relative;

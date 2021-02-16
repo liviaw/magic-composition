@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { observer } from "mobx-react";
 import type { OutputPresenter } from "../../OutputPresenter";
 import Slider from "react-input-slider";
@@ -9,7 +9,6 @@ type Props = {
 
 export const VideoProgressBar: React.FC<Props> = observer(
   ({ outputPresenter }) => {
-    const [state, setState] = useState({ x: 10, y: 10 });
     const formattedTime = (duration: number): string => {
       // Hours, minutes and seconds
       var hrs = Math.floor(duration / 3600);
@@ -50,8 +49,8 @@ export const VideoProgressBar: React.FC<Props> = observer(
               backgroundColor: "#8d39fa",
             },
             thumb: {
-              width: 10,
-              height: 10,
+              width: 15,
+              height: 15,
             },
             disabled: {
               opacity: 0.5,
