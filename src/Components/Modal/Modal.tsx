@@ -11,7 +11,7 @@ import styles from "./Modal.module.css";
 import classnames from "classnames";
 import { Previewer } from "../Previewer/Previewer";
 import { SharedPage } from "../SharedPage/SharedPage";
-import back from "./backArrow.svg";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 type Props = {
   mediaPresenter: MediaPresenter;
@@ -71,11 +71,10 @@ export const Modal: React.FC<Props> = observer(
               <Row className={styles.modalHeader}>
                 {openSharePage ? (
                   <h2>
-                    <img
-                      src={back}
+                    <ArrowBackIcon
                       onClick={closeSharedPage}
-                      alt="return to edit video"
-                    />{" "}
+                      className={styles.backArrow}
+                    />
                     Share
                   </h2>
                 ) : (

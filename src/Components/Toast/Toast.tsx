@@ -14,13 +14,12 @@ export const showError: (msg: string) => React.ReactText = (msg: string) =>
 export const showToast: (msg: string) => React.ReactText = (msg: string) =>
   toast(`💙${msg}`, {
     position: "top-center",
-    autoClose: 5000,
+    autoClose: 10000,
   });
 
 export const Toast: React.FC = () => (
   <ToastContainer
     position="top-center"
-    autoClose={5000}
     hideProgressBar={false}
     newestOnTop={false}
     closeOnClick
