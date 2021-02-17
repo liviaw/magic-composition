@@ -82,13 +82,11 @@ export class OutputPresenter {
       }
     }
     this.overallPlayedSeconds = newValue;
-    this.music.pause();
+    this.pauseVideo();
     this.music.currentTime = this.currLength.start + newValue;
     this.music.volume = this.defaultMusicVolume;
     this.playingMedia = fileIndex;
     this.playedSeconds = playedSeconds;
-    this.play = false;
-
   }
 
   @mobx.action
@@ -99,22 +97,6 @@ export class OutputPresenter {
   @mobx.computed
   get currPlayingMedia(): number {
     return this.playingMedia;
-  }
-
-  @mobx.action
-  incrementPlayedSeconds(seconds: number): void {
-    this.playedSeconds += seconds;
-    this.overallPlayedSeconds += seconds;
-    this.adjustSound();
-    if(this.overallPlayedSeconds >= this.totalVideoDuration){
-      this.pauseVideo();
-      return;
-    }
-    if (this.playedSeconds >= this.currLength.slot[this.playingMedia]) {
-      this.playingMedia += 1;
-      this.playedSeconds = 0;
-    }
-
   }
 
   @mobx.action
@@ -129,7 +111,22 @@ export class OutputPresenter {
       }
     }
   }
-  
+
+  @mobx.action
+  incrementPlayedSeconds(seconds: number): void {
+    this.playedSeconds += seconds;
+    this.overallPlayedSeconds += seconds;
+    this.adjustSound();
+    if (this.overallPlayedSeconds >= this.totalVideoDuration) {
+      this.pauseVideo();
+      return;
+    }
+    if (this.playedSeconds >= this.currLength.slot[this.playingMedia]) {
+      this.playingMedia += 1;
+      this.playedSeconds = 0;
+    }
+  }
+
   @mobx.action
   incrementPlayingMedia(): void {
     this.playingMedia++;
@@ -254,11 +251,6 @@ export class OutputPresenter {
   @mobx.action
   setMusicLoaded(loaded: boolean): void {
     this.musicLoaded = loaded;
-  }
-
-  @mobx.action
-  toggleMusicLoaded(): void {
-    this.musicLoaded = !this.musicLoaded;
   }
 
   // adding event listener handler that binds on the this.music
