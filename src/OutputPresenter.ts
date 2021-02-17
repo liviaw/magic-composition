@@ -3,7 +3,7 @@ import { templates } from "./Template";
 import type { Mood, TrackEl, LengthEl, DurationTypes } from "./Template";
 
 const MAXLEN = 25;
-const TURNDOWNVOLUME = 4;
+const VOLUMEPOINT = 5;
 
 export class OutputPresenter {
   constructor() {
@@ -44,7 +44,7 @@ export class OutputPresenter {
   @mobx.observable
   music: HTMLAudioElement = new Audio(this.currTrack.musicTrack);
 
-  defaultMusicVolume: number = 0.7;
+  defaultMusicVolume: number = 0.6;
 
   @mobx.computed
   get isPlaying(): boolean {
@@ -56,19 +56,37 @@ export class OutputPresenter {
     return this.currMood.tracks.length;
   }
 
-  @mobx.action
+  @mobx.action.bound
   playVideo(): void {
-    if (this.playedSeconds >= this.currLength.totalDuration) {
-      this.resetVideo();
-    }
     this.music.play();
     this.play = true;
   }
 
-  @mobx.action
+  @mobx.action.bound
   pauseVideo(): void {
     this.music.pause();
     this.play = false;
+  }
+
+  @mobx.action
+  seekVideo(newValue: number): void {
+    let videoTime: number = 0;
+    let fileIndex: number = 0;
+    let playedSeconds: number = 0;
+    for (let index = 0; index < this.currLength.slot.length; index++) {
+      videoTime += this.currLength.slot[index];
+      if (videoTime >= newValue) {
+        fileIndex = index;
+        playedSeconds = videoTime - newValue;
+        break;
+      }
+    }
+    this.overallPlayedSeconds = newValue;
+    this.pauseVideo();
+    this.music.currentTime = this.currLength.start + newValue;
+    this.music.volume = this.defaultMusicVolume;
+    this.playingMedia = fileIndex;
+    this.playedSeconds = playedSeconds;
   }
 
   @mobx.action
@@ -82,28 +100,33 @@ export class OutputPresenter {
   }
 
   @mobx.action
-  incrementPlayedSeconds(seconds: number) {
+  adjustSound(): void {
+    if (this.music.currentTime > this.currLength.end - VOLUMEPOINT) {
+      if (this.music.volume - 0.01 >= 0) {
+        this.music.volume -= 0.01;
+      }
+    } else if (this.music.currentTime <= this.currLength.start + VOLUMEPOINT) {
+      if (this.music.volume + 0.01 <= 1) {
+        this.music.volume += 0.01;
+      }
+    }
+  }
+
+  @mobx.action
+  incrementPlayedSeconds(seconds: number): void {
     this.playedSeconds += seconds;
     this.overallPlayedSeconds += seconds;
     this.adjustSound();
+    if (this.overallPlayedSeconds >= this.totalVideoDuration) {
+      this.pauseVideo();
+      return;
+    }
     if (this.playedSeconds >= this.currLength.slot[this.playingMedia]) {
       this.playingMedia += 1;
       this.playedSeconds = 0;
     }
   }
 
-  @mobx.action
-  adjustSound() {
-    if (this.music.currentTime >= this.currLength.end - TURNDOWNVOLUME) {
-      if (this.music.volume - 0.2 >= 0) {
-        this.music.volume -= 0.2;
-      }
-    } else if (this.music.currentTime - 4 <= this.currLength.start) {
-      if (this.music.volume + 0.1 <= 1) {
-        this.music.volume += 0.1;
-      }
-    }
-  }
   @mobx.action
   incrementPlayingMedia(): void {
     this.playingMedia++;
@@ -133,6 +156,25 @@ export class OutputPresenter {
   setTrackIndex(newIndex: number): void {
     this.trackIndex = newIndex;
   }
+
+  canShowDuration(filesLength: number, length: string): boolean {
+    if (length === "short") return true;
+    if (
+      length === "medium" &&
+      this.currTrack.medium.slot.length <= filesLength * 3
+    ) {
+      return true;
+    }
+    if (
+      length === "long" &&
+      this.currTrack.medium.slot.length <= filesLength * 3 &&
+      this.currTrack.long.slot.length <= filesLength * 3
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   // lets say current is long, user changes mood, and the current moodTemplate do not support long
   getSuitableLength(filesLength: number): string {
     if (this.canShowDuration(filesLength, this.lengthIndex)) {
@@ -189,29 +231,12 @@ export class OutputPresenter {
     }
   }
 
-  canShowDuration(filesLength: number, length: string): boolean {
-    if (length === "short") return true;
-    if (
-      length === "medium" &&
-      this.currTrack.medium.slot.length <= filesLength * 3
-    ) {
-      return true;
-    }
-    if (
-      length === "long" &&
-      this.currTrack.medium.slot.length <= filesLength * 3 &&
-      this.currTrack.long.slot.length <= filesLength * 3
-    ) {
-      return true;
-    }
-    return false;
-  }
-
   @mobx.computed
   get templateLength(): string {
     return this.currLength.length;
   }
 
+  @mobx.action
   resetVideo(): void {
     this.music.load();
     this.setMusicLoaded(false);
@@ -228,19 +253,16 @@ export class OutputPresenter {
     this.musicLoaded = loaded;
   }
 
-  @mobx.action
-  toggleMusicLoaded(): void {
-    this.musicLoaded = !this.musicLoaded;
-  }
-
-  @mobx.action
+  // adding event listener handler that binds on the this.music
+  // hence, .bound is needed
+  @mobx.action.bound
   handleLoaded(): void {
     if (this.music.readyState >= 3) {
       this.setMusicLoaded(true);
-      this.music.volume = 0.7;
+      this.music.volume = this.defaultMusicVolume;
     }
   }
-  @mobx.action
+
   seekPlayMusic(): void {
     this.music.currentTime = this.currLength.start;
     this.music.addEventListener("canplaythrough", this.handleLoaded);
