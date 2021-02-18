@@ -111,7 +111,6 @@
     background-position: top right;
     background-repeat: no-repeat;
     background-size: cover;
-    overflow-y: auto;
   }
   .createDesignButton {
     position: absolute;
