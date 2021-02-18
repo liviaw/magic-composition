@@ -11,6 +11,7 @@
   --darkgrey: #585858;
   --translucent-lightgrey: #8080806b;
   --purple: #8d39fa;
+  --canva: #00c4cc;
   --disabled-grey-text: #1e293373;
   --grey-button: #40576d12;
   --hamburger-grey: #dadada;
@@ -20,16 +21,18 @@
 
 .App {
   text-align: center;
+  display: flex;
+    justify-content: center;
 }
-.CanvaHomePage {
+/* .CanvaHomePage {
   background-image: url("./Media/canvaHomePage.png");
   height: 100%;
   width: 100%;
-  position: absolute;
   background-position: right;
   background-repeat: no-repeat;
   background-size: cover;
-}
+  position: relative;
+} */
 
 a:link,
 a:visited {

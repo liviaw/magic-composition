@@ -64,40 +64,33 @@
 .uploadButtonContainer {
   position: relative;
   margin-bottom: 35px;
-  /* height: 45px; */
   left: -20px;
   border: 0;
   background-color: white;
 }
 
-.uploadButton {
+.button {
   position: absolute;
   height: 45px;
   left: 0;
-  background-color: var(--purple);
   display: flex;
   justify-content: center;
   flex-direction: column;
   width: 310px;
+  /* width: calc(310/1920 * 100%); */
   border-radius: 5px;
   font-weight: 500;
-  color: var(--white);
   cursor: pointer;
 }
 
+.uploadButton {
+  color: var(--white);
+  background-color: var(--purple);
+}
+
 .clickedUploadButton {
-  position: absolute;
-  height: 45px;
-  left: 0;
-  background-color: var(--grey-button);
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 310px;
-  border-radius: 5px;
-  font-weight: 500;
   color: var(--black);
-  cursor: pointer;
+  background-color: var(--grey-button);
 }
 
 .continueButton {
@@ -113,40 +106,156 @@
   left: -20px;
 }
 
-.downArrow {
+.arrow {
   border: solid var(--arrows);
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 0.25rem;
+  position: absolute;
+  right: 25px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.down {
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
-  position: absolute;
-  right: 25px;
-  margin-top: 5px;
-  cursor: pointer;
 }
 
-.upArrow {
-  border: solid var(--arrows);
-  border-width: 0 2px 2px 0;
-  display: inline-block;
-  padding: 0.25rem;
+.up {
   transform: rotate(-135deg);
   -webkit-transform: rotate(-135deg);
-  position: absolute;
-  right: 25px;
-  margin-top: 5px;
-  cursor: pointer;
 }
 
-.disabledUpArrow {
-  border: solid var(--disabled-grey-text);
-  border-width: 0 2px 2px 0;
-  display: inline-block;
-  padding: 0.25rem;
+.disabledUp {
+  cursor: default;
   transform: rotate(-135deg);
   -webkit-transform: rotate(-135deg);
-  position: absolute;
-  right: 25px;
-  margin-top: 5px;
+}
+
+/* tablet screen size */
+@media (max-width: 768px) {
+  .stepNumber {
+    background-color: var(--purple);
+    width: 15px;
+    height: 15px;
+    margin-right: 7px;
+    text-align: center;
+    color: var(--white);
+    border-radius: 50%;
+    display: inline-block;
+    font-size: 10px;
+  }
+  .button {
+    position: absolute;
+    height: 45px;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 210px;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .continueButton {
+    position: relative;
+    height: 45px;
+    background-color: var(--purple);
+    width: 210px;
+    border: 0;
+    border-radius: 5px;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 10px;
+    left: -20px;
+  }
+  .disabledStepNumber {
+    width: 15px;
+    height: 15px;
+    margin-right: 7px;
+    text-align: center;
+    color: var(--disabled-grey-text);
+    border: solid 1px var(--disabled-grey-text);
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 8px;
+    font-size: 10px;
+  }
+  .disabledSteppingContainer {
+    position: absolute;
+    height: 50px;
+    left: 0;
+    background-color: var(--grey-button);
+    display: flex;
+    width: 210px;
+    border-radius: 5px;
+    font-weight: 500;
+    padding: 10px 0;
+    font-size: small;
+  }
+  
+}
+
+@media (max-width: 425px) {
+  .stepNumber {
+    background-color: var(--purple);
+    width: 15px;
+    height: 15px;
+    margin-right: 7px;
+    text-align: center;
+    color: var(--white);
+    border-radius: 50%;
+    display: inline-block;
+    font-size: 10px;
+  }
+  .button {
+    position: absolute;
+    height: 45px;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 110px;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .continueButton {
+    position: relative;
+    height: 45px;
+    background-color: var(--purple);
+    width: 110px;
+    border: 0;
+    border-radius: 5px;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 10px;
+    left: -20px;
+  }
+  .disabledStepNumber {
+    width: 10px;
+    height: 10px;
+    margin-right: 7px;
+    text-align: center;
+    color: var(--disabled-grey-text);
+    border: solid 1px var(--disabled-grey-text);
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 8px;
+    font-size: 10px;
+  }
+  .disabledSteppingContainer {
+    position: absolute;
+    height: 50px;
+    left: 0;
+    background-color: var(--grey-button);
+    display: flex;
+    width: 110px;
+    border-radius: 5px;
+    font-weight: 500;
+    padding: 10px 0;
+    font-size: small;
+  }
 }

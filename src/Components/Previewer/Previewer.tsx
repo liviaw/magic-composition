@@ -4,7 +4,6 @@ import styles from "./Previewer.module.css";
 import type { MediaPresenter, MediaStore } from "../../MediaPresenter";
 import { MediaComponent } from "./MediaComponent";
 import { Container } from "react-bootstrap";
-import shuffle from "./ShuffleIcon.svg";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -28,12 +27,7 @@ export const Previewer: React.FC<Props> = observer(({ mediaPresenter }) => {
           );
         })}
       </DndProvider>
-      <button
-        className={styles.shuffleBtn}
-        onClick={mediaPresenter.shuffleArray}
-      >
-        <img src={shuffle} alt="shuffle" /> Shuffle order
-      </button>
+
     </Container>
   );
 });

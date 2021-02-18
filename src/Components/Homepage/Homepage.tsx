@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button } from "react-bootstrap";
 import styles from "./Homepage.module.css";
 import menu from "../../Media/dropdown.png";
 import menuContent from "../../Media/menuContent.png";
@@ -11,7 +10,7 @@ type Props = {
 export const Homepage: React.FC<Props> = ({ openModal }) => {
   const [dropdown, setDropdown] = useState<boolean>(false);
   const toggleOption = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     setDropdown(!dropdown);
     event.stopPropagation();
@@ -26,23 +25,23 @@ export const Homepage: React.FC<Props> = ({ openModal }) => {
   };
   return (
     <div className={styles.CanvaHomePage} onClick={closeOption}>
-      <Button
-        variant="info"
+      <button
         onClick={toggleOption}
         className={styles.createDesignButton}
-      >
+        >
         Create a design
-      </Button>
+      </button>
       {dropdown && (
-          <img src={menu} className={styles.menuContainer} alt="menu" />
+        <img src={menu} className={styles.menuContainer} alt="menu" />
         ) && (
           <img
-            src={menuContent}
-            onClick={showModal}
-            className={styles.menuContent}
-            alt="menu content"
+          src={menuContent}
+          onClick={showModal}
+          className={styles.menuContent}
+          alt="menu content"
           />
-        )}
+          )}
+
     </div>
   );
 };

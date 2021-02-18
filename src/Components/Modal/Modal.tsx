@@ -12,6 +12,7 @@ import classnames from "classnames";
 import { Previewer } from "../Previewer/Previewer";
 import { SharedPage } from "../SharedPage/SharedPage";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import shuffle from "./ShuffleIcon.svg";
 
 type Props = {
   mediaPresenter: MediaPresenter;
@@ -86,6 +87,14 @@ export const Modal: React.FC<Props> = observer(
               ) : (
                 <Row className={styles.steps}>
                   {/* // TODO, I'm aware that Steps is quite bloated and will refctor in the future */}
+                  {mediaPresenter.mediaReady && !openPlayer && (
+                    <button
+                      className={styles.shuffleBtn}
+                      onClick={mediaPresenter.shuffleArray}
+                    >
+                      <img src={shuffle} alt="shuffle" /> Shuffle order
+                    </button>
+                  )}
                   <Steps
                     outputPresenter={outputPresenter}
                     mediaPresenter={mediaPresenter}

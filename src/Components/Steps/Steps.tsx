@@ -5,6 +5,7 @@ import type { MediaPresenter } from "../../MediaPresenter";
 import type { OutputPresenter } from "../../OutputPresenter";
 import { showError } from "../Toast/Toast";
 import { Mood } from "../Mood/Mood";
+import classnames from "classnames";
 
 /**
  * This folder contains components for
@@ -59,7 +60,7 @@ export const Steps: React.FC<Props> = observer(
               setStepOneOpen(!stepOneOpen);
             }}
           >
-            <i className={stepOneOpen ? styles.downArrow : styles.upArrow}></i>
+            <i className={classnames(styles.arrow, stepOneOpen ? styles.down : styles.up)}></i>
           </span>
         </div>
 
@@ -67,10 +68,10 @@ export const Steps: React.FC<Props> = observer(
           <button className={styles.uploadButtonContainer}>
             <label htmlFor="fileUpload">
               <div
-                className={
+                className={classnames(styles.button,
                   mediaPresenter.mediaReady
                     ? styles.clickedUploadButton
-                    : styles.uploadButton
+                    : styles.uploadButton)
                 }
               >
                 Upload media
@@ -141,13 +142,13 @@ export const Steps: React.FC<Props> = observer(
             </p>
             <span>
               <i
-                className={
+                className={classnames(styles.arrow,
                   mediaPresenter.mediaReady
                     ? stepTwoOpen
-                      ? styles.downArrow
-                      : styles.upArrow
-                    : styles.disabledUpArrow
-                }
+                      ? styles.down
+                      : styles.up
+                    : styles.disabledUp
+                )}
                 onClick={() => {
                   setStepTwoOpen(!stepTwoOpen);
                 }}

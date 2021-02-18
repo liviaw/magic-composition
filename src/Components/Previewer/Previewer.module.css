@@ -83,38 +83,3 @@
 .deleteIconButton {
   margin-top: 10px;
 }
-
-.shuffleBtn {
-  position: fixed;
-  bottom: 145px;
-  width: 650px;
-  height: 45px;
-  border: 0;
-  border-radius: 5px;
-  background-color: var(--shuffle-grey);
-}
-
-@media (max-height: 890px) {
-  .shuffleBtn {
-    position: fixed;
-    top: 90vh;
-    width: 650px;
-    height: 45px;
-    border: 0;
-    border-radius: 5px;
-    background-color: var(--shuffle-grey);
-  }
-}
-
-/* height of an Iphone X - Large Phone */
-@media (max-height: 812px) {
-  .shuffleBtn {
-    position: fixed;
-    bottom: 20px;
-    width: 90vw;
-    height: 45px;
-    border: 0;
-    border-radius: 5px;
-    background-color: var(--shuffle-grey);
-  }
-}

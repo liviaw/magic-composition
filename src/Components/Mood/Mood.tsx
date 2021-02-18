@@ -5,6 +5,7 @@ import type { MediaPresenter } from "../../MediaPresenter";
 import { templates } from "../../Template";
 import type { OutputPresenter } from "../../OutputPresenter";
 import { showToast } from "../Toast/Toast";
+import classnames from "classnames";
 
 /**
  * Mood.tsx contains all mood options a user can pick
@@ -30,12 +31,13 @@ export const Mood: React.FC<Props> = observer(
             );
             return (
               <button
-                className={
+                className={ classnames(styles.option,
                   present
                     ? outputPresenter.templateLength === duration
-                      ? styles.clickedOptionButton
+                      ? styles.clickedOption
                       : styles.optionButton
                     : styles.hidden
+                )
                 }
                 key={duration}
                 onClick={() => {
@@ -56,7 +58,7 @@ export const Mood: React.FC<Props> = observer(
             if (outputPresenter.templateMood !== template.style) {
               return (
                 <button
-                  className={styles.optionButton}
+                  className={classnames(styles.option, styles.optionButton)}
                   key={template.style}
                   onClick={() => {
                     mediaPresenter.resetAllPlayedFiles();
@@ -73,7 +75,7 @@ export const Mood: React.FC<Props> = observer(
               return (
                 <button
                   key={template.style}
-                  className={styles.clickedOptionButton}
+                  className={classnames(styles.option, styles.clickedOption)}
                 >
                   {template.style}
                 </button>
@@ -82,7 +84,7 @@ export const Mood: React.FC<Props> = observer(
           })}
         </div>
         <button
-          className={styles.useButton}
+          className={classnames(styles.button, styles.use)}
           onClick={() => {
             outputPresenter.resetVideo();
             mediaPresenter.resetAllPlayedFiles();
@@ -91,7 +93,7 @@ export const Mood: React.FC<Props> = observer(
         >
           Use in a design
         </button>
-        <button className={styles.shareButton} onClick={openSharedPage}>
+        <button className={classnames(styles.button, styles.share)} onClick={openSharedPage}>
           Share
         </button>
       </div>
