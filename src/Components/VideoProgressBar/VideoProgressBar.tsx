@@ -2,6 +2,9 @@ import React from "react";
 import { observer } from "mobx-react";
 import type { OutputPresenter } from "../../OutputPresenter";
 import Slider from "react-input-slider";
+import styles from "./VideoProgressBar.module.css";
+import PauseIcon from '@material-ui/icons/Pause';
+import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 
 type Props = {
   outputPresenter: OutputPresenter;
@@ -26,9 +29,12 @@ export const VideoProgressBar: React.FC<Props> = observer(
       ret += "" + secs;
       return ret;
     };
-
+    
     return (
-      <div>
+      <div className={styles.progressBar}>
+        {/* #d4d9ddf8 */}
+        {/* 8d39fa */}
+        <PauseIcon className={styles.grey}/>
         <Slider
           axis="x"
           x={
@@ -44,9 +50,11 @@ export const VideoProgressBar: React.FC<Props> = observer(
             track: {
               backgroundColor: "#d4d9ddf8",
               width: "31vw",
+              height: "7px",
+              marginRight: "7px",
             },
             active: {
-              backgroundColor: "#8d39fa",
+              backgroundColor: "#ffffff",
             },
             thumb: {
               width: 15,
@@ -57,13 +65,13 @@ export const VideoProgressBar: React.FC<Props> = observer(
             },
           }}
         />
-
-        <span>
+        <span className={styles.grey}>
           {formattedTime(outputPresenter.overallPlayedSeconds) +
             " / " +
             formattedTime(outputPresenter.totalVideoDuration)}
         </span>
-        <br />
+            <VolumeUpIcon className={styles.grey}/>
+
       </div>
     );
   }

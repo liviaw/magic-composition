@@ -1,0 +1,18 @@
+.progressBar {
+    position: relative;
+    top: -4vh;
+}
+
+.grey {
+    color: var(--grey);
+}
+
+@media (max-width: 425px) {
+    .progressBar {
+        position: static;
+    }
+    
+    /* .grey {
+        color: var(--purple);
+    } */
+}

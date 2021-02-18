@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { showError } from "../Toast/Toast";
+// import { showError } from "../Toast/Toast";
 import ReactPlayer from "react-player";
 import styles from "./Previewer.module.css";
 import { observer } from "mobx-react";
@@ -39,7 +39,7 @@ export const VideoComponent: React.FC<MediaProps> = observer(
               url={fileURL}
               className={styles.renderVideo}
               playing={true}
-              onError={() => showError(file.name + " is unable to play")}
+              // onError={() => showError(file.name + " is unable to play")}
               volume={0}
               width="56px"
               height="56px"

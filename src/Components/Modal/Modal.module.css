@@ -206,8 +206,7 @@
   }
 
   .modalBody {
-    height: 25vh;
-    background-color: var(--semi-translucent-white);
+    /* height: 100vh; */
     overflow-y: auto;
     padding-bottom: 50px;
     display: flex;
@@ -218,8 +217,10 @@
     background-color: var(--white);
     position: relative;
     width: 100vw;
+    height: 100vh;
     top: 0;
-    left:0;
+    left: 0;
+    /* overflow-y: auto; */
   }
   .shuffleBtn {
     position: absolute;

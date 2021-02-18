@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { MediaPresenter } from "../../MediaPresenter";
 import styles from "./VideoPlayer.module.css";
 import ReactPlayer from "react-player";
-import { showError } from "../Toast/Toast";
+// import { showError } from "../Toast/Toast";
 
 /*
  * Components under videoPlayer to preview videos in a timely manner
@@ -51,10 +51,10 @@ export const MediaComponent: React.FC<Props> = ({ play, file, playfrom }) => {
         url={fileURL}
         playing={play}
         loop={true}
-        width="36vw"
-        height="43vh"
+        width="40vw"
+        height="51vh"
         onError={() => {
-          showError(file.name + ": media unable to play");
+          // showError(file.name + ": media unable to play");
         }}
         onStart={() => {
           if (mediaRef != null && mediaRef.current != null) {
@@ -66,3 +66,24 @@ export const MediaComponent: React.FC<Props> = ({ play, file, playfrom }) => {
     );
   }
 };
+
+
+{/* <ReactPlayer
+className={play ? styles.clear : styles.blur}
+ref={mediaRef}
+volume={0.2}
+url={fileURL}
+playing={play}
+loop={true}
+width="36vw"
+height="43vh"
+onError={() => {
+  // showError(file.name + ": media unable to play");
+}}
+onStart={() => {
+  if (mediaRef != null && mediaRef.current != null) {
+    mediaRef.current.seekTo(playfrom, "seconds");
+  }
+}}
+id={file.name}
+/> */}

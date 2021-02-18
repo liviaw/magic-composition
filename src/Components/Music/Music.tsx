@@ -42,7 +42,7 @@ export const Music: React.FC<Props> = observer(
             })}
             alt="music logo"
           />
-          {outputPresenter.musicName}
+          <span>{outputPresenter.musicName}</span>
         </div>
         <div className={styles.tooltip}>
           <span className={styles.tooltiptext}>Next Track </span>

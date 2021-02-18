@@ -67,7 +67,6 @@ export const Mood: React.FC<Props> = observer(
           })}
         </div>
         }
-        <br/>
         <span onClick={toggleMoodContainer}>
             <i className={classnames(styles.arrow, {[styles.down]: showMood, [styles.up]: !showMood})}></i>
           </span>
