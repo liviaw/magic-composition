@@ -251,8 +251,8 @@ describe("media presenter", () => {
       expect(MediaPresenter.trimmedName(videoFile.name)).toEqual("blank");
     });
 
-    it("should trim name is it is longer than 40", () => {
-      const fileName = "halo this is a very";
+    it("should trim name is it is longer than 30", () => {
+      const fileName = "halo this is a";
       const extraFileName = fileName + " very very long file name";
       expect(MediaPresenter.trimmedName(extraFileName)).toContain(fileName);
       expect(MediaPresenter.trimmedName(extraFileName)).toContain("...");

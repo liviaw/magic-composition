@@ -1,6 +1,6 @@
 import * as mobx from "mobx";
 
-const MAXLEN = 40;
+const MAXLEN = 30;
 
 export class MediaStore {
   file: File;
