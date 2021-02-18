@@ -33,3 +33,9 @@
 .addMediaText:hover{
     color: var(--darkgrey);
 }
+
+@media (max-width: 425px) {
+    .dotted {
+        display: none;
+    }
+}

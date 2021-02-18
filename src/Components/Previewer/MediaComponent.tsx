@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useDrag, useDrop, DropTargetMonitor } from "react-dnd";
 import styles from "./Previewer.module.css";
+import classnames from "classnames";
 import { MediaPresenter } from "../../MediaPresenter";
 import { observer } from "mobx-react";
 import { VideoComponent } from "./VideoComponent";
@@ -138,12 +139,12 @@ export const MediaComponent: React.FC<MediaProps> = observer(
         </Col>
         <Col xs={1}>
           <span onClick={moveDown}>
-            <i className={styles.downArrow}></i>
+            <i className={classnames(styles.arrow, styles.down)}></i>
           </span>
         </Col>
         <Col xs={1}>
           <span onClick={moveUp}>
-            <i className={styles.upArrow}></i>
+            <i className={classnames(styles.arrow, styles.up)}></i>
           </span>
         </Col>
         <Col xs={1}>

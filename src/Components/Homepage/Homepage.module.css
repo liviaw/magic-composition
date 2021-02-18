@@ -11,6 +11,10 @@
   margin: auto;
 }
 
+.phoneDisplay{
+  display: none;
+}
+
 .createDesignButton {
   position: absolute;
   right: calc(90 / 1920 * 100%);
@@ -45,6 +49,16 @@
 }
 
 /* screen width sizes based on Canva page's screens changes in these breakpoint */
+@media (max-width: 1024px) {
+  .createDesignButton {
+    right: calc(130 / 1920 * 100%);
+    top: calc(15 / 1080 * 100%);
+    height: calc(50 / 1080 * 100%);
+    width:  calc(270 / 1920 * 100%);
+    font-size: 12px;
+  }
+}
+
 /* tablet screen size */
 @media (max-width: 768px) {
   .CanvaHomePage {
@@ -96,18 +110,21 @@
   }
   .createDesignButton {
     position: absolute;
-    right: 20px;
-    top: 750px;
+    right: 15px;
+    top: 85vh;
     height: 65px;
-    width: 90px;
+    width: 65px;
     border-radius: 50%;
+    font-size: 0;
+    content:"+";
+    visibility: visible;
   }
   .menuContainer {
     width: 85%;
     height: auto;
     position: absolute;
     right: 5%;
-    top: 70vh;
+    top: 55vh;
   }
   .menuContent {
     width: 80%;
@@ -115,7 +132,11 @@
     max-height: 100vh;
     position: absolute;
     right: 5%;
-    top: 71vh;
+    top: 56vh;
     cursor: pointer;
+  }
+  .phoneDisplay{
+    display: inline;
+    font-size: 35px;
   }
 }

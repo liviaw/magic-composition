@@ -30,17 +30,19 @@ export const Homepage: React.FC<Props> = ({ openModal }) => {
         className={styles.createDesignButton}
         >
         Create a design
+        <p className={styles.phoneDisplay}>+</p>
       </button>
-      {dropdown && (
-        <img src={menu} className={styles.menuContainer} alt="menu" />
-        ) && (
+      {dropdown && <>
+        <img src={menu} className={styles.menuContainer} alt="menu"/>
           <img
           src={menuContent}
           onClick={showModal}
           className={styles.menuContent}
           alt="menu content"
           />
-          )}
+          </>
+          
+          }
 
     </div>
   );

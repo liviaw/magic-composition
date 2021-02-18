@@ -9,8 +9,7 @@
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: var(--translucent-black);
 }
 
 .modal.open {
@@ -22,10 +21,10 @@
   background-color: var(--lightgrey);
   margin: auto;
   padding-left: 0;
-  border: 1px solid #888;
+  border: 1px solid var(--grey);
   border-radius: 1%;
   width: 80%;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 4px 8px 0 var(--semi-translucent-black), 0 6px 20px 0 var(--semi-translucent-black);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
   animation-name: animatetop;
@@ -121,28 +120,56 @@
   color: var(--purple);
 }
 
-/* tablet screen size */
-@media (max-width: 768px) {
+
+@media (max-width: 1024px) {
+  .modalContent {
+    position: relative;
+    background-color: var(--lightgrey);
+    margin: auto;
+    padding-left: 0;
+    border: 1px solid var(--grey);
+    border-radius: 1%;
+    width: 50%;
+    box-shadow: 0 4px 8px 0 var(--semi-translucent-black), 0 6px 20px 0 var(--semi-translucent-black);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+  }
+
   .shuffleBtn {
     position: absolute;
     top: calc(100% - 50px);
     left: calc(100% + 35px);
-    width: calc(100% + 180px);
+    width: calc(100% + 230px);
     height: 45px;
     z-index: 1;
     border: 0;
     border-radius: 5px;
     background-color: var(--shuffle-grey);
   }
+
+  .leftModal {
+    background-color: var(--white);
+    width: 90vw;
+  }
+  .modalHeader {
+    padding: 35px 15px 0;
+  }
+}
+
+/* tablet screen size */
+@media (max-width: 768px) {
+
   .modalContent {
     position: relative;
     background-color: var(--lightgrey);
     margin: auto;
     padding-left: 0;
-    border: 1px solid #888;
+    border: 1px solid var(--grey);
     border-radius: 1%;
     width: 70%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 4px 8px 0 var(--semi-translucent-black), 0 6px 20px 0 var(--semi-translucent-black);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
@@ -153,55 +180,57 @@
     width: 280px;
   }
 }
-/* small laptop screen size */
-@media (max-width: 1739px) {
-  .modalContent {
-    position: relative;
-    background-color: var(--lightgrey);
-    margin: auto;
-    padding-left: 0;
-    border: 1px solid #888;
-    border-radius: 1%;
-    width: 70%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    -webkit-animation-name: animatetop;
-    -webkit-animation-duration: 0.4s;
-    animation-name: animatetop;
-    animation-duration: 0.4s;
-  }
-}
 
-@media (max-width: 1024px) {
+@media (max-width: 425px) {
+  .modal{
+    width:100vw;
+    height: 95vh;
+    position: absolute;
+  }
   .modalContent {
-    position: relative;
+    position: absolute;
+    left: 0;
+    top: 0;
     background-color: var(--lightgrey);
     margin: auto;
     padding-left: 0;
-    border: 1px solid #888;
+    border: 1px solid var(--grey);
     border-radius: 1%;
-    width: 50%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 100vw;
+    height: 95vh;
+    box-shadow: 0 4px 8px 0 var(--semi-translucent-black), 0 6px 20px 0 var(--semi-translucent-black);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
     animation-duration: 0.4s;
   }
+
+  .modalBody {
+    height: 55vh;
+    background-color: var(--semi-translucent-white);
+    overflow-y: auto;
+    padding-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+  }
+
   .leftModal {
     background-color: var(--white);
-    width: 780px;
+    position: relative;
+    width: 100vw;
+    top: 0;
+    left:0;
   }
   .shuffleBtn {
     position: absolute;
-    top: calc(100% - 50px);
-    left: calc(100% + 35px);
-    width: calc(100% + 190px);
-    height: 40px;
+    top: 86vh;
+    left: 15px;
+    width: 95vw;
+    height: 45px;
     z-index: 1;
     border: 0;
     border-radius: 5px;
     background-color: var(--shuffle-grey);
   }
-  .modalHeader {
-    padding: 35px 15px 0;
-  }
+
 }

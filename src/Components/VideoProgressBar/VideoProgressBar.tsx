@@ -43,7 +43,7 @@ export const VideoProgressBar: React.FC<Props> = observer(
           styles={{
             track: {
               backgroundColor: "#d4d9ddf8",
-              width: 520,
+              width: "31vw",
             },
             active: {
               backgroundColor: "#8d39fa",

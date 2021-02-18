@@ -51,8 +51,8 @@ export const MediaComponent: React.FC<Props> = ({ play, file, playfrom }) => {
         url={fileURL}
         playing={play}
         loop={true}
-        width="600px"
-        height="400px"
+        width="36vw"
+        height="43vh"
         onError={() => {
           showError(file.name + ": media unable to play");
         }}

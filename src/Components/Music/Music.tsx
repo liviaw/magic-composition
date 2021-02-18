@@ -30,7 +30,7 @@ export const Music: React.FC<Props> = observer(
           <span
             onClick={prevTrack}
             className={
-              outputPresenter.currMoodLen > 1 ? styles.leftArrow : undefined
+              outputPresenter.currMoodLen > 1 ? classnames(styles.arrow, styles.previous) : undefined
             }
           ></span>
         </div>
@@ -49,7 +49,7 @@ export const Music: React.FC<Props> = observer(
           <span
             onClick={nextTrack}
             className={
-              outputPresenter.currMoodLen > 1 ? styles.rightArrow : undefined
+              outputPresenter.currMoodLen > 1 ? classnames(styles.next, styles.arrow) : undefined
             }
           ></span>
         </div>

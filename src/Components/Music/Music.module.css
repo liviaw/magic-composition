@@ -31,9 +31,7 @@
   animation: rotation 2s infinite linear;
 }
 
-.leftArrow {
-  transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);
+.arrow{
   border: solid var(--darkgrey);
   border-width: 0 3px 3px 0;
   display: inline-block;
@@ -42,15 +40,14 @@
   margin: 0 10px;
 }
 
-.rightArrow {
-  border: solid var(--darkgrey);
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 5px;
-  transform: rotate(-45deg);
+.previous {
+  -webkit-transform: rotate(135deg);
+  transform: rotate(135deg);
+}
+
+.next {
   -webkit-transform: rotate(-45deg);
-  cursor: pointer;
-  margin: 0 10px;
+  transform: rotate(-45deg);
 }
 
 .tooltip {
@@ -87,4 +84,13 @@
 
 .tooltip:hover .tooltiptext {
   visibility: visible;
+}
+
+@media (max-width: 425px) {
+  .musicContainer {
+    width: 150px;
+    background-color: white;
+    border-radius: 50px;
+    padding: 10px 0px;
+  }
 }

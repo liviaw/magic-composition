@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react";
 import styles from "./Mood.module.css";
 import type { MediaPresenter } from "../../MediaPresenter";
@@ -20,24 +20,38 @@ type Props = {
 
 export const Mood: React.FC<Props> = observer(
   ({ mediaPresenter, outputPresenter, openSharedPage }) => {
+    const [showLength, setShowLength] = useState<boolean>(true);
+    const [showMood, setShowMood] = useState<boolean>(true);
+
+    const toggleLengthContainer = () => {
+      setShowLength(!showLength);
+    }
+    const toggleMoodContainer = () => {
+      setShowMood(!showMood);
+    }
     return (
       <div className={styles.moodContainer}>
+        <span onClick={toggleLengthContainer}>
+          {/* arrow points downward when the container is open */}
+            <i className={classnames(styles.arrow, {[styles.down]: showLength, [styles.up]: !showLength})}></i>
+          </span>
         <p className={styles.optionHeading}>Length</p>
-        <div className={styles.optionContainer}>
+        { showLength &&
+          <div className={styles.optionContainer}>
           {["short", "medium", "long"].map((duration) => {
             let present: boolean = outputPresenter.canShowDuration(
               mediaPresenter.filesLength,
               duration
-            );
-            return (
-              <button
+              );
+              return (
+                <button
                 className={ classnames(styles.option,
                   present
-                    ? outputPresenter.templateLength === duration
-                      ? styles.clickedOption
-                      : styles.optionButton
-                    : styles.hidden
-                )
+                  ? outputPresenter.templateLength === duration
+                  ? styles.clickedOption
+                  : styles.optionButton
+                  : styles.hidden
+                  )
                 }
                 key={duration}
                 onClick={() => {
@@ -46,36 +60,42 @@ export const Mood: React.FC<Props> = observer(
                     mediaPresenter.resetAllPlayedFiles();
                   }
                 }}
-              >
+                >
                 <span>{duration}</span>
               </button>
             );
           })}
         </div>
+        }
+        <br/>
+        <span onClick={toggleMoodContainer}>
+            <i className={classnames(styles.arrow, {[styles.down]: showMood, [styles.up]: !showMood})}></i>
+          </span>
         <p className={styles.optionHeading}>Mood</p>
-        <div className={styles.optionContainer}>
+        {showMood &&
+          <div className={styles.optionContainer}>
           {Object.values(templates).map((template) => {
             if (outputPresenter.templateMood !== template.style) {
               return (
                 <button
-                  className={classnames(styles.option, styles.optionButton)}
-                  key={template.style}
-                  onClick={() => {
-                    mediaPresenter.resetAllPlayedFiles();
-                    outputPresenter.setCurrMood(
-                      template,
-                      mediaPresenter.filesLength
+                className={classnames(styles.option, styles.optionButton)}
+                key={template.style}
+                onClick={() => {
+                  mediaPresenter.resetAllPlayedFiles();
+                  outputPresenter.setCurrMood(
+                    template,
+                    mediaPresenter.filesLength
                     );
                   }}
-                >
+                  >
                   {template.style}
                 </button>
               );
             } else {
               return (
                 <button
-                  key={template.style}
-                  className={classnames(styles.option, styles.clickedOption)}
+                key={template.style}
+                className={classnames(styles.option, styles.clickedOption)}
                 >
                   {template.style}
                 </button>
@@ -83,6 +103,7 @@ export const Mood: React.FC<Props> = observer(
             }
           })}
         </div>
+        }
         <button
           className={classnames(styles.button, styles.use)}
           onClick={() => {

@@ -56,28 +56,25 @@
   margin-top: 20px;
 }
 
-.downArrow {
+.arrow {
   border: solid var(--arrows);
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 5px;
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
   position: absolute;
-  margin-top: 20px;
   cursor: pointer;
 }
 
-.upArrow {
-  border: solid var(--arrows);
-  border-width: 0 2px 2px 0;
-  display: inline-block;
-  padding: 5px;
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  margin-top: 20px;
+}
+
+.up {
   transform: rotate(-135deg);
   -webkit-transform: rotate(-135deg);
-  position: absolute;
   margin-top: 25px;
-  cursor: pointer;
 }
 
 .deleteIconButton {

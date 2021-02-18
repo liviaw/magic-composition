@@ -3,9 +3,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 
 :root {
+  --white: #ffffff;
   --semi-translucent-white: #e1e1e1b3;
   --black: #000000;
-  --white: #ffffff;
+  --translucent-black: #00000066;
+  --semi-translucent-black: #00000033;
   --grey: #808080;
   --lightgrey: #f0efef;
   --darkgrey: #585858;
@@ -24,15 +26,6 @@
   display: flex;
     justify-content: center;
 }
-/* .CanvaHomePage {
-  background-image: url("./Media/canvaHomePage.png");
-  height: 100%;
-  width: 100%;
-  background-position: right;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-} */
 
 a:link,
 a:visited {
