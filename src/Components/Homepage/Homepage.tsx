@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./Homepage.module.css";
 import menu from "../../Media/dropdown.png";
 import menuContent from "../../Media/menuContent.png";
+import phoneMenu from "../../Media/phoneMenu.png";
 
 type Props = {
   openModal: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -25,25 +26,27 @@ export const Homepage: React.FC<Props> = ({ openModal }) => {
   };
   return (
     <div className={styles.CanvaHomePage} onClick={closeOption}>
-      <button
-        onClick={toggleOption}
-        className={styles.createDesignButton}
-        >
+      <button onClick={toggleOption} className={styles.createDesignButton}>
         Create a design
         <p className={styles.phoneDisplay}>+</p>
       </button>
-      {dropdown && <>
-        <img src={menu} className={styles.menuContainer} alt="menu"/>
+      {dropdown && (
+        <>
+          <img src={menu} className={styles.menuContainer} alt="menu"/>
           <img
           src={menuContent}
           onClick={showModal}
           className={styles.menuContent}
           alt="menu content"
           />
-          </>
-          
-          }
-
+          <img
+            src={phoneMenu}
+            onClick={showModal}
+            className={styles.phoneMenuContainer}
+            alt="menu"
+          />
+        </>
+      )}
     </div>
   );
 };
