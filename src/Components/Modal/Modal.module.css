@@ -184,7 +184,7 @@
 @media (max-width: 425px) {
   .modal{
     width:100vw;
-    height: 95vh;
+    height: 94vh;
     position: absolute;
   }
   .modalContent {
@@ -197,7 +197,7 @@
     border: 1px solid var(--grey);
     border-radius: 1%;
     width: 100vw;
-    height: 95vh;
+    height: 94vh;
     box-shadow: 0 4px 8px 0 var(--semi-translucent-black), 0 6px 20px 0 var(--semi-translucent-black);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
@@ -206,7 +206,7 @@
   }
 
   .modalBody {
-    height: 55vh;
+    height: 25vh;
     background-color: var(--semi-translucent-white);
     overflow-y: auto;
     padding-bottom: 50px;
