@@ -124,20 +124,10 @@
     visibility: visible;
   }
   .menuContainer {
-    width: 85%;
-    height: auto;
-    position: absolute;
-    right: 5%;
-    top: 55vh;
+    display: none;
   }
   .menuContent {
-    width: 80%;
-    height: auto;
-    max-height: 100vh;
-    position: absolute;
-    right: 5%;
-    top: 56vh;
-    cursor: pointer;
+    display: none;
   }
   .phoneDisplay{
     display: inline;

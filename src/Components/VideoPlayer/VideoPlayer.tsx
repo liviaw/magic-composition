@@ -9,7 +9,6 @@ import playButton from "./playButton.svg";
 import pauseButton from "./pauseButton.svg";
 import { VideoProgressBar } from "../VideoProgressBar/VideoProgressBar";
 import { Music } from "../Music/Music";
-import { Container } from "react-bootstrap";
 
 /*
  * VideoPlayer.tsx consist of the components to generate a playing video
@@ -59,7 +58,7 @@ export const VideoPlayer: React.FC<Props> = observer(
     );
 
     return (
-      <Container className={styles.finalVideoContainer}>
+      <div className={styles.finalVideoContainer}>
         {outputPresenter.currMusicLoaded && (
           <MediaComponent
             play={outputPresenter.isPlaying}
@@ -91,7 +90,7 @@ export const VideoPlayer: React.FC<Props> = observer(
             outputPresenter={outputPresenter}
           />
         )}
-      </Container>
+      </div>
     );
   }
 );
